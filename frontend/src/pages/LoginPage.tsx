@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { StatusMessage } from "../components/StatusMessage";
 import { useAuth } from "../hooks/useAuth";
 
 export function LoginPage() {
@@ -44,13 +45,17 @@ export function LoginPage() {
 
   return (
     <div className="form-card">
-      <h2>Login</h2>
-      <p className="muted">Use your account to access the dashboard.</p>
+      <div className="form-heading">
+        <span className="eyebrow">Welcome back</span>
+        <h2>Sign in to your workspace</h2>
+        <p className="muted">Use your account to access creator profiles, favorites, and admin operations.</p>
+      </div>
       <form className="form-grid" onSubmit={handleSubmit}>
-        {message ? <div className="form-success">{message}</div> : null}
+        {message ? <StatusMessage tone="success" message={message} /> : null}
         <label>
           <span>Email</span>
           <input
+            placeholder="you@company.com"
             disabled={isSubmitting}
             value={email}
             onChange={(event) => setEmail(event.target.value)}
@@ -61,6 +66,7 @@ export function LoginPage() {
         <label>
           <span>Password</span>
           <input
+            placeholder="Enter your password"
             disabled={isSubmitting}
             value={password}
             onChange={(event) => setPassword(event.target.value)}
@@ -68,7 +74,7 @@ export function LoginPage() {
             required
           />
         </label>
-        {error ? <div className="form-error">{error}</div> : null}
+        {error ? <StatusMessage tone="error" message={error} /> : null}
         <button className="button" disabled={isSubmitting} type="submit">
           {isSubmitting ? "Signing in..." : "Sign in"}
         </button>

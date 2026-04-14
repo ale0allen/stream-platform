@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
+import { EmptyState } from "../components/EmptyState";
+import { Loader } from "../components/Loader";
 import { SectionHeader } from "../components/SectionHeader";
+import { StatusMessage } from "../components/StatusMessage";
 import { useAuth } from "../hooks/useAuth";
 import { listUsers, updateUserStatus } from "../modules/admin/adminService";
 import type { UserSummary } from "../services/types";
@@ -62,50 +65,67 @@ export function AdminPage() {
     <section className="page">
       <SectionHeader
         eyebrow="Admin"
-        title="Users"
-        description="Basic user listing for administrative review."
+        title="User operations"
+        description="Review account access and toggle active status without leaving the workspace."
+        badge="Admin only"
       />
 
-      {isLoading ? <div className="state-card">Loading users...</div> : null}
-      {!isLoading && error ? <div className="form-error">{error}</div> : null}
-      {!isLoading && !error && successMessage ? <div className="form-success">{successMessage}</div> : null}
-      {!isLoading && !error && users.length === 0 ? <div className="state-card">No users found.</div> : null}
+      {isLoading ? <Loader label="Loading users..." /> : null}
+      {!isLoading && error ? <StatusMessage tone="error" message={error} /> : null}
+      {!isLoading && !error && successMessage ? <StatusMessage tone="success" message={successMessage} /> : null}
+      {!isLoading && !error && users.length === 0 ? (
+        <EmptyState title="No users found" description="New accounts will appear here for administrative review." />
+      ) : null}
 
       {!isLoading && !error && users.length > 0 ? (
         <div className="card table-card">
-          <table>
-            <thead>
-              <tr>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.email}</td>
-                  <td>{user.role}</td>
-                  <td>{user.active ? "Active" : "Inactive"}</td>
-                  <td>
-                    <button
-                      className="button button-secondary table-action-button"
-                      onClick={() => void handleStatusToggle(user)}
-                      type="button"
-                      disabled={pendingUserId !== null}
-                    >
-                      {pendingUserId === user.id
-                        ? "Saving..."
-                        : user.active
-                          ? "Deactivate"
-                          : "Activate"}
-                    </button>
-                  </td>
+          <div className="table-header">
+            <div>
+              <strong>User directory</strong>
+              <p className="muted">Manage activation status for every account in the platform.</p>
+            </div>
+          </div>
+          <div className="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {users.map((user) => (
+                  <tr key={user.id}>
+                    <td>{user.email}</td>
+                    <td>
+                      <span className="table-pill">{user.role}</span>
+                    </td>
+                    <td>
+                      <span className={`table-pill ${user.active ? "is-success" : "is-muted"}`}>
+                        {user.active ? "Active" : "Inactive"}
+                      </span>
+                    </td>
+                    <td>
+                      <button
+                        className="button button-secondary table-action-button"
+                        onClick={() => void handleStatusToggle(user)}
+                        type="button"
+                        disabled={pendingUserId !== null}
+                      >
+                        {pendingUserId === user.id
+                          ? "Saving..."
+                          : user.active
+                            ? "Deactivate"
+                            : "Activate"}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       ) : null}
     </section>

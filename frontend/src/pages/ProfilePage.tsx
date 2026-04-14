@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { Loader } from "../components/Loader";
 import { SectionHeader } from "../components/SectionHeader";
+import { StatusMessage } from "../components/StatusMessage";
 import { useAuth } from "../hooks/useAuth";
 import { getMyProfile, updateMyProfile } from "../modules/profile/profileService";
 
@@ -74,55 +76,83 @@ export function ProfilePage() {
     <section className="page">
       <SectionHeader
         eyebrow="Profile"
-        title="Edit profile"
-        description="Manage the public information shown to other users on the platform."
+        title="Shape the creator profile"
+        description="Manage the public information shown across discovery and favorites."
+        badge="Public-facing"
       />
 
-      <div className="card form-card wide-card">
-        {isLoading ? (
-          <div className="state-card compact-state">Loading profile...</div>
-        ) : (
-          <form className="form-grid two-columns" onSubmit={handleSubmit}>
-            <label>
-              <span>Display name</span>
-              <input
-                disabled={isSaving}
-                value={form.displayName}
-                onChange={(event) => setForm((current) => ({ ...current, displayName: event.target.value }))}
-              />
-            </label>
-            <label>
-              <span>Username</span>
-              <input
-                disabled={isSaving}
-                value={form.username}
-                onChange={(event) => setForm((current) => ({ ...current, username: event.target.value }))}
-              />
-            </label>
-            <label className="full-width">
-              <span>Avatar URL</span>
-              <input
-                disabled={isSaving}
-                value={form.avatarUrl}
-                onChange={(event) => setForm((current) => ({ ...current, avatarUrl: event.target.value }))}
-              />
-            </label>
-            <label className="full-width">
-              <span>Bio</span>
-              <textarea
-                disabled={isSaving}
-                rows={5}
-                value={form.bio}
-                onChange={(event) => setForm((current) => ({ ...current, bio: event.target.value }))}
-              />
-            </label>
-            {error ? <div className="form-error full-width">{error}</div> : null}
-            {savedMessage ? <div className="form-success full-width">{savedMessage}</div> : null}
-            <button className="button" disabled={isSaving} type="submit">
-              {isSaving ? "Saving..." : "Save changes"}
-            </button>
-          </form>
-        )}
+      <div className="page-grid page-grid-profile">
+        <aside className="card profile-preview-card">
+          <span className="eyebrow">Preview</span>
+          <div className="avatar avatar-large">{form.displayName.charAt(0).toUpperCase() || "?"}</div>
+          <div>
+            <h3>{form.displayName || "Display name"}</h3>
+            <p className="muted">@{form.username || "username"}</p>
+          </div>
+          <p>{form.bio || "Add a short creator bio to improve discovery quality and profile clarity."}</p>
+          <div className="profile-preview-meta">
+            <span>{form.avatarUrl ? "Avatar URL added" : "No avatar URL yet"}</span>
+            <span>Discovery ready</span>
+          </div>
+        </aside>
+
+        <div className="card form-card wide-card">
+          {isLoading ? (
+            <Loader label="Loading profile..." compact />
+          ) : (
+            <form className="form-grid two-columns" onSubmit={handleSubmit}>
+              <label>
+                <span>Display name</span>
+                <input
+                  placeholder="Display name"
+                  disabled={isSaving}
+                  value={form.displayName}
+                  onChange={(event) => setForm((current) => ({ ...current, displayName: event.target.value }))}
+                />
+              </label>
+              <label>
+                <span>Username</span>
+                <input
+                  placeholder="Username"
+                  disabled={isSaving}
+                  value={form.username}
+                  onChange={(event) => setForm((current) => ({ ...current, username: event.target.value }))}
+                />
+              </label>
+              <label className="full-width">
+                <span>Avatar URL</span>
+                <input
+                  placeholder="https://..."
+                  disabled={isSaving}
+                  value={form.avatarUrl}
+                  onChange={(event) => setForm((current) => ({ ...current, avatarUrl: event.target.value }))}
+                />
+              </label>
+              <label className="full-width">
+                <span>Bio</span>
+                <textarea
+                  disabled={isSaving}
+                  rows={5}
+                  value={form.bio}
+                  onChange={(event) => setForm((current) => ({ ...current, bio: event.target.value }))}
+                />
+              </label>
+              {error ? (
+                <div className="full-width">
+                  <StatusMessage tone="error" message={error} />
+                </div>
+              ) : null}
+              {savedMessage ? (
+                <div className="full-width">
+                  <StatusMessage tone="success" message={savedMessage} />
+                </div>
+              ) : null}
+              <button className="button" disabled={isSaving} type="submit">
+                {isSaving ? "Saving..." : "Save changes"}
+              </button>
+            </form>
+          )}
+        </div>
       </div>
     </section>
   );

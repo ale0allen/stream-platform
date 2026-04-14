@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
+import { EmptyState } from "../components/EmptyState";
+import { Loader } from "../components/Loader";
 import { ProfileCard } from "../components/ProfileCard";
 import { SectionHeader } from "../components/SectionHeader";
+import { StatusMessage } from "../components/StatusMessage";
 import { useAuth } from "../hooks/useAuth";
 import { listFavorites, removeFavorite } from "../modules/favorite/favoriteService";
 import type { Favorite } from "../services/types";
@@ -60,15 +63,22 @@ export function FavoritesPage() {
     <section className="page">
       <SectionHeader
         eyebrow="Favorites"
-        title="Saved profiles"
-        description="Quick access to the streamer profiles you care about most."
+        title="Saved creator shortlist"
+        description="Keep your strongest creator picks close and remove them when priorities change."
+        badge="Curated list"
       />
 
+      {error ? <StatusMessage tone="error" message={error} /> : null}
+      {!error && success ? <StatusMessage tone="success" message={success} /> : null}
+
       <div className="card-grid">
-        {isLoading ? <div className="state-card">Loading favorites...</div> : null}
-        {!isLoading && error ? <div className="form-error">{error}</div> : null}
-        {!isLoading && !error && success ? <div className="form-success">{success}</div> : null}
-        {!isLoading && !error && !favorites.length ? <div className="state-card">No favorites yet.</div> : null}
+        {isLoading ? <Loader label="Loading favorites..." /> : null}
+        {!isLoading && !error && !favorites.length ? (
+          <EmptyState
+            title="No favorites yet"
+            description="Save creator profiles from discovery to build a shortlist for later review."
+          />
+        ) : null}
         {!isLoading && !error
           ? favorites.map((favorite) => (
               <div className="favorite-item" key={favorite.id}>

@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
+import { EmptyState } from "../components/EmptyState";
+import { Loader } from "../components/Loader";
 import { ProfileCard } from "../components/ProfileCard";
 import { SectionHeader } from "../components/SectionHeader";
+import { StatusMessage } from "../components/StatusMessage";
 import { useAuth } from "../hooks/useAuth";
 import { listProfiles } from "../modules/discovery/discoveryService";
 import { addFavorite } from "../modules/favorite/favoriteService";
@@ -60,11 +63,16 @@ export function DiscoveryPage() {
     <section className="page">
       <SectionHeader
         eyebrow="Discovery"
-        title="Find streamer profiles"
-        description="Search the current streamer directory by display name, username, or bio."
+        title="Find creator profiles"
+        description="Search the current directory by display name, username, or bio and turn strong matches into favorites."
+        badge="Searchable directory"
       />
 
-      <div className="toolbar">
+      <div className="toolbar card toolbar-card">
+        <div className="toolbar-copy">
+          <strong>Search creators</strong>
+          <span className="muted">Type a name, username, or a term from the bio.</span>
+        </div>
         <input
           className="search-input"
           placeholder="Search profiles"
@@ -74,11 +82,17 @@ export function DiscoveryPage() {
         />
       </div>
 
+      {error ? <StatusMessage tone="error" message={error} /> : null}
+      {!error && feedback ? <StatusMessage tone="success" message={feedback} /> : null}
+
       <div className="card-grid">
-        {isLoading ? <div className="state-card">Loading profiles...</div> : null}
-        {!isLoading && error ? <div className="form-error">{error}</div> : null}
-        {!isLoading && !error && feedback ? <div className="form-success">{feedback}</div> : null}
-        {!isLoading && !error && !profiles.length ? <div className="state-card">No profiles found.</div> : null}
+        {isLoading ? <Loader label="Loading profiles..." /> : null}
+        {!isLoading && !error && !profiles.length ? (
+          <EmptyState
+            title="No profiles found"
+            description="Try a broader search term or clear the query to browse the full creator directory."
+          />
+        ) : null}
         {!isLoading && !error
           ? profiles.map((profile) => (
               <div className="favorite-item" key={profile.id}>

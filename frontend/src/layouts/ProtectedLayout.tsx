@@ -1,17 +1,21 @@
-import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { AppSidebar } from "../components/AppSidebar";
+import { AppTopbar } from "../components/AppTopbar";
 import { useAuth } from "../hooks/useAuth";
 
 export function ProtectedLayout() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const pageTitleByPath: Record<string, string> = {
-    "/": "Home",
-    "/profile": "Profile",
-    "/discovery": "Discovery",
-    "/favorites": "Favorites",
-    "/admin": "Admin"
+  const pageMetaByPath: Record<string, { title: string; eyebrow: string }> = {
+    "/": { title: "Overview", eyebrow: "Dashboard" },
+    "/profile": { title: "Creator Profile", eyebrow: "Profile" },
+    "/discovery": { title: "Discovery", eyebrow: "Network" },
+    "/favorites": { title: "Favorites", eyebrow: "Shortlist" },
+    "/admin": { title: "Admin", eyebrow: "Operations" }
   };
 
   function handleLogout() {
@@ -22,43 +26,34 @@ export function ProtectedLayout() {
     });
   }
 
+  function handleNavigate() {
+    setIsSidebarOpen(false);
+  }
+
+  const currentPage = pageMetaByPath[location.pathname] ?? {
+    title: "Workspace",
+    eyebrow: "Dashboard"
+  };
+
   return (
     <div className="app-shell">
-      <aside className="sidebar">
-        <div>
-          <div className="brand brand-large">Stream Platform</div>
-          <p className="muted">MVP dashboard for streamers and internal ops.</p>
-        </div>
-
-        <nav className="nav-list">
-          <NavLink to="/" end>
-            Home
-          </NavLink>
-          <NavLink to="/profile">Profile</NavLink>
-          <NavLink to="/discovery">Discovery</NavLink>
-          <NavLink to="/favorites">Favorites</NavLink>
-          {user?.role === "ADMIN" ? <NavLink to="/admin">Admin</NavLink> : null}
-        </nav>
-
-        <div className="sidebar-footer">
-          <div className="user-chip">
-            <strong>{user?.email}</strong>
-            <span>{user?.role}</span>
-          </div>
-          <button className="button button-secondary" onClick={handleLogout} type="button">
-            Logout
-          </button>
-        </div>
-      </aside>
+      <div className={`sidebar-layer${isSidebarOpen ? " is-open" : ""}`} onClick={handleNavigate} />
+      <div className={`sidebar-frame${isSidebarOpen ? " is-open" : ""}`}>
+        <AppSidebar
+          email={user?.email}
+          role={user?.role}
+          onLogout={handleLogout}
+          onNavigate={handleNavigate}
+        />
+      </div>
 
       <main className="content">
-        <header className="content-header card">
-          <div>
-            <span className="eyebrow">Workspace</span>
-            <h2>{pageTitleByPath[location.pathname] ?? "Dashboard"}</h2>
-          </div>
-          <div className="muted">Signed in as {user?.email}</div>
-        </header>
+        <AppTopbar
+          eyebrow={currentPage.eyebrow}
+          title={currentPage.title}
+          email={user?.email}
+          onMenuToggle={() => setIsSidebarOpen((current) => !current)}
+        />
         <Outlet />
       </main>
     </div>

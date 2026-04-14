@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { StatusMessage } from "../components/StatusMessage";
 import { useAuth } from "../hooks/useAuth";
 
 export function RegisterPage() {
@@ -41,12 +42,16 @@ export function RegisterPage() {
 
   return (
     <div className="form-card">
-      <h2>Register</h2>
-      <p className="muted">Create the first profile for your streamer platform MVP.</p>
+      <div className="form-heading">
+        <span className="eyebrow">Get started</span>
+        <h2>Create your account</h2>
+        <p className="muted">Set up the first account for the creator workspace and land directly in the app.</p>
+      </div>
       <form className="form-grid" onSubmit={handleSubmit}>
         <label>
           <span>Display name</span>
           <input
+            placeholder="Creator team"
             disabled={isSubmitting}
             value={form.displayName}
             onChange={(event) => setForm((current) => ({ ...current, displayName: event.target.value }))}
@@ -56,6 +61,7 @@ export function RegisterPage() {
         <label>
           <span>Username</span>
           <input
+            placeholder="creatorteam"
             disabled={isSubmitting}
             value={form.username}
             onChange={(event) => setForm((current) => ({ ...current, username: event.target.value }))}
@@ -65,6 +71,7 @@ export function RegisterPage() {
         <label>
           <span>Email</span>
           <input
+            placeholder="you@company.com"
             disabled={isSubmitting}
             value={form.email}
             onChange={(event) => setForm((current) => ({ ...current, email: event.target.value }))}
@@ -75,6 +82,7 @@ export function RegisterPage() {
         <label>
           <span>Password</span>
           <input
+            placeholder="Create a password"
             disabled={isSubmitting}
             value={form.password}
             onChange={(event) => setForm((current) => ({ ...current, password: event.target.value }))}
@@ -82,7 +90,7 @@ export function RegisterPage() {
             required
           />
         </label>
-        {error ? <div className="form-error">{error}</div> : null}
+        {error ? <StatusMessage tone="error" message={error} /> : null}
         <button className="button" disabled={isSubmitting} type="submit">
           {isSubmitting ? "Creating account..." : "Create account"}
         </button>
