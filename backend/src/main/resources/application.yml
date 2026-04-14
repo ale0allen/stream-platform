@@ -1,0 +1,29 @@
+server:
+  port: ${APP_PORT:8080}
+
+spring:
+  application:
+    name: stream-platform-backend
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/stream_platform}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:ZmFrZXNlY3JldGtleWZvcmxvY2FsZGV2ZWxvcG1lbnRvbmx5MTIzNDU2Nzg5MDEyMzQ1Njc4OTA=}
+    expiration-minutes: ${JWT_EXPIRATION_MINUTES:1440}
+  cors:
+    allowed-origins: ${FRONTEND_URLS:http://localhost:5173,http://127.0.0.1:5173}
