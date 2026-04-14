@@ -1,10 +1,15 @@
 package br.com.streamplatform.config;
 
+import br.com.streamplatform.common.exception.ApiErrorResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -22,6 +27,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Configuration
@@ -32,15 +40,21 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserDetailsService userDetailsService;
     private final CorsProperties corsProperties;
+    private final MessageSource messageSource;
+    private final ObjectMapper objectMapper;
 
     public SecurityConfig(
             JwtAuthenticationFilter jwtAuthenticationFilter,
             UserDetailsService userDetailsService,
-            CorsProperties corsProperties
+            CorsProperties corsProperties,
+            MessageSource messageSource,
+            ObjectMapper objectMapper
     ) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userDetailsService = userDetailsService;
         this.corsProperties = corsProperties;
+        this.messageSource = messageSource;
+        this.objectMapper = objectMapper;
     }
 
     @Bean
@@ -51,9 +65,9 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint((request, response, authException) ->
-                                response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase()))
+                                writeErrorResponse(response, HttpStatus.UNAUTHORIZED, "error.security.unauthorized"))
                         .accessDeniedHandler((request, response, accessDeniedException) ->
-                                response.sendError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase()))
+                                writeErrorResponse(response, HttpStatus.FORBIDDEN, "error.security.forbidden"))
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
@@ -95,5 +109,19 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    private void writeErrorResponse(jakarta.servlet.http.HttpServletResponse response, HttpStatus status, String messageKey)
+            throws IOException {
+        response.setStatus(status.value());
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        objectMapper.writeValue(response.getWriter(), new ApiErrorResponse(
+                OffsetDateTime.now(),
+                status.value(),
+                status.getReasonPhrase(),
+                messageSource.getMessage(messageKey, null, LocaleContextHolder.getLocale()),
+                List.of()
+        ));
     }
 }

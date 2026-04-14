@@ -21,7 +21,7 @@ public class StreamUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         User user = userRepository.findByEmail(username.trim().toLowerCase())
-                .orElseThrow(() -> new BusinessException(HttpStatus.UNAUTHORIZED, "Invalid credentials"));
+                .orElseThrow(() -> new BusinessException(HttpStatus.UNAUTHORIZED, "error.auth.invalidCredentials"));
         return new AuthenticatedUser(user);
     }
 }

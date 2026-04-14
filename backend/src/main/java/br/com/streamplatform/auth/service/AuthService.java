@@ -55,10 +55,10 @@ public class AuthService {
         String username = request.username().trim().toLowerCase();
 
         if (userRepository.existsByEmail(email)) {
-            throw new BusinessException(HttpStatus.CONFLICT, "Email is already in use");
+            throw new BusinessException(HttpStatus.CONFLICT, "error.auth.emailInUse");
         }
         if (profileRepository.existsByUsername(username)) {
-            throw new BusinessException(HttpStatus.CONFLICT, "Username is already in use");
+            throw new BusinessException(HttpStatus.CONFLICT, "error.profile.usernameInUse");
         }
 
         User user = userRepository.save(new User(
@@ -93,7 +93,7 @@ public class AuthService {
                     )
             );
         } catch (AuthenticationException exception) {
-            throw new BusinessException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
+            throw new BusinessException(HttpStatus.UNAUTHORIZED, "error.auth.invalidCredentials");
         }
 
         AuthenticatedUser authenticatedUser = (AuthenticatedUser) authentication.getPrincipal();

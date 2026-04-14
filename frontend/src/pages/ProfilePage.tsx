@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Loader } from "../components/Loader";
 import { SectionHeader } from "../components/SectionHeader";
 import { StatusMessage } from "../components/StatusMessage";
@@ -7,6 +8,7 @@ import { getMyProfile, updateMyProfile } from "../modules/profile/profileService
 
 export function ProfilePage() {
   const { token } = useAuth();
+  const { t } = useTranslation();
   const [form, setForm] = useState({
     displayName: "",
     username: "",
@@ -37,7 +39,7 @@ export function ProfilePage() {
           avatarUrl: profile.avatarUrl ?? ""
         });
       } catch (loadError) {
-        setError(loadError instanceof Error ? loadError.message : "Unable to load profile");
+        setError(loadError instanceof Error ? loadError.message : t("pages.profile.loadError"));
       } finally {
         setIsLoading(false);
       }
@@ -64,9 +66,9 @@ export function ProfilePage() {
         bio: profile.bio ?? "",
         avatarUrl: profile.avatarUrl ?? ""
       });
-      setSavedMessage("Profile updated successfully.");
+      setSavedMessage(t("pages.profile.saveSuccess"));
     } catch (saveError) {
-      setError(saveError instanceof Error ? saveError.message : "Unable to save profile");
+      setError(saveError instanceof Error ? saveError.message : t("pages.profile.saveError"));
     } finally {
       setIsSaving(false);
     }
@@ -75,61 +77,61 @@ export function ProfilePage() {
   return (
     <section className="page">
       <SectionHeader
-        eyebrow="Profile"
-        title="Shape the creator profile"
-        description="Manage the public information shown across discovery and favorites."
-        badge="Public-facing"
+        eyebrow={t("pages.profile.eyebrow")}
+        title={t("pages.profile.title")}
+        description={t("pages.profile.description")}
+        badge={t("pages.profile.badge")}
       />
 
       <div className="page-grid page-grid-profile">
         <aside className="card profile-preview-card">
-          <span className="eyebrow">Preview</span>
+          <span className="eyebrow">{t("pages.profile.previewEyebrow")}</span>
           <div className="avatar avatar-large">{form.displayName.charAt(0).toUpperCase() || "?"}</div>
           <div>
-            <h3>{form.displayName || "Display name"}</h3>
-            <p className="muted">@{form.username || "username"}</p>
+            <h3>{form.displayName || t("pages.profile.displayName")}</h3>
+            <p className="muted">@{form.username || t("pages.profile.username").toLowerCase()}</p>
           </div>
-          <p>{form.bio || "Add a short creator bio to improve discovery quality and profile clarity."}</p>
+          <p>{form.bio || t("pages.profile.emptyBio")}</p>
           <div className="profile-preview-meta">
-            <span>{form.avatarUrl ? "Avatar URL added" : "No avatar URL yet"}</span>
-            <span>Discovery ready</span>
+            <span>{form.avatarUrl ? t("pages.profile.avatarAdded") : t("pages.profile.avatarMissing")}</span>
+            <span>{t("pages.profile.discoveryReady")}</span>
           </div>
         </aside>
 
         <div className="card form-card wide-card">
           {isLoading ? (
-            <Loader label="Loading profile..." compact />
+            <Loader label={t("pages.profile.loading")} compact />
           ) : (
             <form className="form-grid two-columns" onSubmit={handleSubmit}>
               <label>
-                <span>Display name</span>
+                <span>{t("pages.profile.displayName")}</span>
                 <input
-                  placeholder="Display name"
+                  placeholder={t("pages.profile.displayNamePlaceholder")}
                   disabled={isSaving}
                   value={form.displayName}
                   onChange={(event) => setForm((current) => ({ ...current, displayName: event.target.value }))}
                 />
               </label>
               <label>
-                <span>Username</span>
+                <span>{t("pages.profile.username")}</span>
                 <input
-                  placeholder="Username"
+                  placeholder={t("pages.profile.usernamePlaceholder")}
                   disabled={isSaving}
                   value={form.username}
                   onChange={(event) => setForm((current) => ({ ...current, username: event.target.value }))}
                 />
               </label>
               <label className="full-width">
-                <span>Avatar URL</span>
+                <span>{t("pages.profile.avatarUrl")}</span>
                 <input
-                  placeholder="https://..."
+                  placeholder={t("pages.profile.avatarUrlPlaceholder")}
                   disabled={isSaving}
                   value={form.avatarUrl}
                   onChange={(event) => setForm((current) => ({ ...current, avatarUrl: event.target.value }))}
                 />
               </label>
               <label className="full-width">
-                <span>Bio</span>
+                <span>{t("pages.profile.bio")}</span>
                 <textarea
                   disabled={isSaving}
                   rows={5}
@@ -148,7 +150,7 @@ export function ProfilePage() {
                 </div>
               ) : null}
               <button className="button" disabled={isSaving} type="submit">
-                {isSaving ? "Saving..." : "Save changes"}
+                {isSaving ? t("common.actions.saving") : t("common.actions.save")}
               </button>
             </form>
           )}

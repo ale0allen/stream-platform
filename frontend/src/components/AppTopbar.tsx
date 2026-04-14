@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 interface AppTopbarProps {
   eyebrow: string;
   title: string;
@@ -6,6 +8,8 @@ interface AppTopbarProps {
 }
 
 export function AppTopbar({ eyebrow, title, email, onMenuToggle }: AppTopbarProps) {
+  const { t } = useTranslation();
+
   return (
     <header className="topbar card">
       <div className="topbar-copy">
@@ -14,16 +18,16 @@ export function AppTopbar({ eyebrow, title, email, onMenuToggle }: AppTopbarProp
       </div>
       <div className="topbar-actions">
         <div className="topbar-user">
-          <span className="muted">Workspace</span>
+          <span className="muted">{t("common.workspace")}</span>
           <strong>{email}</strong>
         </div>
         <button
-          aria-label="Toggle navigation"
+          aria-label={t("common.actions.menu")}
           className="button button-secondary mobile-menu-button"
           onClick={onMenuToggle}
           type="button"
         >
-          Menu
+          {t("common.actions.menu")}
         </button>
       </div>
     </header>

@@ -1,3 +1,5 @@
+import i18n from "../i18n";
+
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 
 export interface ApiError {
@@ -17,7 +19,7 @@ async function parseResponse<T>(response: Response): Promise<T> {
     return response.json() as Promise<T>;
   }
 
-  let errorMessage = "Request failed";
+  let errorMessage = i18n.t("common.feedback.requestFailed");
   let errorDetails: string[] | undefined;
 
   try {

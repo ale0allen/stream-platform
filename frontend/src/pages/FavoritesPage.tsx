@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { EmptyState } from "../components/EmptyState";
 import { Loader } from "../components/Loader";
 import { ProfileCard } from "../components/ProfileCard";
@@ -10,6 +11,7 @@ import type { Favorite } from "../services/types";
 
 export function FavoritesPage() {
   const { token } = useAuth();
+  const { t } = useTranslation();
   const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -31,7 +33,7 @@ export function FavoritesPage() {
         setSuccess("");
         setFavorites(await listFavorites(authToken));
       } catch (loadError) {
-        setError(loadError instanceof Error ? loadError.message : "Unable to load favorites");
+        setError(loadError instanceof Error ? loadError.message : t("pages.favorites.loadError"));
       } finally {
         setIsLoading(false);
       }
@@ -51,9 +53,9 @@ export function FavoritesPage() {
       setSuccess("");
       await removeFavorite(token, profileId);
       setFavorites((current) => current.filter((favorite) => favorite.profileId !== profileId));
-      setSuccess("Favorite removed successfully.");
+      setSuccess(t("pages.favorites.removeSuccess"));
     } catch (removeError) {
-      setError(removeError instanceof Error ? removeError.message : "Unable to remove favorite");
+      setError(removeError instanceof Error ? removeError.message : t("pages.favorites.removeError"));
     } finally {
       setRemovingProfileId("");
     }
@@ -62,21 +64,21 @@ export function FavoritesPage() {
   return (
     <section className="page">
       <SectionHeader
-        eyebrow="Favorites"
-        title="Saved creator shortlist"
-        description="Keep your strongest creator picks close and remove them when priorities change."
-        badge="Curated list"
+        eyebrow={t("pages.favorites.eyebrow")}
+        title={t("pages.favorites.title")}
+        description={t("pages.favorites.description")}
+        badge={t("pages.favorites.badge")}
       />
 
       {error ? <StatusMessage tone="error" message={error} /> : null}
       {!error && success ? <StatusMessage tone="success" message={success} /> : null}
 
       <div className="card-grid">
-        {isLoading ? <Loader label="Loading favorites..." /> : null}
+        {isLoading ? <Loader label={t("pages.favorites.loading")} /> : null}
         {!isLoading && !error && !favorites.length ? (
           <EmptyState
-            title="No favorites yet"
-            description="Save creator profiles from discovery to build a shortlist for later review."
+            title={t("pages.favorites.emptyTitle")}
+            description={t("pages.favorites.emptyDescription")}
           />
         ) : null}
         {!isLoading && !error
@@ -89,7 +91,7 @@ export function FavoritesPage() {
                   onClick={() => void handleRemove(favorite.profileId)}
                   type="button"
                 >
-                  {removingProfileId === favorite.profileId ? "Removing..." : "Remove"}
+                  {removingProfileId === favorite.profileId ? t("common.actions.removing") : t("common.actions.remove")}
                 </button>
               </div>
             ))

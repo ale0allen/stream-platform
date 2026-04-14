@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { EmptyState } from "../components/EmptyState";
 import { Loader } from "../components/Loader";
 import { ProfileCard } from "../components/ProfileCard";
@@ -11,6 +12,7 @@ import type { Profile } from "../services/types";
 
 export function DiscoveryPage() {
   const { token } = useAuth();
+  const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -32,7 +34,7 @@ export function DiscoveryPage() {
         setError("");
         setProfiles(await listProfiles(authToken, query));
       } catch (loadError) {
-        setError(loadError instanceof Error ? loadError.message : "Unable to load profiles");
+        setError(loadError instanceof Error ? loadError.message : t("pages.discovery.loadError"));
       } finally {
         setIsLoading(false);
       }
@@ -51,9 +53,9 @@ export function DiscoveryPage() {
       setError("");
       setFeedback("");
       await addFavorite(token, profileId);
-      setFeedback("Profile added to favorites.");
+      setFeedback(t("pages.discovery.addSuccess"));
     } catch (submitError) {
-      setError(submitError instanceof Error ? submitError.message : "Unable to add favorite");
+      setError(submitError instanceof Error ? submitError.message : t("pages.discovery.addError"));
     } finally {
       setAddingProfileId("");
     }
@@ -62,20 +64,20 @@ export function DiscoveryPage() {
   return (
     <section className="page">
       <SectionHeader
-        eyebrow="Discovery"
-        title="Find creator profiles"
-        description="Search the current directory by display name, username, or bio and turn strong matches into favorites."
-        badge="Searchable directory"
+        eyebrow={t("pages.discovery.eyebrow")}
+        title={t("pages.discovery.title")}
+        description={t("pages.discovery.description")}
+        badge={t("pages.discovery.badge")}
       />
 
       <div className="toolbar card toolbar-card">
         <div className="toolbar-copy">
-          <strong>Search creators</strong>
-          <span className="muted">Type a name, username, or a term from the bio.</span>
+          <strong>{t("pages.discovery.searchTitle")}</strong>
+          <span className="muted">{t("pages.discovery.searchDescription")}</span>
         </div>
         <input
           className="search-input"
-          placeholder="Search profiles"
+          placeholder={t("pages.discovery.searchPlaceholder")}
           disabled={isLoading}
           value={query}
           onChange={(event) => setQuery(event.target.value)}
@@ -86,11 +88,11 @@ export function DiscoveryPage() {
       {!error && feedback ? <StatusMessage tone="success" message={feedback} /> : null}
 
       <div className="card-grid">
-        {isLoading ? <Loader label="Loading profiles..." /> : null}
+        {isLoading ? <Loader label={t("pages.discovery.loading")} /> : null}
         {!isLoading && !error && !profiles.length ? (
           <EmptyState
-            title="No profiles found"
-            description="Try a broader search term or clear the query to browse the full creator directory."
+            title={t("pages.discovery.emptyTitle")}
+            description={t("pages.discovery.emptyDescription")}
           />
         ) : null}
         {!isLoading && !error
@@ -103,7 +105,7 @@ export function DiscoveryPage() {
                   onClick={() => void handleAddFavorite(profile.id)}
                   type="button"
                 >
-                  {addingProfileId === profile.id ? "Adding..." : "Add to favorites"}
+                  {addingProfileId === profile.id ? t("common.actions.adding") : t("common.actions.addToFavorites")}
                 </button>
               </div>
             ))

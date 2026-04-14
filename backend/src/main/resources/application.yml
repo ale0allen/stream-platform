@@ -20,6 +20,9 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration
+  messages:
+    basename: messages
+    encoding: UTF-8
 
 app:
   jwt:

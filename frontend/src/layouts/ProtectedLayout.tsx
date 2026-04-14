@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { AppSidebar } from "../components/AppSidebar";
 import { AppTopbar } from "../components/AppTopbar";
@@ -9,20 +10,21 @@ export function ProtectedLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { t } = useTranslation();
 
-  const pageMetaByPath: Record<string, { title: string; eyebrow: string }> = {
-    "/": { title: "Overview", eyebrow: "Dashboard" },
-    "/profile": { title: "Creator Profile", eyebrow: "Profile" },
-    "/discovery": { title: "Discovery", eyebrow: "Network" },
-    "/favorites": { title: "Favorites", eyebrow: "Shortlist" },
-    "/admin": { title: "Admin", eyebrow: "Operations" }
+  const pageMetaByPath: Record<string, { titleKey: string; eyebrowKey: string }> = {
+    "/": { titleKey: "pages.home.topbarTitle", eyebrowKey: "pages.home.topbarEyebrow" },
+    "/profile": { titleKey: "pages.profile.topbarTitle", eyebrowKey: "pages.profile.topbarEyebrow" },
+    "/discovery": { titleKey: "pages.discovery.topbarTitle", eyebrowKey: "pages.discovery.topbarEyebrow" },
+    "/favorites": { titleKey: "pages.favorites.topbarTitle", eyebrowKey: "pages.favorites.topbarEyebrow" },
+    "/admin": { titleKey: "pages.admin.topbarTitle", eyebrowKey: "pages.admin.topbarEyebrow" }
   };
 
   function handleLogout() {
     signOut();
     navigate("/login", {
       replace: true,
-      state: { message: "Logged out successfully." }
+      state: { message: t("common.feedback.loggedOut") }
     });
   }
 
@@ -31,8 +33,8 @@ export function ProtectedLayout() {
   }
 
   const currentPage = pageMetaByPath[location.pathname] ?? {
-    title: "Workspace",
-    eyebrow: "Dashboard"
+    titleKey: "common.workspace",
+    eyebrowKey: "pages.home.topbarEyebrow"
   };
 
   return (
@@ -49,8 +51,8 @@ export function ProtectedLayout() {
 
       <main className="content">
         <AppTopbar
-          eyebrow={currentPage.eyebrow}
-          title={currentPage.title}
+          eyebrow={t(currentPage.eyebrowKey)}
+          title={t(currentPage.titleKey)}
           email={user?.email}
           onMenuToggle={() => setIsSidebarOpen((current) => !current)}
         />

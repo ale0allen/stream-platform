@@ -19,7 +19,7 @@ public class UserService {
 
     public UserMeResponse getCurrentUser(AuthenticatedUser authenticatedUser) {
         User user = userRepository.findById(authenticatedUser.getId())
-                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "User not found"));
+                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "error.user.notFound"));
 
         return new UserMeResponse(
                 user.getId(),

@@ -30,7 +30,7 @@ public class AdminService {
     @Transactional
     public AdminUserResponse updateUserStatus(UUID userId, boolean active) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "User not found"));
+                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "error.user.notFound"));
 
         user.updateActive(active);
         return mapUser(user);

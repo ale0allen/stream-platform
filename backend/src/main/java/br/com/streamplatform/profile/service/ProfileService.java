@@ -40,7 +40,7 @@ public class ProfileService {
         String normalizedUsername = request.username().trim().toLowerCase();
 
         if (profileRepository.existsByUsernameAndUserIdNot(normalizedUsername, userId)) {
-            throw new BusinessException(HttpStatus.CONFLICT, "Username is already in use");
+            throw new BusinessException(HttpStatus.CONFLICT, "error.profile.usernameInUse");
         }
 
         profile.update(
@@ -55,7 +55,7 @@ public class ProfileService {
 
     public Profile findEntityByUserId(UUID userId) {
         Profile profile = profileRepository.findByUserId(userId)
-                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Profile not found"));
+                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "error.profile.notFound"));
         return profile;
     }
 

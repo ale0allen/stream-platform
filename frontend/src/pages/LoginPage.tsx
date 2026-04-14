@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { StatusMessage } from "../components/StatusMessage";
 import { useAuth } from "../hooks/useAuth";
 
 export function LoginPage() {
   const { isAuthenticated, signIn } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const [email, setEmail] = useState("");
@@ -37,7 +39,7 @@ export function LoginPage() {
       await signIn({ email, password });
       navigate(redirectTo, { replace: true });
     } catch (submitError) {
-      setError(submitError instanceof Error ? submitError.message : "Unable to sign in");
+      setError(submitError instanceof Error ? submitError.message : t("common.feedback.unexpectedError"));
     } finally {
       setIsSubmitting(false);
     }
@@ -46,16 +48,16 @@ export function LoginPage() {
   return (
     <div className="form-card">
       <div className="form-heading">
-        <span className="eyebrow">Welcome back</span>
-        <h2>Sign in to your workspace</h2>
-        <p className="muted">Use your account to access creator profiles, favorites, and admin operations.</p>
+        <span className="eyebrow">{t("auth.login.eyebrow")}</span>
+        <h2>{t("auth.login.title")}</h2>
+        <p className="muted">{t("auth.login.description")}</p>
       </div>
       <form className="form-grid" onSubmit={handleSubmit}>
         {message ? <StatusMessage tone="success" message={message} /> : null}
         <label>
-          <span>Email</span>
+          <span>{t("auth.login.email")}</span>
           <input
-            placeholder="you@company.com"
+            placeholder={t("auth.login.emailPlaceholder")}
             disabled={isSubmitting}
             value={email}
             onChange={(event) => setEmail(event.target.value)}
@@ -64,9 +66,9 @@ export function LoginPage() {
           />
         </label>
         <label>
-          <span>Password</span>
+          <span>{t("auth.login.password")}</span>
           <input
-            placeholder="Enter your password"
+            placeholder={t("auth.login.passwordPlaceholder")}
             disabled={isSubmitting}
             value={password}
             onChange={(event) => setPassword(event.target.value)}
@@ -76,11 +78,11 @@ export function LoginPage() {
         </label>
         {error ? <StatusMessage tone="error" message={error} /> : null}
         <button className="button" disabled={isSubmitting} type="submit">
-          {isSubmitting ? "Signing in..." : "Sign in"}
+          {isSubmitting ? t("auth.login.submitting") : t("auth.login.submit")}
         </button>
       </form>
       <p className="form-footer">
-        No account yet? <Link to="/register">Create one</Link>
+        {t("auth.login.footer")} <Link to="/register">{t("auth.login.footerLink")}</Link>
       </p>
     </div>
   );

@@ -3,6 +3,6 @@ package br.com.streamplatform.admin.dto;
 import jakarta.validation.constraints.NotNull;
 
 public record UpdateUserStatusRequest(
-        @NotNull Boolean active
+        @NotNull(message = "{validation.notNull}") Boolean active
 ) {
 }

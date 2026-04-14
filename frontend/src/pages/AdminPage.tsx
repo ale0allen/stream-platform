@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { EmptyState } from "../components/EmptyState";
 import { Loader } from "../components/Loader";
 import { SectionHeader } from "../components/SectionHeader";
@@ -6,9 +7,11 @@ import { StatusMessage } from "../components/StatusMessage";
 import { useAuth } from "../hooks/useAuth";
 import { listUsers, updateUserStatus } from "../modules/admin/adminService";
 import type { UserSummary } from "../services/types";
+import { formatDateTime } from "../utils/format";
 
 export function AdminPage() {
   const { token } = useAuth();
+  const { t } = useTranslation();
   const [users, setUsers] = useState<UserSummary[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -30,7 +33,7 @@ export function AdminPage() {
         const response = await listUsers(authToken);
         setUsers(response);
       } catch (loadError) {
-        setError(loadError instanceof Error ? loadError.message : "Unable to load users");
+        setError(loadError instanceof Error ? loadError.message : t("pages.admin.loadError"));
       } finally {
         setIsLoading(false);
       }
@@ -53,9 +56,14 @@ export function AdminPage() {
       setUsers((currentUsers) =>
         currentUsers.map((currentUser) => (currentUser.id === updatedUser.id ? updatedUser : currentUser))
       );
-      setSuccessMessage(`${updatedUser.email} is now ${updatedUser.active ? "active" : "inactive"}.`);
+      setSuccessMessage(
+        t("pages.admin.statusChanged", {
+          email: updatedUser.email,
+          status: t(updatedUser.active ? "common.status.active" : "common.status.inactive")
+        })
+      );
     } catch (updateError) {
-      setError(updateError instanceof Error ? updateError.message : "Unable to update user status");
+      setError(updateError instanceof Error ? updateError.message : t("pages.admin.updateError"));
     } finally {
       setPendingUserId(null);
     }
@@ -64,35 +72,36 @@ export function AdminPage() {
   return (
     <section className="page">
       <SectionHeader
-        eyebrow="Admin"
-        title="User operations"
-        description="Review account access and toggle active status without leaving the workspace."
-        badge="Admin only"
+        eyebrow={t("pages.admin.eyebrow")}
+        title={t("pages.admin.title")}
+        description={t("pages.admin.description")}
+        badge={t("pages.admin.badge")}
       />
 
-      {isLoading ? <Loader label="Loading users..." /> : null}
+      {isLoading ? <Loader label={t("pages.admin.loading")} /> : null}
       {!isLoading && error ? <StatusMessage tone="error" message={error} /> : null}
       {!isLoading && !error && successMessage ? <StatusMessage tone="success" message={successMessage} /> : null}
       {!isLoading && !error && users.length === 0 ? (
-        <EmptyState title="No users found" description="New accounts will appear here for administrative review." />
+        <EmptyState title={t("pages.admin.emptyTitle")} description={t("pages.admin.emptyDescription")} />
       ) : null}
 
       {!isLoading && !error && users.length > 0 ? (
         <div className="card table-card">
           <div className="table-header">
             <div>
-              <strong>User directory</strong>
-              <p className="muted">Manage activation status for every account in the platform.</p>
+              <strong>{t("pages.admin.tableTitle")}</strong>
+              <p className="muted">{t("pages.admin.tableDescription")}</p>
             </div>
           </div>
           <div className="table-scroll">
             <table>
               <thead>
                 <tr>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Status</th>
-                  <th>Action</th>
+                  <th>{t("pages.admin.headers.email")}</th>
+                  <th>{t("pages.admin.headers.role")}</th>
+                  <th>{t("pages.admin.headers.status")}</th>
+                  <th>{t("pages.admin.headers.updatedAt")}</th>
+                  <th>{t("pages.admin.headers.action")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -100,13 +109,14 @@ export function AdminPage() {
                   <tr key={user.id}>
                     <td>{user.email}</td>
                     <td>
-                      <span className="table-pill">{user.role}</span>
+                      <span className="table-pill">{t(`common.role.${user.role}`)}</span>
                     </td>
                     <td>
                       <span className={`table-pill ${user.active ? "is-success" : "is-muted"}`}>
-                        {user.active ? "Active" : "Inactive"}
+                        {t(user.active ? "common.status.active" : "common.status.inactive")}
                       </span>
                     </td>
+                    <td>{formatDateTime(user.updatedAt)}</td>
                     <td>
                       <button
                         className="button button-secondary table-action-button"
@@ -115,10 +125,10 @@ export function AdminPage() {
                         disabled={pendingUserId !== null}
                       >
                         {pendingUserId === user.id
-                          ? "Saving..."
+                          ? t("common.actions.saving")
                           : user.active
-                            ? "Deactivate"
-                            : "Activate"}
+                            ? t("common.actions.deactivate")
+                            : t("common.actions.activate")}
                       </button>
                     </td>
                   </tr>

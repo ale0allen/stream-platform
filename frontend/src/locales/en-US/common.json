@@ -1,0 +1,213 @@
+{
+  "common": {
+    "brand": "Stream Platform",
+    "workspace": "Workspace",
+    "role": {
+      "ADMIN": "Admin",
+      "USER": "User"
+    },
+    "status": {
+      "active": "active",
+      "inactive": "inactive"
+    },
+    "actions": {
+      "logout": "Logout",
+      "menu": "Menu",
+      "save": "Save changes",
+      "saving": "Saving...",
+      "remove": "Remove",
+      "removing": "Removing...",
+      "addToFavorites": "Add to favorites",
+      "adding": "Adding...",
+      "activate": "Activate",
+      "deactivate": "Deactivate"
+    },
+    "feedback": {
+      "loggedOut": "Logged out successfully.",
+      "requestFailed": "Unable to complete the request.",
+      "unexpectedError": "An unexpected error occurred."
+    }
+  },
+  "auth": {
+    "hero": {
+      "eyebrow": "Creator platform",
+      "title": "Run a creator workspace that feels like a real product.",
+      "description": "Centralize profiles, discovery, saved talent, and internal operations in one control room.",
+      "feature1Title": "Discovery pipeline",
+      "feature1Description": "Search, review, and save creator profiles quickly.",
+      "feature2Title": "Operational visibility",
+      "feature2Description": "Keep profile edits and admin actions inside the same workspace."
+    },
+    "login": {
+      "eyebrow": "Welcome back",
+      "title": "Sign in to your workspace",
+      "description": "Use your account to access profiles, favorites, and admin operations.",
+      "email": "Email",
+      "emailPlaceholder": "you@company.com",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "submit": "Sign in",
+      "submitting": "Signing in...",
+      "footer": "No account yet?",
+      "footerLink": "Create one"
+    },
+    "register": {
+      "eyebrow": "Get started",
+      "title": "Create your account",
+      "description": "Set up the first creator workspace account and enter the app right away.",
+      "displayName": "Display name",
+      "displayNamePlaceholder": "Creator team",
+      "username": "Username",
+      "usernamePlaceholder": "creatorteam",
+      "email": "Email",
+      "emailPlaceholder": "you@company.com",
+      "password": "Password",
+      "passwordPlaceholder": "Create a password",
+      "submit": "Create account",
+      "submitting": "Creating account...",
+      "footer": "Already registered?",
+      "footerLink": "Sign in"
+    }
+  },
+  "navigation": {
+    "home": {
+      "label": "Overview",
+      "caption": "Home"
+    },
+    "profile": {
+      "label": "Creator profile",
+      "caption": "Profile"
+    },
+    "discovery": {
+      "label": "Find creators",
+      "caption": "Discovery"
+    },
+    "favorites": {
+      "label": "Saved shortlist",
+      "caption": "Favorites"
+    },
+    "admin": {
+      "label": "Operations",
+      "caption": "Admin"
+    },
+    "signedIn": "Signed in",
+    "brandDescription": "Operations, discovery, and profile management in one workspace."
+  },
+  "pages": {
+    "home": {
+      "topbarEyebrow": "Dashboard",
+      "topbarTitle": "Overview",
+      "eyebrow": "Dashboard",
+      "title": "Creator workspace overview",
+      "description": "A focused control room for profile management, discovery, shortlist review, and internal ops.",
+      "badge": "Live workspace",
+      "heroEyebrow": "Ready to work",
+      "heroTitle": "Everything important is one click away.",
+      "heroDescription": "Use the sidebar to move between profile setup, discovery, favorites, and admin review without leaving the workspace.",
+      "signedInAs": "Signed in as",
+      "platformState": "Platform state",
+      "platformReady": "MVP ready",
+      "cards": {
+        "profileOpsTitle": "Profile operations",
+        "profileOpsDescription": "Keep display name, handle, bio, and avatar presentation-ready.",
+        "discoveryTitle": "Discovery flow",
+        "discoveryDescription": "Search the directory and turn promising profiles into favorites quickly.",
+        "platformDescription": "The UI is standardized for desktop and mobile use."
+      }
+    },
+    "profile": {
+      "topbarEyebrow": "Profile",
+      "topbarTitle": "Creator Profile",
+      "eyebrow": "Profile",
+      "title": "Shape the creator profile",
+      "description": "Manage the public information shown across discovery and favorites.",
+      "badge": "Public-facing",
+      "previewEyebrow": "Preview",
+      "emptyBio": "Add a short creator bio to improve discovery and profile clarity.",
+      "avatarAdded": "Avatar URL added",
+      "avatarMissing": "No avatar URL yet",
+      "discoveryReady": "Discovery ready",
+      "displayName": "Display name",
+      "displayNamePlaceholder": "Display name",
+      "username": "Username",
+      "usernamePlaceholder": "Username",
+      "avatarUrl": "Avatar URL",
+      "avatarUrlPlaceholder": "https://...",
+      "bio": "Bio",
+      "loading": "Loading profile...",
+      "saveSuccess": "Profile updated successfully.",
+      "loadError": "Unable to load profile.",
+      "saveError": "Unable to save profile."
+    },
+    "discovery": {
+      "topbarEyebrow": "Network",
+      "topbarTitle": "Discovery",
+      "eyebrow": "Discovery",
+      "title": "Find creator profiles",
+      "description": "Search the directory by display name, username, or bio and turn strong matches into favorites.",
+      "badge": "Searchable directory",
+      "searchTitle": "Search creators",
+      "searchDescription": "Type a name, username, or term from the bio.",
+      "searchPlaceholder": "Search profiles",
+      "loading": "Loading profiles...",
+      "emptyTitle": "No profiles found",
+      "emptyDescription": "Try a broader term or clear the search to browse the full directory.",
+      "addSuccess": "Profile added to favorites.",
+      "loadError": "Unable to load profiles.",
+      "addError": "Unable to add favorite."
+    },
+    "favorites": {
+      "topbarEyebrow": "Shortlist",
+      "topbarTitle": "Favorites",
+      "eyebrow": "Favorites",
+      "title": "Saved creator shortlist",
+      "description": "Keep the strongest creator picks close and remove them when priorities change.",
+      "badge": "Curated list",
+      "loading": "Loading favorites...",
+      "emptyTitle": "No favorites yet",
+      "emptyDescription": "Save profiles from discovery to build a shortlist for later review.",
+      "removeSuccess": "Favorite removed successfully.",
+      "loadError": "Unable to load favorites.",
+      "removeError": "Unable to remove favorite."
+    },
+    "admin": {
+      "topbarEyebrow": "Operations",
+      "topbarTitle": "Admin",
+      "eyebrow": "Admin",
+      "title": "User operations",
+      "description": "Review account access and toggle status without leaving the workspace.",
+      "badge": "Admin only",
+      "loading": "Loading users...",
+      "emptyTitle": "No users found",
+      "emptyDescription": "New accounts will appear here for administrative review.",
+      "tableTitle": "User directory",
+      "tableDescription": "Manage activation status for each account in the platform.",
+      "headers": {
+        "email": "Email",
+        "role": "Role",
+        "status": "Status",
+        "updatedAt": "Updated at",
+        "action": "Action"
+      },
+      "updateError": "Unable to update user status.",
+      "loadError": "Unable to load users.",
+      "statusChanged": "{{email}} is now {{status}}."
+    }
+  },
+  "profileCard": {
+    "usernamePrefix": "@{{username}}",
+    "emptyBio": "Creator profile without a bio yet.",
+    "tag": "Creator",
+    "metaPublic": "Public profile",
+    "metaShortlist": "Shortlist ready"
+  },
+  "states": {
+    "loading": "Loading..."
+  },
+  "access": {
+    "denied": "Restricted access. You were redirected to the home page."
+  },
+  "format": {
+    "currencyCode": "USD"
+  }
+}

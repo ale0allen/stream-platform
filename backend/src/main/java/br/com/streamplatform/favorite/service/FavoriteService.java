@@ -59,12 +59,12 @@ public class FavoriteService {
         UUID profileId = request.profileId();
 
         if (favoriteRepository.existsByUserIdAndProfileId(userId, profileId)) {
-            throw new BusinessException(HttpStatus.CONFLICT, "Profile is already in favorites");
+            throw new BusinessException(HttpStatus.CONFLICT, "error.favorite.alreadyExists");
         }
 
         ProfileResponse profile = profileRepository.findById(profileId)
                 .map(entity -> profileService.getByUserId(entity.getUser().getId()))
-                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Profile not found"));
+                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "error.profile.notFound"));
 
         Favorite favorite = favoriteRepository.save(new Favorite(userId, profileId));
         return new FavoriteResponse(
@@ -82,7 +82,7 @@ public class FavoriteService {
                 .anyMatch(favorite -> favorite.getProfileId().equals(profileId));
 
         if (!exists) {
-            throw new BusinessException(HttpStatus.NOT_FOUND, "Favorite not found");
+            throw new BusinessException(HttpStatus.NOT_FOUND, "error.favorite.notFound");
         }
 
         favoriteRepository.deleteByUserIdAndProfileId(userId, profileId);
