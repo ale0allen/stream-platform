@@ -154,13 +154,59 @@
       "avatarAdded": "Avatar configurado",
       "avatarMissing": "Sem avatar definido",
       "discoveryReady": "Pronto para descoberta",
+      "avatarPreviewAlt": "Previa do avatar do perfil",
       "displayName": "Nome de exibicao",
       "displayNamePlaceholder": "Nome de exibicao",
       "username": "Nome de usuario",
-      "usernamePlaceholder": "Nome de usuario",
+      "usernamePlaceholder": "usuario-publico",
       "avatarUrl": "URL do avatar",
       "avatarUrlPlaceholder": "https://...",
+      "avatarUpload": "Previa por upload",
       "bio": "Bio",
+      "bioCounter_one": "{{count}} caractere restante",
+      "bioCounter_other": "{{count}} caracteres restantes",
+      "help": {
+        "displayName": "Use o nome publico exibido na descoberta.",
+        "avatarUrl": "Informe uma URL publica em http ou https.",
+        "avatarUpload": "Selecione PNG, JPG ou WebP para visualizar antes de publicar."
+      },
+      "usernameStatus": {
+        "idle": "Digite um usuario para validar disponibilidade.",
+        "checking": "Verificando disponibilidade...",
+        "available": "Usuario disponivel.",
+        "unavailable": "Este usuario ja esta em uso.",
+        "invalid": "Use 3 a 30 caracteres: letras minusculas, numeros, ponto, hifen ou underline."
+      },
+      "validation": {
+        "displayName": "Informe um nome de exibicao com pelo menos 2 caracteres.",
+        "username": "O usuario deve ter 3 a 30 caracteres e usar apenas letras minusculas, numeros, ponto, hifen ou underline.",
+        "usernameUnavailable": "Escolha outro usuario: este ja esta em uso.",
+        "bio": "A bio deve ter no maximo {{count}} caracteres.",
+        "avatarUrl": "Informe uma URL de avatar valida iniciando com http ou https.",
+        "avatarFile": "Envie uma imagem PNG, JPG ou WebP para a previa."
+      },
+      "completeness": {
+        "title": "Completude do perfil",
+        "items": {
+          "displayName": "Nome publico",
+          "username": "Usuario validado",
+          "bio": "Bio objetiva",
+          "avatar": "Avatar",
+          "streamAccounts": "Contas vinculadas"
+        }
+      },
+      "streamAccounts": {
+        "title": "Contas de stream",
+        "count_one": "{{count}} conta",
+        "count_other": "{{count}} contas",
+        "empty": "Nenhuma conta de stream vinculada ainda."
+      },
+      "platforms": {
+        "TWITCH": "Twitch",
+        "YOUTUBE": "YouTube",
+        "KICK": "Kick",
+        "OTHER": "Outro"
+      },
       "loading": "Carregando perfil...",
       "saveSuccess": "Perfil atualizado com sucesso.",
       "loadError": "Nao foi possivel carregar o perfil.",

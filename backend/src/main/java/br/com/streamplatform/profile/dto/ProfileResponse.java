@@ -1,6 +1,7 @@
 package br.com.streamplatform.profile.dto;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
 
 public record ProfileResponse(
@@ -10,6 +11,7 @@ public record ProfileResponse(
         String username,
         String bio,
         String avatarUrl,
+        List<StreamAccountSummaryResponse> streamAccounts,
         OffsetDateTime createdAt,
         OffsetDateTime updatedAt
 ) {

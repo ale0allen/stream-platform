@@ -3,6 +3,7 @@ package br.com.streamplatform.profile.controller;
 import br.com.streamplatform.auth.model.AuthenticatedUser;
 import br.com.streamplatform.profile.dto.ProfileResponse;
 import br.com.streamplatform.profile.dto.UpdateProfileRequest;
+import br.com.streamplatform.profile.dto.UsernameAvailabilityResponse;
 import br.com.streamplatform.profile.service.ProfileService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -36,6 +37,14 @@ public class ProfileController {
             @Valid @RequestBody UpdateProfileRequest request
     ) {
         return profileService.updateCurrentProfile(authenticatedUser.getId(), request);
+    }
+
+    @GetMapping("/username-availability")
+    public UsernameAvailabilityResponse usernameAvailability(
+            @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
+            @RequestParam String username
+    ) {
+        return profileService.checkUsernameAvailability(authenticatedUser.getId(), username);
     }
 
     @GetMapping

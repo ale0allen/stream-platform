@@ -154,13 +154,59 @@
       "avatarAdded": "Avatar configured",
       "avatarMissing": "No avatar defined",
       "discoveryReady": "Ready for discovery",
+      "avatarPreviewAlt": "Profile avatar preview",
       "displayName": "Display name",
       "displayNamePlaceholder": "Display name",
       "username": "Username",
-      "usernamePlaceholder": "Username",
+      "usernamePlaceholder": "public-username",
       "avatarUrl": "Avatar URL",
       "avatarUrlPlaceholder": "https://...",
+      "avatarUpload": "Upload preview",
       "bio": "Bio",
+      "bioCounter_one": "{{count}} character left",
+      "bioCounter_other": "{{count}} characters left",
+      "help": {
+        "displayName": "Use the public name shown in discovery.",
+        "avatarUrl": "Enter a public http or https URL.",
+        "avatarUpload": "Select PNG, JPG, or WebP to preview before publishing."
+      },
+      "usernameStatus": {
+        "idle": "Enter a username to validate availability.",
+        "checking": "Checking availability...",
+        "available": "Username is available.",
+        "unavailable": "This username is already in use.",
+        "invalid": "Use 3 to 30 characters: lowercase letters, numbers, dots, hyphens, or underscores."
+      },
+      "validation": {
+        "displayName": "Enter a display name with at least 2 characters.",
+        "username": "Username must be 3 to 30 characters and use only lowercase letters, numbers, dots, hyphens, or underscores.",
+        "usernameUnavailable": "Choose another username: this one is already in use.",
+        "bio": "Bio must be at most {{count}} characters.",
+        "avatarUrl": "Enter a valid avatar URL starting with http or https.",
+        "avatarFile": "Upload a PNG, JPG, or WebP image for preview."
+      },
+      "completeness": {
+        "title": "Profile completeness",
+        "items": {
+          "displayName": "Public name",
+          "username": "Validated username",
+          "bio": "Focused bio",
+          "avatar": "Avatar",
+          "streamAccounts": "Linked accounts"
+        }
+      },
+      "streamAccounts": {
+        "title": "Stream accounts",
+        "count_one": "{{count}} account",
+        "count_other": "{{count}} accounts",
+        "empty": "No stream accounts linked yet."
+      },
+      "platforms": {
+        "TWITCH": "Twitch",
+        "YOUTUBE": "YouTube",
+        "KICK": "Kick",
+        "OTHER": "Other"
+      },
       "loading": "Loading profile...",
       "saveSuccess": "Profile updated successfully.",
       "loadError": "Unable to load the profile.",

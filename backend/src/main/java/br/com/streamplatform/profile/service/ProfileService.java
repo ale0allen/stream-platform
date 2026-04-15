@@ -2,9 +2,13 @@ package br.com.streamplatform.profile.service;
 
 import br.com.streamplatform.common.exception.BusinessException;
 import br.com.streamplatform.profile.dto.ProfileResponse;
+import br.com.streamplatform.profile.dto.StreamAccountSummaryResponse;
 import br.com.streamplatform.profile.dto.UpdateProfileRequest;
+import br.com.streamplatform.profile.dto.UsernameAvailabilityResponse;
 import br.com.streamplatform.profile.model.Profile;
 import br.com.streamplatform.profile.repository.ProfileRepository;
+import br.com.streamplatform.stream.model.StreamAccount;
+import br.com.streamplatform.stream.repository.StreamAccountRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,9 +20,11 @@ import java.util.UUID;
 public class ProfileService {
 
     private final ProfileRepository profileRepository;
+    private final StreamAccountRepository streamAccountRepository;
 
-    public ProfileService(ProfileRepository profileRepository) {
+    public ProfileService(ProfileRepository profileRepository, StreamAccountRepository streamAccountRepository) {
         this.profileRepository = profileRepository;
+        this.streamAccountRepository = streamAccountRepository;
     }
 
     public ProfileResponse getByUserId(UUID userId) {
@@ -32,6 +38,14 @@ public class ProfileService {
                 : profileRepository.findByDisplayNameContainingIgnoreCaseOrUsernameContainingIgnoreCaseOrderByDisplayNameAsc(normalized, normalized);
 
         return profiles.stream().map(this::toResponse).toList();
+    }
+
+    public UsernameAvailabilityResponse checkUsernameAvailability(UUID userId, String username) {
+        String normalizedUsername = username == null ? "" : username.trim().toLowerCase();
+        boolean available = !normalizedUsername.isBlank()
+                && !profileRepository.existsByUsernameAndUserIdNot(normalizedUsername, userId);
+
+        return new UsernameAvailabilityResponse(normalizedUsername, available);
     }
 
     @Transactional
@@ -67,8 +81,21 @@ public class ProfileService {
                 profile.getUsername(),
                 profile.getBio(),
                 profile.getAvatarUrl(),
+                streamAccountRepository.findByUserIdOrderByPlatformAsc(profile.getUser().getId())
+                        .stream()
+                        .map(this::toStreamAccountResponse)
+                        .toList(),
                 profile.getCreatedAt(),
                 profile.getUpdatedAt()
+        );
+    }
+
+    private StreamAccountSummaryResponse toStreamAccountResponse(StreamAccount streamAccount) {
+        return new StreamAccountSummaryResponse(
+                streamAccount.getId(),
+                streamAccount.getPlatform(),
+                streamAccount.getPlatformUsername(),
+                streamAccount.getChannelUrl()
         );
     }
 

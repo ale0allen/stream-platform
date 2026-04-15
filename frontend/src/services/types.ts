@@ -23,8 +23,18 @@ export interface Profile {
   username: string;
   bio: string | null;
   avatarUrl: string | null;
+  streamAccounts: StreamAccountSummary[];
   createdAt: string;
   updatedAt: string;
+}
+
+export type StreamPlatformType = "TWITCH" | "YOUTUBE" | "KICK" | "OTHER";
+
+export interface StreamAccountSummary {
+  id: string;
+  platform: StreamPlatformType;
+  platformUsername: string;
+  channelUrl: string;
 }
 
 export interface Favorite {

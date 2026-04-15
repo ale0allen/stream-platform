@@ -19,3 +19,13 @@ export function updateMyProfile(token: string, input: UpdateProfileInput) {
     body: JSON.stringify(input)
   });
 }
+
+export interface UsernameAvailability {
+  username: string;
+  available: boolean;
+}
+
+export function checkUsernameAvailability(token: string, username: string) {
+  const searchParams = new URLSearchParams({ username });
+  return apiRequest<UsernameAvailability>(`/profiles/username-availability?${searchParams.toString()}`, { token });
+}

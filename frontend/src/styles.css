@@ -785,6 +785,205 @@ textarea::placeholder {
   gap: 0.2rem;
 }
 
+.profile-edit-form small,
+.field-hint {
+  color: var(--text-soft);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.username-input-wrap {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface-strong);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.username-input-wrap:focus-within {
+  border-color: rgba(35, 87, 255, 0.5);
+  box-shadow: 0 0 0 4px rgba(35, 87, 255, 0.12);
+}
+
+.username-input-wrap span {
+  padding-left: 1rem;
+  color: var(--text-soft);
+  font-weight: 800;
+}
+
+.username-input-wrap input {
+  border: 0;
+  box-shadow: none;
+  padding-left: 0.25rem;
+  background: transparent;
+}
+
+.username-input-wrap input:focus {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.username-status.is-available {
+  color: var(--success);
+}
+
+.username-status.is-unavailable,
+.username-status.is-invalid,
+.field-hint.is-warning {
+  color: var(--danger);
+}
+
+.avatar-preview {
+  overflow: hidden;
+}
+
+.avatar-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-editor {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(220px, 0.75fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.avatar-upload-control input {
+  padding: 0.78rem;
+}
+
+.validation-list {
+  display: grid;
+  gap: 0.45rem;
+  border: 1px solid rgba(180, 63, 81, 0.16);
+  border-radius: 18px;
+  padding: 0.9rem 1rem;
+  background: var(--danger-soft);
+  color: var(--danger);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.profile-completeness {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.95rem;
+  border-radius: 18px;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+}
+
+.profile-completeness-heading,
+.stream-account-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.profile-completeness-heading span,
+.stream-account-heading span {
+  color: var(--text-soft);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.profile-completeness-track {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #dbe3ef;
+}
+
+.profile-completeness-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--success), #2fa0d8);
+  transition: width 180ms ease;
+}
+
+.profile-checklist,
+.stream-account-list {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.profile-checklist span {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.profile-checklist span.is-complete {
+  color: var(--success);
+}
+
+.stream-account-panel {
+  display: grid;
+  gap: 0.85rem;
+  padding-top: 0.2rem;
+}
+
+.stream-account-item {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: 18px;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.stream-account-item:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+}
+
+.stream-account-item span:last-child {
+  display: grid;
+  gap: 0.05rem;
+  min-width: 0;
+}
+
+.stream-account-item small {
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
+
+.stream-platform-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-soft);
+  color: var(--primary-dark);
+  font-weight: 800;
+}
+
+.platform-twitch {
+  background: #efe7ff;
+  color: #5b2dbd;
+}
+
+.platform-youtube {
+  background: #fff0f0;
+  color: #b4232f;
+}
+
+.platform-kick {
+  background: #edfaef;
+  color: #17733a;
+}
+
 .profile-preview-meta,
 .profile-meta {
   display: flex;
@@ -1145,6 +1344,7 @@ th {
 
   .auth-feature-grid,
   .two-columns,
+  .avatar-editor,
   .topbar-meta {
     grid-template-columns: 1fr;
   }
