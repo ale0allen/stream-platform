@@ -46,7 +46,7 @@ export function ProfilePage() {
     }
 
     void loadProfile();
-  }, [token]);
+  }, [t, token]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -87,7 +87,7 @@ export function ProfilePage() {
         <aside className="card profile-preview-card">
           <span className="eyebrow">{t("pages.profile.previewEyebrow")}</span>
           <div className="avatar avatar-large">{form.displayName.charAt(0).toUpperCase() || "?"}</div>
-          <div>
+          <div className="profile-preview-copy">
             <h3>{form.displayName || t("pages.profile.displayName")}</h3>
             <p className="muted">@{form.username || t("pages.profile.username").toLowerCase()}</p>
           </div>
@@ -98,61 +98,70 @@ export function ProfilePage() {
           </div>
         </aside>
 
-        <div className="card form-card wide-card">
+        <div className="card form-card wide-card editor-card">
           {isLoading ? (
             <Loader label={t("pages.profile.loading")} compact />
           ) : (
-            <form className="form-grid two-columns" onSubmit={handleSubmit}>
-              <label>
-                <span>{t("pages.profile.displayName")}</span>
-                <input
-                  placeholder={t("pages.profile.displayNamePlaceholder")}
-                  disabled={isSaving}
-                  value={form.displayName}
-                  onChange={(event) => setForm((current) => ({ ...current, displayName: event.target.value }))}
-                />
-              </label>
-              <label>
-                <span>{t("pages.profile.username")}</span>
-                <input
-                  placeholder={t("pages.profile.usernamePlaceholder")}
-                  disabled={isSaving}
-                  value={form.username}
-                  onChange={(event) => setForm((current) => ({ ...current, username: event.target.value }))}
-                />
-              </label>
-              <label className="full-width">
-                <span>{t("pages.profile.avatarUrl")}</span>
-                <input
-                  placeholder={t("pages.profile.avatarUrlPlaceholder")}
-                  disabled={isSaving}
-                  value={form.avatarUrl}
-                  onChange={(event) => setForm((current) => ({ ...current, avatarUrl: event.target.value }))}
-                />
-              </label>
-              <label className="full-width">
-                <span>{t("pages.profile.bio")}</span>
-                <textarea
-                  disabled={isSaving}
-                  rows={5}
-                  value={form.bio}
-                  onChange={(event) => setForm((current) => ({ ...current, bio: event.target.value }))}
-                />
-              </label>
-              {error ? (
-                <div className="full-width">
-                  <StatusMessage tone="error" message={error} />
+            <>
+              <div className="panel-heading">
+                <span className="eyebrow">{t("pages.profile.editorEyebrow")}</span>
+                <strong>{t("pages.profile.editorTitle")}</strong>
+                <p className="muted">{t("pages.profile.editorDescription")}</p>
+              </div>
+              <form className="form-grid two-columns" onSubmit={handleSubmit}>
+                <label>
+                  <span>{t("pages.profile.displayName")}</span>
+                  <input
+                    placeholder={t("pages.profile.displayNamePlaceholder")}
+                    disabled={isSaving}
+                    value={form.displayName}
+                    onChange={(event) => setForm((current) => ({ ...current, displayName: event.target.value }))}
+                  />
+                </label>
+                <label>
+                  <span>{t("pages.profile.username")}</span>
+                  <input
+                    placeholder={t("pages.profile.usernamePlaceholder")}
+                    disabled={isSaving}
+                    value={form.username}
+                    onChange={(event) => setForm((current) => ({ ...current, username: event.target.value }))}
+                  />
+                </label>
+                <label className="full-width">
+                  <span>{t("pages.profile.avatarUrl")}</span>
+                  <input
+                    placeholder={t("pages.profile.avatarUrlPlaceholder")}
+                    disabled={isSaving}
+                    value={form.avatarUrl}
+                    onChange={(event) => setForm((current) => ({ ...current, avatarUrl: event.target.value }))}
+                  />
+                </label>
+                <label className="full-width">
+                  <span>{t("pages.profile.bio")}</span>
+                  <textarea
+                    disabled={isSaving}
+                    rows={5}
+                    value={form.bio}
+                    onChange={(event) => setForm((current) => ({ ...current, bio: event.target.value }))}
+                  />
+                </label>
+                {error ? (
+                  <div className="full-width">
+                    <StatusMessage tone="error" message={error} />
+                  </div>
+                ) : null}
+                {savedMessage ? (
+                  <div className="full-width">
+                    <StatusMessage tone="success" message={savedMessage} />
+                  </div>
+                ) : null}
+                <div className="form-actions full-width">
+                  <button className="button" disabled={isSaving} type="submit">
+                    {isSaving ? t("common.actions.saving") : t("common.actions.save")}
+                  </button>
                 </div>
-              ) : null}
-              {savedMessage ? (
-                <div className="full-width">
-                  <StatusMessage tone="success" message={savedMessage} />
-                </div>
-              ) : null}
-              <button className="button" disabled={isSaving} type="submit">
-                {isSaving ? t("common.actions.saving") : t("common.actions.save")}
-              </button>
-            </form>
+              </form>
+            </>
           )}
         </div>
       </div>

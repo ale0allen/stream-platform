@@ -2,6 +2,7 @@
   "common": {
     "brand": "Stream Platform",
     "workspace": "Workspace",
+    "creatorHub": "Creator hub",
     "role": {
       "ADMIN": "Admin",
       "USER": "User"
@@ -12,15 +13,22 @@
     },
     "actions": {
       "logout": "Logout",
-      "menu": "Menu",
+      "menu": "Open menu",
       "save": "Save changes",
       "saving": "Saving...",
       "remove": "Remove",
       "removing": "Removing...",
-      "addToFavorites": "Add to favorites",
-      "adding": "Adding...",
+      "addToFavorites": "Save to shortlist",
+      "adding": "Saving...",
       "activate": "Activate",
-      "deactivate": "Deactivate"
+      "deactivate": "Deactivate",
+      "retry": "Try again"
+    },
+    "labels": {
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "updatedAt": "Updated at"
     },
     "feedback": {
       "loggedOut": "Logged out successfully.",
@@ -31,17 +39,19 @@
   "auth": {
     "hero": {
       "eyebrow": "Creator platform",
-      "title": "Run a creator workspace that feels like a real product.",
-      "description": "Centralize profiles, discovery, saved talent, and internal operations in one control room.",
-      "feature1Title": "Discovery pipeline",
+      "title": "Manage operations, discovery, and curation in a workspace that feels like a product.",
+      "description": "Centralize profiles, discovery, saved shortlist, and internal operations in one control area.",
+      "feature1Title": "Structured discovery",
       "feature1Description": "Search, review, and save creator profiles quickly.",
-      "feature2Title": "Operational visibility",
-      "feature2Description": "Keep profile edits and admin actions inside the same workspace."
+      "feature2Title": "Clear operations flow",
+      "feature2Description": "Keep profile edits and admin actions inside the same workspace.",
+      "feature3Title": "Shared visibility",
+      "feature3Description": "Standardize information reading with clearer visual hierarchy."
     },
     "login": {
       "eyebrow": "Welcome back",
-      "title": "Sign in to your workspace",
-      "description": "Use your account to access profiles, favorites, and admin operations.",
+      "title": "Access your workspace",
+      "description": "Sign in to manage profiles, saved shortlist, and admin operations.",
       "email": "Email",
       "emailPlaceholder": "you@company.com",
       "password": "Password",
@@ -54,7 +64,7 @@
     "register": {
       "eyebrow": "Get started",
       "title": "Create your account",
-      "description": "Set up the first creator workspace account and enter the app right away.",
+      "description": "Set up the first workspace access and enter the application right away.",
       "displayName": "Display name",
       "displayNamePlaceholder": "Creator team",
       "username": "Username",
@@ -72,14 +82,14 @@
   "navigation": {
     "home": {
       "label": "Overview",
-      "caption": "Home"
+      "caption": "Dashboard"
     },
     "profile": {
       "label": "Creator profile",
       "caption": "Profile"
     },
     "discovery": {
-      "label": "Find creators",
+      "label": "Discover creators",
       "caption": "Discovery"
     },
     "favorites": {
@@ -87,46 +97,63 @@
       "caption": "Favorites"
     },
     "admin": {
-      "label": "Operations",
-      "caption": "Admin"
+      "label": "Administration",
+      "caption": "Administration"
     },
     "signedIn": "Signed in",
-    "brandDescription": "Operations, discovery, and profile management in one workspace."
+    "userRole": "Role: {{role}}",
+    "brandDescription": "Management, discovery, and profile curation in one workspace.",
+    "platformLabel": "Platform"
+  },
+  "topbar": {
+    "overview": "Environment overview",
+    "account": "Active account",
+    "currentPage": "Current page"
   },
   "pages": {
     "home": {
-      "topbarEyebrow": "Dashboard",
       "topbarTitle": "Overview",
+      "topbarContext": "Main dashboard",
       "eyebrow": "Dashboard",
-      "title": "Creator workspace overview",
-      "description": "A focused control room for profile management, discovery, shortlist review, and internal ops.",
-      "badge": "Live workspace",
-      "heroEyebrow": "Ready to work",
-      "heroTitle": "Everything important is one click away.",
-      "heroDescription": "Use the sidebar to move between profile setup, discovery, favorites, and admin review without leaving the workspace.",
-      "signedInAs": "Signed in as",
-      "platformState": "Platform state",
-      "platformReady": "MVP ready",
+      "title": "Operations overview",
+      "description": "Track what is ready across profile, discovery, shortlist, and administration.",
+      "badge": "Live environment",
+      "heroEyebrow": "Ready to operate",
+      "heroTitle": "Your workflow is centralized in a clearer, more responsive workspace.",
+      "heroDescription": "Profile, discovery, favorites, and administration now share the same visual hierarchy with less wasted space and faster reading.",
+      "heroPrimaryBadge": "Fast curation",
+      "heroSecondaryBadge": "Responsive layout",
+      "heroTertiaryBadge": "Unified visual system",
+      "signedInAs": "Current account",
+      "platformState": "Platform status",
+      "platformReady": "MVP operational",
+      "roleLabel": "Current role",
+      "statsTitle": "Operations snapshot",
+      "statsDescription": "Core blocks to track the daily workflow.",
       "cards": {
-        "profileOpsTitle": "Profile operations",
-        "profileOpsDescription": "Keep display name, handle, bio, and avatar presentation-ready.",
-        "discoveryTitle": "Discovery flow",
-        "discoveryDescription": "Search the directory and turn promising profiles into favorites quickly.",
-        "platformDescription": "The UI is standardized for desktop and mobile use."
+        "profileOpsTitle": "Profile ready for publishing",
+        "profileOpsDescription": "Update name, username, bio, and avatar with a consistent presentation.",
+        "discoveryTitle": "Structured discovery",
+        "discoveryDescription": "Search the directory and turn strong profiles into a relevant shortlist.",
+        "platformTitle": "Standardized visual foundation",
+        "platformDescription": "Navigation, states, information blocks, and actions now share the same visual system."
       }
     },
     "profile": {
-      "topbarEyebrow": "Profile",
-      "topbarTitle": "Creator Profile",
+      "topbarTitle": "Profile",
+      "topbarContext": "Profile management",
       "eyebrow": "Profile",
-      "title": "Shape the creator profile",
-      "description": "Manage the public information shown across discovery and favorites.",
-      "badge": "Public-facing",
+      "title": "Structure the creator profile",
+      "description": "Edit the public information shown in discovery and favorites.",
+      "badge": "Public profile",
       "previewEyebrow": "Preview",
-      "emptyBio": "Add a short creator bio to improve discovery and profile clarity.",
-      "avatarAdded": "Avatar URL added",
-      "avatarMissing": "No avatar URL yet",
-      "discoveryReady": "Discovery ready",
+      "editorEyebrow": "Editor",
+      "editorTitle": "Update the core details",
+      "editorDescription": "Fill out the fields below to keep the profile consistent across the workspace.",
+      "emptyBio": "Add a short bio to improve context, positioning, and profile clarity.",
+      "avatarAdded": "Avatar configured",
+      "avatarMissing": "No avatar defined",
+      "discoveryReady": "Ready for discovery",
       "displayName": "Display name",
       "displayNamePlaceholder": "Display name",
       "username": "Username",
@@ -136,52 +163,58 @@
       "bio": "Bio",
       "loading": "Loading profile...",
       "saveSuccess": "Profile updated successfully.",
-      "loadError": "Unable to load profile.",
-      "saveError": "Unable to save profile."
+      "loadError": "Unable to load the profile.",
+      "saveError": "Unable to save the profile."
     },
     "discovery": {
-      "topbarEyebrow": "Network",
       "topbarTitle": "Discovery",
+      "topbarContext": "Creator search",
       "eyebrow": "Discovery",
       "title": "Find creator profiles",
-      "description": "Search the directory by display name, username, or bio and turn strong matches into favorites.",
+      "description": "Search by name, username, or bio and save the most promising profiles to your shortlist.",
       "badge": "Searchable directory",
       "searchTitle": "Search creators",
-      "searchDescription": "Type a name, username, or term from the bio.",
+      "searchDescription": "Use name, username, or bio terms to filter results.",
       "searchPlaceholder": "Search profiles",
+      "resultsSummary_one": "{{count}} profile found",
+      "resultsSummary_other": "{{count}} profiles found",
       "loading": "Loading profiles...",
       "emptyTitle": "No profiles found",
-      "emptyDescription": "Try a broader term or clear the search to browse the full directory.",
-      "addSuccess": "Profile added to favorites.",
+      "emptyDescription": "Try a broader term or clear the search to view the full directory.",
+      "addSuccess": "Profile saved to the shortlist.",
       "loadError": "Unable to load profiles.",
-      "addError": "Unable to add favorite."
+      "addError": "Unable to save the profile to the shortlist."
     },
     "favorites": {
-      "topbarEyebrow": "Shortlist",
       "topbarTitle": "Favorites",
+      "topbarContext": "Saved shortlist",
       "eyebrow": "Favorites",
       "title": "Saved creator shortlist",
-      "description": "Keep the strongest creator picks close and remove them when priorities change.",
+      "description": "Track the most promising profiles and remove them when priorities change.",
       "badge": "Curated list",
+      "summaryTitle": "Tracked profiles",
+      "summaryDescription": "Centralize the creators that deserve continuous follow-up.",
+      "savedCount_one": "{{count}} saved profile",
+      "savedCount_other": "{{count}} saved profiles",
       "loading": "Loading favorites...",
-      "emptyTitle": "No favorites yet",
-      "emptyDescription": "Save profiles from discovery to build a shortlist for later review.",
-      "removeSuccess": "Favorite removed successfully.",
+      "emptyTitle": "No saved profiles",
+      "emptyDescription": "Save profiles in discovery to build your shortlist.",
+      "removeSuccess": "Profile removed from the shortlist successfully.",
       "loadError": "Unable to load favorites.",
-      "removeError": "Unable to remove favorite."
+      "removeError": "Unable to remove the profile from the shortlist."
     },
     "admin": {
-      "topbarEyebrow": "Operations",
-      "topbarTitle": "Admin",
-      "eyebrow": "Admin",
-      "title": "User operations",
-      "description": "Review account access and toggle status without leaving the workspace.",
-      "badge": "Admin only",
+      "topbarTitle": "Administration",
+      "topbarContext": "Internal operations",
+      "eyebrow": "Administration",
+      "title": "User management",
+      "description": "Review access, track updates, and change account status in one place.",
+      "badge": "Administrative access",
       "loading": "Loading users...",
       "emptyTitle": "No users found",
       "emptyDescription": "New accounts will appear here for administrative review.",
       "tableTitle": "User directory",
-      "tableDescription": "Manage activation status for each account in the platform.",
+      "tableDescription": "Manage activation status and track the latest update for each account.",
       "headers": {
         "email": "Email",
         "role": "Role",
@@ -189,20 +222,23 @@
         "updatedAt": "Updated at",
         "action": "Action"
       },
-      "updateError": "Unable to update user status.",
+      "userCount_one": "{{count}} user",
+      "userCount_other": "{{count}} users",
+      "updateError": "Unable to update the user status.",
       "loadError": "Unable to load users.",
       "statusChanged": "{{email}} is now {{status}}."
     }
   },
   "profileCard": {
     "usernamePrefix": "@{{username}}",
-    "emptyBio": "Creator profile without a bio yet.",
+    "emptyBio": "Creator profile without a bio.",
     "tag": "Creator",
     "metaPublic": "Public profile",
-    "metaShortlist": "Shortlist ready"
+    "metaShortlist": "Ready for curation"
   },
   "states": {
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "emptyIcon": "[]"
   },
   "access": {
     "denied": "Restricted access. You were redirected to the home page."

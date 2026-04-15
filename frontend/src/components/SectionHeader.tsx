@@ -7,7 +7,7 @@ interface SectionHeaderProps {
 
 export function SectionHeader({ eyebrow, title, description, badge }: SectionHeaderProps) {
   return (
-    <div className="section-header">
+    <div className="section-header card">
       <div className="section-header-main">
         <span className="eyebrow">{eyebrow}</span>
         <h1>{title}</h1>

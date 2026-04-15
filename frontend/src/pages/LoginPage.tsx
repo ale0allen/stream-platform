@@ -12,9 +12,7 @@ export function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [message, setMessage] = useState(
-    (location.state as { message?: string } | null)?.message ?? ""
-  );
+  const [message, setMessage] = useState((location.state as { message?: string } | null)?.message ?? "");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const redirectTo = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname ?? "/";
@@ -77,12 +75,15 @@ export function LoginPage() {
           />
         </label>
         {error ? <StatusMessage tone="error" message={error} /> : null}
-        <button className="button" disabled={isSubmitting} type="submit">
+        <button className="button button-full" disabled={isSubmitting} type="submit">
           {isSubmitting ? t("auth.login.submitting") : t("auth.login.submit")}
         </button>
       </form>
       <p className="form-footer">
-        {t("auth.login.footer")} <Link to="/register">{t("auth.login.footerLink")}</Link>
+        {t("auth.login.footer")}{" "}
+        <Link to="/register" className="form-footer-link">
+          {t("auth.login.footerLink")}
+        </Link>
       </p>
     </div>
   );

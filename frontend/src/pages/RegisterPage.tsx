@@ -93,12 +93,15 @@ export function RegisterPage() {
           />
         </label>
         {error ? <StatusMessage tone="error" message={error} /> : null}
-        <button className="button" disabled={isSubmitting} type="submit">
+        <button className="button button-full" disabled={isSubmitting} type="submit">
           {isSubmitting ? t("auth.register.submitting") : t("auth.register.submit")}
         </button>
       </form>
       <p className="form-footer">
-        {t("auth.register.footer")} <Link to="/login">{t("auth.register.footerLink")}</Link>
+        {t("auth.register.footer")}{" "}
+        <Link to="/login" className="form-footer-link">
+          {t("auth.register.footerLink")}
+        </Link>
       </p>
     </div>
   );

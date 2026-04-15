@@ -12,12 +12,12 @@ export function ProtectedLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { t } = useTranslation();
 
-  const pageMetaByPath: Record<string, { titleKey: string; eyebrowKey: string }> = {
-    "/": { titleKey: "pages.home.topbarTitle", eyebrowKey: "pages.home.topbarEyebrow" },
-    "/profile": { titleKey: "pages.profile.topbarTitle", eyebrowKey: "pages.profile.topbarEyebrow" },
-    "/discovery": { titleKey: "pages.discovery.topbarTitle", eyebrowKey: "pages.discovery.topbarEyebrow" },
-    "/favorites": { titleKey: "pages.favorites.topbarTitle", eyebrowKey: "pages.favorites.topbarEyebrow" },
-    "/admin": { titleKey: "pages.admin.topbarTitle", eyebrowKey: "pages.admin.topbarEyebrow" }
+  const pageMetaByPath: Record<string, { titleKey: string; contextKey: string }> = {
+    "/": { titleKey: "pages.home.topbarTitle", contextKey: "pages.home.topbarContext" },
+    "/profile": { titleKey: "pages.profile.topbarTitle", contextKey: "pages.profile.topbarContext" },
+    "/discovery": { titleKey: "pages.discovery.topbarTitle", contextKey: "pages.discovery.topbarContext" },
+    "/favorites": { titleKey: "pages.favorites.topbarTitle", contextKey: "pages.favorites.topbarContext" },
+    "/admin": { titleKey: "pages.admin.topbarTitle", contextKey: "pages.admin.topbarContext" }
   };
 
   function handleLogout() {
@@ -34,7 +34,7 @@ export function ProtectedLayout() {
 
   const currentPage = pageMetaByPath[location.pathname] ?? {
     titleKey: "common.workspace",
-    eyebrowKey: "pages.home.topbarEyebrow"
+    contextKey: "common.workspace"
   };
 
   return (
@@ -51,12 +51,15 @@ export function ProtectedLayout() {
 
       <main className="content">
         <AppTopbar
-          eyebrow={t(currentPage.eyebrowKey)}
           title={t(currentPage.titleKey)}
+          context={t(currentPage.contextKey)}
           email={user?.email}
+          role={user?.role}
           onMenuToggle={() => setIsSidebarOpen((current) => !current)}
         />
-        <Outlet />
+        <div className="content-shell">
+          <Outlet />
+        </div>
       </main>
     </div>
   );

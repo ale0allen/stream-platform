@@ -41,7 +41,7 @@ export function DiscoveryPage() {
     }
 
     void loadProfiles();
-  }, [query, token]);
+  }, [query, t, token]);
 
   async function handleAddFavorite(profileId: string) {
     if (!token || addingProfileId) {
@@ -75,13 +75,16 @@ export function DiscoveryPage() {
           <strong>{t("pages.discovery.searchTitle")}</strong>
           <span className="muted">{t("pages.discovery.searchDescription")}</span>
         </div>
-        <input
-          className="search-input"
-          placeholder={t("pages.discovery.searchPlaceholder")}
-          disabled={isLoading}
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-        />
+        <div className="toolbar-actions">
+          <span className="table-summary">{t("pages.discovery.resultsSummary", { count: profiles.length })}</span>
+          <input
+            className="search-input"
+            placeholder={t("pages.discovery.searchPlaceholder")}
+            disabled={isLoading}
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+          />
+        </div>
       </div>
 
       {error ? <StatusMessage tone="error" message={error} /> : null}
@@ -99,14 +102,16 @@ export function DiscoveryPage() {
           ? profiles.map((profile) => (
               <div className="favorite-item" key={profile.id}>
                 <ProfileCard profile={profile} />
-                <button
-                  className="button button-secondary"
-                  disabled={addingProfileId === profile.id}
-                  onClick={() => void handleAddFavorite(profile.id)}
-                  type="button"
-                >
-                  {addingProfileId === profile.id ? t("common.actions.adding") : t("common.actions.addToFavorites")}
-                </button>
+                <div className="card-actions">
+                  <button
+                    className="button button-secondary"
+                    disabled={addingProfileId === profile.id}
+                    onClick={() => void handleAddFavorite(profile.id)}
+                    type="button"
+                  >
+                    {addingProfileId === profile.id ? t("common.actions.adding") : t("common.actions.addToFavorites")}
+                  </button>
+                </div>
               </div>
             ))
           : null}

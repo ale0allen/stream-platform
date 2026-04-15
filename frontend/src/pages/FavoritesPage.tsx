@@ -40,7 +40,7 @@ export function FavoritesPage() {
     }
 
     void loadFavorites();
-  }, [token]);
+  }, [t, token]);
 
   async function handleRemove(profileId: string) {
     if (!token || removingProfileId) {
@@ -70,6 +70,14 @@ export function FavoritesPage() {
         badge={t("pages.favorites.badge")}
       />
 
+      <div className="toolbar card toolbar-card">
+        <div className="toolbar-copy">
+          <strong>{t("pages.favorites.summaryTitle")}</strong>
+          <span className="muted">{t("pages.favorites.summaryDescription")}</span>
+        </div>
+        <span className="table-summary">{t("pages.favorites.savedCount", { count: favorites.length })}</span>
+      </div>
+
       {error ? <StatusMessage tone="error" message={error} /> : null}
       {!error && success ? <StatusMessage tone="success" message={success} /> : null}
 
@@ -85,14 +93,16 @@ export function FavoritesPage() {
           ? favorites.map((favorite) => (
               <div className="favorite-item" key={favorite.id}>
                 <ProfileCard profile={favorite.profile} />
-                <button
-                  className="button button-secondary"
-                  disabled={removingProfileId === favorite.profileId}
-                  onClick={() => void handleRemove(favorite.profileId)}
-                  type="button"
-                >
-                  {removingProfileId === favorite.profileId ? t("common.actions.removing") : t("common.actions.remove")}
-                </button>
+                <div className="card-actions">
+                  <button
+                    className="button button-secondary"
+                    disabled={removingProfileId === favorite.profileId}
+                    onClick={() => void handleRemove(favorite.profileId)}
+                    type="button"
+                  >
+                    {removingProfileId === favorite.profileId ? t("common.actions.removing") : t("common.actions.remove")}
+                  </button>
+                </div>
               </div>
             ))
           : null}

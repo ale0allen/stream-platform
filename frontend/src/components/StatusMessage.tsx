@@ -4,5 +4,9 @@ interface StatusMessageProps {
 }
 
 export function StatusMessage({ tone, message }: StatusMessageProps) {
-  return <div className={tone === "error" ? "form-error" : "form-success"}>{message}</div>;
+  return (
+    <div className={`status-message ${tone === "error" ? "form-error" : "form-success"}`} role="status">
+      {message}
+    </div>
+  );
 }

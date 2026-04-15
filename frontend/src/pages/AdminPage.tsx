@@ -40,7 +40,7 @@ export function AdminPage() {
     }
 
     void loadUsers();
-  }, [token]);
+  }, [t, token]);
 
   async function handleStatusToggle(user: UserSummary) {
     if (!token || pendingUserId) {
@@ -92,6 +92,7 @@ export function AdminPage() {
               <strong>{t("pages.admin.tableTitle")}</strong>
               <p className="muted">{t("pages.admin.tableDescription")}</p>
             </div>
+            <span className="table-summary">{t("pages.admin.userCount", { count: users.length })}</span>
           </div>
           <div className="table-scroll">
             <table>

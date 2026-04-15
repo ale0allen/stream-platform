@@ -19,6 +19,10 @@ export function AuthLayout() {
             <strong>{t("auth.hero.feature2Title")}</strong>
             <span>{t("auth.hero.feature2Description")}</span>
           </div>
+          <div className="auth-feature-card">
+            <strong>{t("auth.hero.feature3Title")}</strong>
+            <span>{t("auth.hero.feature3Description")}</span>
+          </div>
         </div>
       </div>
       <div className="auth-panel">

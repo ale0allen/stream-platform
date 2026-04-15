@@ -1,211 +1,247 @@
 {
   "common": {
     "brand": "Stream Platform",
-    "workspace": "Workspace",
+    "workspace": "Espaco de trabalho",
+    "creatorHub": "Central de criadores",
     "role": {
       "ADMIN": "Administrador",
-      "USER": "Usuário"
+      "USER": "Usuario"
     },
     "status": {
-      "active": "Ativo",
-      "inactive": "Inativo"
+      "active": "ativo",
+      "inactive": "inativo"
     },
     "actions": {
       "logout": "Sair",
-      "menu": "Menu",
-      "save": "Salvar alterações",
+      "menu": "Abrir menu",
+      "save": "Salvar alteracoes",
       "saving": "Salvando...",
       "remove": "Remover",
       "removing": "Removendo...",
-      "addToFavorites": "Adicionar aos favoritos",
-      "adding": "Adicionando...",
+      "addToFavorites": "Salvar na selecao",
+      "adding": "Salvando...",
       "activate": "Ativar",
-      "deactivate": "Desativar"
+      "deactivate": "Desativar",
+      "retry": "Tentar novamente"
+    },
+    "labels": {
+      "email": "E-mail",
+      "role": "Perfil",
+      "status": "Status",
+      "updatedAt": "Atualizado em"
     },
     "feedback": {
-      "loggedOut": "Sessão encerrada com sucesso.",
-      "requestFailed": "Não foi possível concluir a solicitação.",
+      "loggedOut": "Sessao encerrada com sucesso.",
+      "requestFailed": "Nao foi possivel concluir a solicitacao.",
       "unexpectedError": "Ocorreu um erro inesperado."
     }
   },
   "auth": {
     "hero": {
-      "eyebrow": "Plataforma para creators",
-      "title": "Gerencie um workspace de creators com aparência de produto real.",
-      "description": "Centralize perfis, descoberta, talentos salvos e operações internas em uma única central.",
-      "feature1Title": "Pipeline de descoberta",
-      "feature1Description": "Pesquise, avalie e salve perfis de creators rapidamente.",
-      "feature2Title": "Visibilidade operacional",
-      "feature2Description": "Mantenha edições de perfil e ações administrativas no mesmo workspace."
+      "eyebrow": "Plataforma para criadores",
+      "title": "Gerencie operacao, descoberta e curadoria em um painel com linguagem de produto.",
+      "description": "Centralize perfis, descoberta, selecao salva e operacao interna em uma unica base de trabalho.",
+      "feature1Title": "Descoberta organizada",
+      "feature1Description": "Pesquise, avalie e salve perfis de criadores com agilidade.",
+      "feature2Title": "Fluxo operacional claro",
+      "feature2Description": "Mantenha ajustes de perfil e acoes administrativas no mesmo painel.",
+      "feature3Title": "Visao compartilhada",
+      "feature3Description": "Padronize a leitura das informacoes com hierarquia visual mais clara."
     },
     "login": {
       "eyebrow": "Bem-vindo de volta",
-      "title": "Entre no seu workspace",
-      "description": "Use sua conta para acessar perfis, favoritos e operações administrativas.",
+      "title": "Acesse seu painel",
+      "description": "Entre para gerenciar perfis, selecao salva e operacoes administrativas.",
       "email": "E-mail",
       "emailPlaceholder": "voce@empresa.com",
       "password": "Senha",
       "passwordPlaceholder": "Digite sua senha",
       "submit": "Entrar",
       "submitting": "Entrando...",
-      "footer": "Ainda não tem conta?",
+      "footer": "Ainda nao tem conta?",
       "footerLink": "Criar conta"
     },
     "register": {
       "eyebrow": "Primeiros passos",
       "title": "Crie sua conta",
-      "description": "Configure a primeira conta do workspace de creators e entre direto na aplicação.",
-      "displayName": "Nome de exibição",
-      "displayNamePlaceholder": "Time de creators",
-      "username": "Nome de usuário",
-      "usernamePlaceholder": "timedecreators",
+      "description": "Configure o primeiro acesso do painel e entre direto na aplicacao.",
+      "displayName": "Nome de exibicao",
+      "displayNamePlaceholder": "Equipe de creators",
+      "username": "Nome de usuario",
+      "usernamePlaceholder": "equipedecreators",
       "email": "E-mail",
       "emailPlaceholder": "voce@empresa.com",
       "password": "Senha",
       "passwordPlaceholder": "Crie uma senha",
       "submit": "Criar conta",
       "submitting": "Criando conta...",
-      "footer": "Já possui cadastro?",
+      "footer": "Ja possui cadastro?",
       "footerLink": "Entrar"
     }
   },
   "navigation": {
     "home": {
-      "label": "Visão geral",
-      "caption": "Início"
+      "label": "Visao geral",
+      "caption": "Dashboard"
     },
     "profile": {
-      "label": "Perfil do creator",
+      "label": "Perfil do criador",
       "caption": "Perfil"
     },
     "discovery": {
-      "label": "Encontrar creators",
+      "label": "Descobrir criadores",
       "caption": "Descoberta"
     },
     "favorites": {
-      "label": "Shortlist salva",
+      "label": "Selecao salva",
       "caption": "Favoritos"
     },
     "admin": {
-      "label": "Operações",
-      "caption": "Admin"
+      "label": "Administracao",
+      "caption": "Administracao"
     },
-    "signedIn": "Sessão ativa",
-    "brandDescription": "Operações, descoberta e gestão de perfis em um só workspace."
+    "signedIn": "Sessao ativa",
+    "userRole": "Perfil: {{role}}",
+    "brandDescription": "Gestao, descoberta e curadoria de perfis em um so painel.",
+    "platformLabel": "Plataforma"
+  },
+  "topbar": {
+    "overview": "Resumo do ambiente",
+    "account": "Conta ativa",
+    "currentPage": "Pagina atual"
   },
   "pages": {
     "home": {
-      "topbarEyebrow": "Dashboard",
-      "topbarTitle": "Visão geral",
+      "topbarTitle": "Visao geral",
+      "topbarContext": "Painel principal",
       "eyebrow": "Dashboard",
-      "title": "Visão geral do workspace",
-      "description": "Uma central focada para gestão de perfis, descoberta, shortlist e operações internas.",
-      "badge": "Workspace ativo",
-      "heroEyebrow": "Pronto para operar",
-      "heroTitle": "Tudo o que importa está a um clique.",
-      "heroDescription": "Use a barra lateral para navegar entre perfil, descoberta, favoritos e administração sem sair do workspace.",
-      "signedInAs": "Sessão iniciada como",
-      "platformState": "Estado da plataforma",
-      "platformReady": "MVP pronto",
+      "title": "Visao geral da operacao",
+      "description": "Acompanhe rapidamente o que esta pronto para perfil, descoberta, selecao e administracao.",
+      "badge": "Ambiente ativo",
+      "heroEyebrow": "Operacao pronta",
+      "heroTitle": "Seu fluxo de trabalho esta centralizado em um painel mais claro e responsivo.",
+      "heroDescription": "Perfil, descoberta, favoritos e administracao agora compartilham a mesma hierarquia visual, com menos espaco ocioso e leitura mais rapida.",
+      "heroPrimaryBadge": "Curadoria rapida",
+      "heroSecondaryBadge": "Layout responsivo",
+      "heroTertiaryBadge": "Padrao visual unificado",
+      "signedInAs": "Conta em uso",
+      "platformState": "Status da plataforma",
+      "platformReady": "MVP operacional",
+      "roleLabel": "Perfil atual",
+      "statsTitle": "Resumo da operacao",
+      "statsDescription": "Blocos essenciais para acompanhar o fluxo diario.",
       "cards": {
-        "profileOpsTitle": "Operação de perfil",
-        "profileOpsDescription": "Mantenha nome, handle, bio e avatar com apresentação consistente.",
-        "discoveryTitle": "Fluxo de descoberta",
-        "discoveryDescription": "Pesquise no diretório e transforme bons perfis em favoritos rapidamente.",
-        "platformDescription": "A interface está padronizada para uso em desktop e mobile."
+        "profileOpsTitle": "Perfil pronto para publicacao",
+        "profileOpsDescription": "Atualize nome, usuario, bio e avatar com uma apresentacao consistente.",
+        "discoveryTitle": "Descoberta organizada",
+        "discoveryDescription": "Pesquise no diretorio e transforme bons perfis em uma selecao relevante.",
+        "platformTitle": "Base visual padronizada",
+        "platformDescription": "Navegacao, estados, blocos de informacao e acoes compartilham o mesmo sistema visual."
       }
     },
     "profile": {
-      "topbarEyebrow": "Perfil",
-      "topbarTitle": "Perfil do creator",
+      "topbarTitle": "Perfil",
+      "topbarContext": "Gestao de perfil",
       "eyebrow": "Perfil",
-      "title": "Modele o perfil do creator",
-      "description": "Gerencie as informações públicas exibidas em descoberta e favoritos.",
-      "badge": "Visível ao público",
-      "previewEyebrow": "Prévia",
-      "emptyBio": "Adicione uma bio curta para melhorar a descoberta e a clareza do perfil.",
-      "avatarAdded": "URL de avatar adicionada",
-      "avatarMissing": "Sem URL de avatar",
+      "title": "Estruture o perfil do criador",
+      "description": "Edite as informacoes publicas exibidas nas areas de descoberta e favoritos.",
+      "badge": "Perfil publico",
+      "previewEyebrow": "Previa",
+      "editorEyebrow": "Edicao",
+      "editorTitle": "Atualize os dados principais",
+      "editorDescription": "Preencha os campos abaixo para manter o perfil consistente em todo o painel.",
+      "emptyBio": "Adicione uma bio curta para reforcar contexto, posicionamento e clareza do perfil.",
+      "avatarAdded": "Avatar configurado",
+      "avatarMissing": "Sem avatar definido",
       "discoveryReady": "Pronto para descoberta",
-      "displayName": "Nome de exibição",
-      "displayNamePlaceholder": "Nome de exibição",
-      "username": "Nome de usuário",
-      "usernamePlaceholder": "Nome de usuário",
+      "displayName": "Nome de exibicao",
+      "displayNamePlaceholder": "Nome de exibicao",
+      "username": "Nome de usuario",
+      "usernamePlaceholder": "Nome de usuario",
       "avatarUrl": "URL do avatar",
       "avatarUrlPlaceholder": "https://...",
       "bio": "Bio",
       "loading": "Carregando perfil...",
       "saveSuccess": "Perfil atualizado com sucesso.",
-      "loadError": "Não foi possível carregar o perfil.",
-      "saveError": "Não foi possível salvar o perfil."
+      "loadError": "Nao foi possivel carregar o perfil.",
+      "saveError": "Nao foi possivel salvar o perfil."
     },
     "discovery": {
-      "topbarEyebrow": "Rede",
       "topbarTitle": "Descoberta",
+      "topbarContext": "Busca de criadores",
       "eyebrow": "Descoberta",
-      "title": "Encontre perfis de creators",
-      "description": "Pesquise no diretório por nome, usuário ou bio e transforme bons resultados em favoritos.",
-      "badge": "Diretório pesquisável",
-      "searchTitle": "Buscar creators",
-      "searchDescription": "Digite um nome, usuário ou termo presente na bio.",
+      "title": "Encontre perfis de criadores",
+      "description": "Busque por nome, usuario ou bio e salve os perfis mais promissores na sua selecao.",
+      "badge": "Diretorio pesquisavel",
+      "searchTitle": "Buscar criadores",
+      "searchDescription": "Use nome, usuario ou termos da bio para filtrar os resultados.",
       "searchPlaceholder": "Buscar perfis",
+      "resultsSummary_one": "{{count}} perfil encontrado",
+      "resultsSummary_other": "{{count}} perfis encontrados",
       "loading": "Carregando perfis...",
       "emptyTitle": "Nenhum perfil encontrado",
-      "emptyDescription": "Tente um termo mais amplo ou limpe a busca para navegar pelo diretório completo.",
-      "addSuccess": "Perfil adicionado aos favoritos.",
-      "loadError": "Não foi possível carregar os perfis.",
-      "addError": "Não foi possível adicionar o favorito."
+      "emptyDescription": "Tente um termo mais amplo ou limpe a busca para visualizar todo o diretorio.",
+      "addSuccess": "Perfil salvo na selecao.",
+      "loadError": "Nao foi possivel carregar os perfis.",
+      "addError": "Nao foi possivel salvar o perfil na selecao."
     },
     "favorites": {
-      "topbarEyebrow": "Shortlist",
       "topbarTitle": "Favoritos",
+      "topbarContext": "Selecao salva",
       "eyebrow": "Favoritos",
-      "title": "Shortlist salva de creators",
-      "description": "Mantenha os perfis mais promissores por perto e remova-os quando as prioridades mudarem.",
+      "title": "Selecao salva de criadores",
+      "description": "Acompanhe os perfis com maior potencial e remova-os quando as prioridades mudarem.",
       "badge": "Lista curada",
+      "summaryTitle": "Perfis acompanhados",
+      "summaryDescription": "Centralize os criadores que merecem acompanhamento continuo.",
+      "savedCount_one": "{{count}} perfil salvo",
+      "savedCount_other": "{{count}} perfis salvos",
       "loading": "Carregando favoritos...",
-      "emptyTitle": "Nenhum favorito salvo",
-      "emptyDescription": "Salve perfis a partir da descoberta para montar uma shortlist para revisão posterior.",
-      "removeSuccess": "Favorito removido com sucesso.",
-      "loadError": "Não foi possível carregar os favoritos.",
-      "removeError": "Não foi possível remover o favorito."
+      "emptyTitle": "Nenhum perfil salvo",
+      "emptyDescription": "Salve perfis na descoberta para montar sua selecao de acompanhamento.",
+      "removeSuccess": "Perfil removido da selecao com sucesso.",
+      "loadError": "Nao foi possivel carregar os favoritos.",
+      "removeError": "Nao foi possivel remover o perfil da selecao."
     },
     "admin": {
-      "topbarEyebrow": "Operações",
-      "topbarTitle": "Admin",
-      "eyebrow": "Admin",
-      "title": "Operações de usuários",
-      "description": "Revise o acesso das contas e altere o status sem sair do workspace.",
-      "badge": "Somente admin",
-      "loading": "Carregando usuários...",
-      "emptyTitle": "Nenhum usuário encontrado",
-      "emptyDescription": "Novas contas aparecerão aqui para revisão administrativa.",
-      "tableTitle": "Diretório de usuários",
-      "tableDescription": "Gerencie o status de ativação de cada conta na plataforma.",
+      "topbarTitle": "Administracao",
+      "topbarContext": "Operacao interna",
+      "eyebrow": "Administracao",
+      "title": "Gestao de usuarios",
+      "description": "Revise acessos, acompanhe atualizacoes e altere o status das contas em um unico lugar.",
+      "badge": "Acesso administrativo",
+      "loading": "Carregando usuarios...",
+      "emptyTitle": "Nenhum usuario encontrado",
+      "emptyDescription": "Novas contas aparecerao aqui para revisao administrativa.",
+      "tableTitle": "Diretorio de usuarios",
+      "tableDescription": "Gerencie status de ativacao e acompanhe a atualizacao mais recente de cada conta.",
       "headers": {
         "email": "E-mail",
         "role": "Perfil",
         "status": "Status",
         "updatedAt": "Atualizado em",
-        "action": "Ação"
+        "action": "Acao"
       },
-      "updateError": "Não foi possível atualizar o status do usuário.",
-      "loadError": "Não foi possível carregar os usuários.",
-      "statusChanged": "{{email}} agora está {{status}}."
+      "userCount_one": "{{count}} usuario",
+      "userCount_other": "{{count}} usuarios",
+      "updateError": "Nao foi possivel atualizar o status do usuario.",
+      "loadError": "Nao foi possivel carregar os usuarios.",
+      "statusChanged": "{{email}} agora esta {{status}}."
     }
   },
   "profileCard": {
     "usernamePrefix": "@{{username}}",
-    "emptyBio": "Perfil de creator sem bio ainda.",
-    "tag": "Creator",
-    "metaPublic": "Perfil público",
-    "metaShortlist": "Pronto para shortlist"
+    "emptyBio": "Perfil de criador sem bio cadastrada.",
+    "tag": "Criador",
+    "metaPublic": "Perfil publico",
+    "metaShortlist": "Pronto para curadoria"
   },
   "states": {
-    "loading": "Carregando..."
+    "loading": "Carregando...",
+    "emptyIcon": "[]"
   },
   "access": {
-    "denied": "Acesso restrito. Você foi redirecionado para a página inicial."
+    "denied": "Acesso restrito. Voce foi redirecionado para a pagina inicial."
   },
   "format": {
     "currencyCode": "BRL"
