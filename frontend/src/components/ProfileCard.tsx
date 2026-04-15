@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { Avatar } from "./Avatar";
 import type { Profile } from "../services/types";
 
 interface ProfileCardProps {
@@ -10,7 +11,11 @@ export function ProfileCard({ profile }: ProfileCardProps) {
 
   return (
     <article className="card profile-card">
-      <div className="avatar">{profile.displayName.charAt(0).toUpperCase()}</div>
+      <Avatar
+        alt={profile.displayName}
+        imageUrl={profile.avatarUrl}
+        label={profile.displayName || profile.username}
+      />
       <div className="profile-card-body">
         <div className="profile-card-heading">
           <div className="profile-card-copy">

@@ -1,5 +1,7 @@
+import type { ChangeEvent, FormEvent } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Avatar } from "../components/Avatar";
 import { Loader } from "../components/Loader";
 import { SectionHeader } from "../components/SectionHeader";
 import { StatusMessage } from "../components/StatusMessage";
@@ -23,13 +25,10 @@ interface ProfileFormState {
 }
 
 type UsernameStatus = "idle" | "checking" | "available" | "unavailable" | "invalid";
+type ProfileField = keyof ProfileFormState;
 
 function normalizeUsername(value: string) {
   return value.trim().toLowerCase();
-}
-
-function getAvatarInitial(displayName: string, username: string) {
-  return (displayName.trim() || username.trim() || "?").charAt(0).toUpperCase();
 }
 
 function isAvatarUrlValid(value: string) {
@@ -55,6 +54,8 @@ export function ProfilePage() {
     avatarUrl: ""
   });
   const [streamAccounts, setStreamAccounts] = useState<StreamAccountSummary[]>([]);
+  const [touchedFields, setTouchedFields] = useState<Partial<Record<ProfileField, boolean>>>({});
+  const [submitAttempted, setSubmitAttempted] = useState(false);
   const [avatarPreviewUrl, setAvatarPreviewUrl] = useState("");
   const [avatarImageFailed, setAvatarImageFailed] = useState(false);
   const [usernameStatus, setUsernameStatus] = useState<UsernameStatus>("idle");
@@ -69,32 +70,40 @@ export function ProfilePage() {
   const trimmedAvatarUrl = form.avatarUrl.trim();
   const bioCharactersLeft = BIO_MAX_LENGTH - form.bio.length;
   const avatarSource = avatarPreviewUrl || trimmedAvatarUrl;
+  const isDisplayNameInvalid = trimmedDisplayName.length < 2;
+  const isUsernameFormatInvalid =
+    normalizedUsername.length < 3 || normalizedUsername.length > 30 || !USERNAME_PATTERN.test(normalizedUsername);
+  const isUsernameUnavailable = usernameStatus === "unavailable";
+  const isUsernameInvalid = isUsernameFormatInvalid || isUsernameUnavailable;
+  const isBioInvalid = form.bio.length > BIO_MAX_LENGTH;
+  const isAvatarUrlInvalid = !isAvatarUrlValid(trimmedAvatarUrl);
+  const shouldShowFieldError = (field: ProfileField) => submitAttempted || Boolean(touchedFields[field]);
 
   const validationErrors = useMemo(() => {
     const errors: string[] = [];
 
-    if (trimmedDisplayName.length < 2) {
+    if (isDisplayNameInvalid) {
       errors.push(t("pages.profile.validation.displayName"));
     }
 
-    if (normalizedUsername.length < 3 || normalizedUsername.length > 30 || !USERNAME_PATTERN.test(normalizedUsername)) {
+    if (isUsernameFormatInvalid) {
       errors.push(t("pages.profile.validation.username"));
     }
 
-    if (form.bio.length > BIO_MAX_LENGTH) {
+    if (isBioInvalid) {
       errors.push(t("pages.profile.validation.bio", { count: BIO_MAX_LENGTH }));
     }
 
-    if (!isAvatarUrlValid(trimmedAvatarUrl)) {
+    if (isAvatarUrlInvalid) {
       errors.push(t("pages.profile.validation.avatarUrl"));
     }
 
-    if (usernameStatus === "unavailable") {
+    if (isUsernameUnavailable) {
       errors.push(t("pages.profile.validation.usernameUnavailable"));
     }
 
     return errors;
-  }, [form.bio.length, normalizedUsername, t, trimmedAvatarUrl, trimmedDisplayName.length, usernameStatus]);
+  }, [isAvatarUrlInvalid, isBioInvalid, isDisplayNameInvalid, isUsernameFormatInvalid, isUsernameUnavailable, t]);
 
   const completenessItems = useMemo(
     () => [
@@ -108,7 +117,7 @@ export function ProfilePage() {
   );
   const completedItems = completenessItems.filter((item) => item.complete).length;
   const completenessPercent = Math.round((completedItems / completenessItems.length) * 100);
-  const canSubmit = validationErrors.length === 0 && usernameStatus === "available" && !isSaving;
+  const canSubmit = validationErrors.length === 0 && usernameStatus === "available" && !isSaving && !isLoading;
 
   useEffect(() => {
     if (!token) {
@@ -177,7 +186,7 @@ export function ProfilePage() {
     };
   }, [isLoading, normalizedUsername, token]);
 
-  function updateField(field: keyof ProfileFormState, value: string) {
+  function updateField(field: ProfileField, value: string) {
     setSavedMessage("");
     setError("");
     setForm((current) => ({
@@ -186,7 +195,14 @@ export function ProfilePage() {
     }));
   }
 
-  function handleAvatarFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function markFieldTouched(field: ProfileField) {
+    setTouchedFields((current) => ({
+      ...current,
+      [field]: true
+    }));
+  }
+
+  function handleAvatarFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
 
     if (!file) {
@@ -217,8 +233,16 @@ export function ProfilePage() {
     };
   }, [avatarPreviewUrl]);
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setSubmitAttempted(true);
+    setTouchedFields({
+      avatarUrl: true,
+      bio: true,
+      displayName: true,
+      username: true
+    });
+
     if (!token || !canSubmit) {
       return;
     }
@@ -241,6 +265,8 @@ export function ProfilePage() {
         avatarUrl: profile.avatarUrl ?? ""
       });
       setStreamAccounts(profile.streamAccounts ?? []);
+      setSubmitAttempted(false);
+      setTouchedFields({});
       setAvatarPreviewUrl((currentPreviewUrl) => {
         if (currentPreviewUrl) {
           URL.revokeObjectURL(currentPreviewUrl);
@@ -268,13 +294,14 @@ export function ProfilePage() {
       <div className="page-grid page-grid-profile">
         <aside className="card profile-preview-card">
           <span className="eyebrow">{t("pages.profile.previewEyebrow")}</span>
-          <div className="avatar avatar-large avatar-preview">
-            {avatarSource && !avatarImageFailed ? (
-              <img src={avatarSource} alt={t("pages.profile.avatarPreviewAlt")} onError={() => setAvatarImageFailed(true)} />
-            ) : (
-              <span>{getAvatarInitial(form.displayName, form.username)}</span>
-            )}
-          </div>
+          <Avatar
+            alt={t("pages.profile.avatarPreviewAlt")}
+            className="avatar-large avatar-preview"
+            imageUrl={avatarSource}
+            label={form.displayName || form.username}
+            showImage={!avatarImageFailed}
+            onImageError={() => setAvatarImageFailed(true)}
+          />
           <div className="profile-preview-copy">
             <h3>{form.displayName || t("pages.profile.displayName")}</h3>
             <p className="muted">@{normalizedUsername || t("pages.profile.username").toLowerCase()}</p>
@@ -291,7 +318,7 @@ export function ProfilePage() {
             <div className="profile-checklist">
               {completenessItems.map((item) => (
                 <span className={item.complete ? "is-complete" : ""} key={item.label}>
-                  {item.complete ? "OK" : "--"} {item.label}
+                  {item.label}
                 </span>
               ))}
             </div>
@@ -335,41 +362,57 @@ export function ProfilePage() {
                 <label>
                   <span>{t("pages.profile.displayName")}</span>
                   <input
-                    aria-invalid={trimmedDisplayName.length > 0 && trimmedDisplayName.length < 2}
+                    aria-describedby="display-name-feedback"
+                    aria-invalid={shouldShowFieldError("displayName") && isDisplayNameInvalid}
                     placeholder={t("pages.profile.displayNamePlaceholder")}
                     disabled={isSaving}
                     value={form.displayName}
                     onChange={(event) => updateField("displayName", event.target.value)}
+                    onBlur={() => markFieldTouched("displayName")}
                   />
-                  <small>{t("pages.profile.help.displayName")}</small>
+                  <small id="display-name-feedback" className={shouldShowFieldError("displayName") && isDisplayNameInvalid ? "field-hint is-error" : "field-hint"}>
+                    {shouldShowFieldError("displayName") && isDisplayNameInvalid
+                      ? t("pages.profile.validation.displayName")
+                      : t("pages.profile.help.displayName")}
+                  </small>
                 </label>
                 <label>
                   <span>{t("pages.profile.username")}</span>
                   <div className="username-input-wrap">
                     <span>@</span>
                     <input
-                      aria-invalid={usernameStatus === "invalid" || usernameStatus === "unavailable"}
+                      aria-describedby="username-feedback"
+                      aria-invalid={shouldShowFieldError("username") && isUsernameInvalid}
                       placeholder={t("pages.profile.usernamePlaceholder")}
                       disabled={isSaving}
                       value={form.username}
                       onChange={(event) => updateField("username", event.target.value.toLowerCase())}
+                      onBlur={() => markFieldTouched("username")}
                     />
                   </div>
-                  <small className={`field-hint username-status is-${usernameStatus}`}>
-                    {t(`pages.profile.usernameStatus.${usernameStatus}`)}
+                  <small id="username-feedback" className={`field-hint username-status is-${usernameStatus}`}>
+                    {shouldShowFieldError("username") && isUsernameFormatInvalid
+                      ? t("pages.profile.validation.username")
+                      : t(`pages.profile.usernameStatus.${usernameStatus}`)}
                   </small>
                 </label>
                 <div className="full-width avatar-editor">
                   <label>
                     <span>{t("pages.profile.avatarUrl")}</span>
                     <input
-                      aria-invalid={!isAvatarUrlValid(trimmedAvatarUrl)}
+                      aria-describedby="avatar-url-feedback"
+                      aria-invalid={shouldShowFieldError("avatarUrl") && isAvatarUrlInvalid}
                       placeholder={t("pages.profile.avatarUrlPlaceholder")}
                       disabled={isSaving}
                       value={form.avatarUrl}
                       onChange={(event) => updateField("avatarUrl", event.target.value)}
+                      onBlur={() => markFieldTouched("avatarUrl")}
                     />
-                    <small>{t("pages.profile.help.avatarUrl")}</small>
+                    <small id="avatar-url-feedback" className={shouldShowFieldError("avatarUrl") && isAvatarUrlInvalid ? "field-hint is-error" : "field-hint"}>
+                      {shouldShowFieldError("avatarUrl") && isAvatarUrlInvalid
+                        ? t("pages.profile.validation.avatarUrl")
+                        : t("pages.profile.help.avatarUrl")}
+                    </small>
                   </label>
                   <label className="avatar-upload-control">
                     <span>{t("pages.profile.avatarUpload")}</span>
@@ -385,17 +428,20 @@ export function ProfilePage() {
                 <label className="full-width">
                   <span>{t("pages.profile.bio")}</span>
                   <textarea
+                    aria-describedby="bio-feedback"
+                    aria-invalid={shouldShowFieldError("bio") && isBioInvalid}
                     disabled={isSaving}
                     maxLength={BIO_MAX_LENGTH}
                     rows={5}
                     value={form.bio}
                     onChange={(event) => updateField("bio", event.target.value)}
+                    onBlur={() => markFieldTouched("bio")}
                   />
-                  <small className={bioCharactersLeft < 30 ? "field-hint is-warning" : "field-hint"}>
+                  <small id="bio-feedback" className={bioCharactersLeft < 30 ? "field-hint is-warning" : "field-hint"}>
                     {t("pages.profile.bioCounter", { count: bioCharactersLeft })}
                   </small>
                 </label>
-                {validationErrors.length ? (
+                {submitAttempted && validationErrors.length ? (
                   <div className="full-width validation-list" role="alert">
                     {validationErrors.map((validationError) => (
                       <span key={validationError}>{validationError}</span>

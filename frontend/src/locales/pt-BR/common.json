@@ -166,9 +166,9 @@
       "bioCounter_one": "{{count}} caractere restante",
       "bioCounter_other": "{{count}} caracteres restantes",
       "help": {
-        "displayName": "Use o nome publico exibido na descoberta.",
+        "displayName": "Obrigatorio. Use o nome publico exibido na descoberta.",
         "avatarUrl": "Informe uma URL publica em http ou https.",
-        "avatarUpload": "Selecione PNG, JPG ou WebP para visualizar antes de publicar."
+        "avatarUpload": "Selecione PNG, JPG ou WebP para testar a previa. O envio de arquivo ainda nao publica avatar."
       },
       "usernameStatus": {
         "idle": "Digite um usuario para validar disponibilidade.",
@@ -179,7 +179,7 @@
       },
       "validation": {
         "displayName": "Informe um nome de exibicao com pelo menos 2 caracteres.",
-        "username": "O usuario deve ter 3 a 30 caracteres e usar apenas letras minusculas, numeros, ponto, hifen ou underline.",
+        "username": "Informe um usuario com 3 a 30 caracteres, usando letras minusculas, numeros, ponto, hifen ou underline. Comece e termine com letra ou numero.",
         "usernameUnavailable": "Escolha outro usuario: este ja esta em uso.",
         "bio": "A bio deve ter no maximo {{count}} caracteres.",
         "avatarUrl": "Informe uma URL de avatar valida iniciando com http ou https.",

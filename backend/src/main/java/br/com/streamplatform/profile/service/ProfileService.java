@@ -19,6 +19,8 @@ import java.util.UUID;
 @Service
 public class ProfileService {
 
+    private static final String USERNAME_PATTERN = "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?$";
+
     private final ProfileRepository profileRepository;
     private final StreamAccountRepository streamAccountRepository;
 
@@ -42,7 +44,9 @@ public class ProfileService {
 
     public UsernameAvailabilityResponse checkUsernameAvailability(UUID userId, String username) {
         String normalizedUsername = username == null ? "" : username.trim().toLowerCase();
-        boolean available = !normalizedUsername.isBlank()
+        boolean available = normalizedUsername.matches(USERNAME_PATTERN)
+                && normalizedUsername.length() >= 3
+                && normalizedUsername.length() <= 30
                 && !profileRepository.existsByUsernameAndUserIdNot(normalizedUsername, userId);
 
         return new UsernameAvailabilityResponse(normalizedUsername, available);

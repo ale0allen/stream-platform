@@ -11,6 +11,8 @@ public record UpdateProfileRequest(
         @Pattern(regexp = "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?$", message = "{validation.username}")
         String username,
         @Size(max = 280, message = "{validation.size}") String bio,
-        @Size(max = 500, message = "{validation.size}") String avatarUrl
+        @Size(max = 500, message = "{validation.size}")
+        @Pattern(regexp = "^$|https?://.+", message = "{validation.avatarUrl}")
+        String avatarUrl
 ) {
 }
