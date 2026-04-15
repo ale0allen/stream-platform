@@ -246,6 +246,8 @@
       "searching": "Searching...",
       "noPlatform": "No platform",
       "noLinkedAccount": "No linked stream account",
+      "openProfile": "View public profile",
+      "openProfileShort": "Open profile",
       "filters": {
         "label": "Filter by platform",
         "ALL": "All",
@@ -261,6 +263,7 @@
       "loading": "Loading profiles...",
       "emptyTitle": "No results found",
       "emptyDescription": "Try a broader term or clear the search to view the full directory.",
+      "emptyFilteredDescription": "No creators match the current filters. Adjust the search or select another platform.",
       "addSuccess": "Profile saved to the shortlist.",
       "removeSuccess": "Profile removed from the shortlist.",
       "loadError": "Unable to load profiles.",
@@ -300,6 +303,23 @@
       "backToFavorites": "Back to favorites",
       "loadError": "Unable to load profile.",
       "noLinkedAccount": "No linked stream account."
+    },
+    "publicProfile": {
+      "eyebrow": "Public profile",
+      "loading": "Loading public profile...",
+      "loadError": "Unable to load public profile.",
+      "notFoundTitle": "User not found",
+      "notFoundDescription": "Check the username or try another public profile.",
+      "login": "Sign in",
+      "backToApp": "Back to app",
+      "favorite": "Favorite",
+      "alreadyFavorite": "Already favorited",
+      "favoriteSuccess": "Profile saved to your shortlist.",
+      "favoriteError": "Unable to favorite this profile.",
+      "platformEyebrow": "Where to watch",
+      "platformTitle": "Linked platforms",
+      "openChannel": "Open channel",
+      "noLinkedAccounts": "This creator has not linked stream accounts yet."
     },
     "admin": {
       "topbarTitle": "Administration",

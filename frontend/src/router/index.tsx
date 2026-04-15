@@ -5,6 +5,7 @@ import { LoginPage } from "../pages/LoginPage";
 import { RegisterPage } from "../pages/RegisterPage";
 import { HomePage } from "../pages/HomePage";
 import { ProfilePage } from "../pages/ProfilePage";
+import { PublicProfilePage } from "../pages/PublicProfilePage";
 import { CreatorProfilePage } from "../pages/CreatorProfilePage";
 import { DiscoveryPage } from "../pages/DiscoveryPage";
 import { FavoritesPage } from "../pages/FavoritesPage";
@@ -13,6 +14,7 @@ import { RequireAuth } from "./RequireAuth";
 import { RequireAdmin } from "./RequireAdmin";
 
 export const router = createBrowserRouter([
+  { path: "/u/:username", element: <PublicProfilePage /> },
   {
     element: <AuthLayout />,
     children: [

@@ -246,6 +246,8 @@
       "searching": "Buscando...",
       "noPlatform": "Sem plataforma",
       "noLinkedAccount": "Conta de stream nao vinculada",
+      "openProfile": "Ver perfil publico",
+      "openProfileShort": "Abrir perfil",
       "filters": {
         "label": "Filtrar por plataforma",
         "ALL": "Todos",
@@ -261,6 +263,7 @@
       "loading": "Carregando perfis...",
       "emptyTitle": "Nenhum resultado encontrado",
       "emptyDescription": "Tente um termo mais amplo ou limpe a busca para visualizar todo o diretorio.",
+      "emptyFilteredDescription": "Nenhum criador corresponde aos filtros atuais. Ajuste a busca ou selecione outra plataforma.",
       "addSuccess": "Perfil salvo na selecao.",
       "removeSuccess": "Perfil removido da selecao.",
       "loadError": "Nao foi possivel carregar os perfis.",
@@ -300,6 +303,23 @@
       "backToFavorites": "Voltar para favoritos",
       "loadError": "Nao foi possivel carregar o perfil.",
       "noLinkedAccount": "Nenhuma conta de stream vinculada."
+    },
+    "publicProfile": {
+      "eyebrow": "Perfil publico",
+      "loading": "Carregando perfil publico...",
+      "loadError": "Nao foi possivel carregar o perfil publico.",
+      "notFoundTitle": "Usuario nao encontrado",
+      "notFoundDescription": "Confira o nome de usuario ou tente acessar outro perfil publico.",
+      "login": "Entrar",
+      "backToApp": "Voltar ao app",
+      "favorite": "Favoritar",
+      "alreadyFavorite": "Ja favoritado",
+      "favoriteSuccess": "Perfil salvo na sua selecao.",
+      "favoriteError": "Nao foi possivel favoritar este perfil.",
+      "platformEyebrow": "Onde assistir",
+      "platformTitle": "Plataformas vinculadas",
+      "openChannel": "Abrir canal",
+      "noLinkedAccounts": "Este criador ainda nao vinculou contas de stream."
     },
     "admin": {
       "topbarTitle": "Administracao",

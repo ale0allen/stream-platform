@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { Avatar } from "../components/Avatar";
 import { EmptyState } from "../components/EmptyState";
 import { Loader } from "../components/Loader";
@@ -26,6 +27,7 @@ function getPrimaryPlatform(profile: Profile, selectedPlatform: PlatformFilter) 
 export function DiscoveryPage() {
   const { token } = useAuth();
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [searchInput, setSearchInput] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [platformFilter, setPlatformFilter] = useState<PlatformFilter>("ALL");
@@ -131,6 +133,11 @@ export function DiscoveryPage() {
 
   const showInitialLoading = isLoading && !profiles.length;
   const showSearchLoading = isLoading && profiles.length > 0;
+  const hasActiveDiscoveryFilter = Boolean(debouncedQuery || platformFilter !== "ALL");
+
+  function openPublicProfile(username: string) {
+    navigate(`/u/${username}`);
+  }
 
   return (
     <section className="page">
@@ -181,7 +188,7 @@ export function DiscoveryPage() {
         {!isLoading && !error && !filteredProfiles.length ? (
           <EmptyState
             title={t("pages.discovery.emptyTitle")}
-            description={t("pages.discovery.emptyDescription")}
+            description={hasActiveDiscoveryFilter ? t("pages.discovery.emptyFilteredDescription") : t("pages.discovery.emptyDescription")}
           />
         ) : null}
         {!isLoading && !error
@@ -191,7 +198,19 @@ export function DiscoveryPage() {
               const isMutating = mutatingProfileId === profile.id;
 
               return (
-                <article className="card discovery-card" key={profile.id}>
+                <article
+                  className="card discovery-card is-clickable"
+                  key={profile.id}
+                  role="link"
+                  tabIndex={0}
+                  onClick={() => openPublicProfile(profile.username)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      openPublicProfile(profile.username);
+                    }
+                  }}
+                >
                   <div className="discovery-card-header">
                     <Avatar
                       alt={profile.displayName}
@@ -203,23 +222,41 @@ export function DiscoveryPage() {
                       <h3>{profile.displayName}</h3>
                       <p className="muted">@{profile.username}</p>
                     </div>
-                    <span className={`platform-badge platform-${(primaryPlatform?.platform ?? "OTHER").toLowerCase()}`}>
-                      {primaryPlatform ? t(`pages.profile.platforms.${primaryPlatform.platform}`) : t("pages.discovery.noPlatform")}
-                    </span>
+                    <span className="open-profile-indicator">{t("pages.discovery.openProfileShort")}</span>
+                  </div>
+                  <div className="discovery-platform-row">
+                    {profile.streamAccounts.length ? (
+                      profile.streamAccounts.slice(0, 3).map((account) => (
+                        <span className={`platform-badge platform-${account.platform.toLowerCase()}`} key={account.id}>
+                          {t(`pages.profile.platforms.${account.platform}`)}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="platform-badge">{t("pages.discovery.noPlatform")}</span>
+                    )}
                   </div>
                   <p className="discovery-card-bio">{profile.bio || t("profileCard.emptyBio")}</p>
                   <div className="discovery-card-footer">
                     {primaryPlatform ? (
-                      <a href={primaryPlatform.channelUrl} rel="noreferrer" target="_blank">
+                      <a href={primaryPlatform.channelUrl} rel="noreferrer" target="_blank" onClick={(event) => event.stopPropagation()}>
                         {primaryPlatform.platformUsername}
                       </a>
                     ) : (
                       <span>{t("pages.discovery.noLinkedAccount")}</span>
                     )}
+                    <button className="button button-secondary open-profile-button" onClick={(event) => {
+                      event.stopPropagation();
+                      openPublicProfile(profile.username);
+                    }} type="button">
+                      {t("pages.discovery.openProfile")}
+                    </button>
                     <button
                       className={isFavorite ? "button button-secondary favorite-toggle is-active" : "button button-secondary favorite-toggle"}
                       disabled={isMutating || Boolean(mutatingProfileId)}
-                      onClick={() => void handleToggleFavorite(profile.id)}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        void handleToggleFavorite(profile.id);
+                      }}
                       type="button"
                     >
                       {isMutating

@@ -2,6 +2,7 @@ package br.com.streamplatform.profile.service;
 
 import br.com.streamplatform.common.exception.BusinessException;
 import br.com.streamplatform.profile.dto.ProfileResponse;
+import br.com.streamplatform.profile.dto.PublicProfileResponse;
 import br.com.streamplatform.profile.dto.StreamAccountSummaryResponse;
 import br.com.streamplatform.profile.dto.UpdateProfileRequest;
 import br.com.streamplatform.profile.dto.UsernameAvailabilityResponse;
@@ -31,6 +32,24 @@ public class ProfileService {
 
     public ProfileResponse getByUserId(UUID userId) {
         return toResponse(findEntityByUserId(userId));
+    }
+
+    public PublicProfileResponse getPublicByUsername(String username) {
+        String normalizedUsername = username == null ? "" : username.trim().toLowerCase();
+        Profile profile = profileRepository.findByUsername(normalizedUsername)
+                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "error.profile.notFound"));
+
+        return new PublicProfileResponse(
+                profile.getId(),
+                profile.getDisplayName(),
+                profile.getUsername(),
+                profile.getBio(),
+                profile.getAvatarUrl(),
+                streamAccountRepository.findByUserIdOrderByPlatformAsc(profile.getUser().getId())
+                        .stream()
+                        .map(this::toStreamAccountResponse)
+                        .toList()
+        );
     }
 
     public List<ProfileResponse> listProfiles(String query) {
