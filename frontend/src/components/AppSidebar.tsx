@@ -36,7 +36,7 @@ export function AppSidebar({ email, role, onLogout, onNavigate }: AppSidebarProp
   ];
 
   return (
-    <aside className="sidebar">
+    <aside className="sidebar" id="app-sidebar">
       <div className="sidebar-top">
         <div className="brand-lockup">
           <div className="brand-mark">SP</div>

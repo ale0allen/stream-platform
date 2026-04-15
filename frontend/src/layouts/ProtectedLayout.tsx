@@ -40,7 +40,10 @@ export function ProtectedLayout() {
   return (
     <div className="app-shell">
       <div className={`sidebar-layer${isSidebarOpen ? " is-open" : ""}`} onClick={handleNavigate} />
-      <div className={`sidebar-frame${isSidebarOpen ? " is-open" : ""}`}>
+      <div
+        aria-hidden={!isSidebarOpen}
+        className={`sidebar-frame${isSidebarOpen ? " is-open" : ""}`}
+      >
         <AppSidebar
           email={user?.email}
           role={user?.role}
@@ -55,6 +58,7 @@ export function ProtectedLayout() {
           context={t(currentPage.contextKey)}
           email={user?.email}
           role={user?.role}
+          isSidebarOpen={isSidebarOpen}
           onMenuToggle={() => setIsSidebarOpen((current) => !current)}
         />
         <div className="content-shell">
