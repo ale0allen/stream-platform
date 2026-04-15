@@ -5,6 +5,7 @@ import { LoginPage } from "../pages/LoginPage";
 import { RegisterPage } from "../pages/RegisterPage";
 import { HomePage } from "../pages/HomePage";
 import { ProfilePage } from "../pages/ProfilePage";
+import { CreatorProfilePage } from "../pages/CreatorProfilePage";
 import { DiscoveryPage } from "../pages/DiscoveryPage";
 import { FavoritesPage } from "../pages/FavoritesPage";
 import { AdminPage } from "../pages/AdminPage";
@@ -27,6 +28,7 @@ export const router = createBrowserRouter([
         children: [
           { path: "/", element: <HomePage /> },
           { path: "/profile", element: <ProfilePage /> },
+          { path: "/profiles/:profileId", element: <CreatorProfilePage /> },
           { path: "/discovery", element: <DiscoveryPage /> },
           { path: "/favorites", element: <FavoritesPage /> },
           {

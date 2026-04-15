@@ -199,7 +199,26 @@
         "title": "Contas de stream",
         "count_one": "{{count}} conta",
         "count_other": "{{count}} contas",
-        "empty": "Nenhuma conta de stream vinculada ainda."
+        "empty": "Nenhuma conta de stream vinculada ainda.",
+        "editorEyebrow": "Contas vinculadas",
+        "editorTitle": "Vincule suas plataformas de stream",
+        "editorDescription": "Adicione contas manualmente agora. OAuth pode ser conectado depois sem mudar este fluxo.",
+        "platform": "Plataforma",
+        "username": "Usuario na plataforma",
+        "usernamePlaceholder": "nome-do-canal",
+        "usernameHelp": "Use letras, numeros, ponto, hifen ou underline.",
+        "url": "URL do canal",
+        "urlPlaceholder": "https://...",
+        "urlHelp": "Informe a URL publica do canal em http ou https.",
+        "duplicate": "Esta conta ja esta vinculada para a plataforma selecionada.",
+        "addAction": "Vincular conta",
+        "open": "Abrir",
+        "loading": "Carregando contas vinculadas...",
+        "loadError": "Nao foi possivel carregar as contas de stream.",
+        "addSuccess": "Conta de stream vinculada com sucesso.",
+        "addError": "Nao foi possivel vincular a conta de stream.",
+        "removeSuccess": "Conta de stream removida com sucesso.",
+        "removeError": "Nao foi possivel remover a conta de stream."
       },
       "platforms": {
         "TWITCH": "Twitch",
@@ -224,12 +243,29 @@
       "searchPlaceholder": "Buscar perfis",
       "resultsSummary_one": "{{count}} perfil encontrado",
       "resultsSummary_other": "{{count}} perfis encontrados",
+      "searching": "Buscando...",
+      "noPlatform": "Sem plataforma",
+      "noLinkedAccount": "Conta de stream nao vinculada",
+      "filters": {
+        "label": "Filtrar por plataforma",
+        "ALL": "Todos",
+        "TWITCH": "Twitch",
+        "YOUTUBE": "YouTube",
+        "KICK": "Kick"
+      },
+      "favoriteToggle": {
+        "add": "Favoritar",
+        "remove": "Desfavoritar",
+        "loading": "Atualizando..."
+      },
       "loading": "Carregando perfis...",
-      "emptyTitle": "Nenhum perfil encontrado",
+      "emptyTitle": "Nenhum resultado encontrado",
       "emptyDescription": "Tente um termo mais amplo ou limpe a busca para visualizar todo o diretorio.",
       "addSuccess": "Perfil salvo na selecao.",
+      "removeSuccess": "Perfil removido da selecao.",
       "loadError": "Nao foi possivel carregar os perfis.",
-      "addError": "Nao foi possivel salvar o perfil na selecao."
+      "addError": "Nao foi possivel salvar o perfil na selecao.",
+      "toggleError": "Nao foi possivel atualizar a selecao."
     },
     "favorites": {
       "topbarTitle": "Favoritos",
@@ -243,11 +279,27 @@
       "savedCount_one": "{{count}} perfil salvo",
       "savedCount_other": "{{count}} perfis salvos",
       "loading": "Carregando favoritos...",
-      "emptyTitle": "Nenhum perfil salvo",
-      "emptyDescription": "Salve perfis na descoberta para montar sua selecao de acompanhamento.",
+      "emptyTitle": "Sua selecao ainda esta vazia",
+      "emptyDescription": "Explore a descoberta e salve criadores promissores para acompanhar depois.",
+      "emptyAction": "Ir para descoberta",
+      "removeAction": "Remover",
+      "noPlatform": "Sem plataforma",
+      "noLinkedAccount": "Conta de stream nao vinculada",
       "removeSuccess": "Perfil removido da selecao com sucesso.",
       "loadError": "Nao foi possivel carregar os favoritos.",
       "removeError": "Nao foi possivel remover o perfil da selecao."
+    },
+    "creatorProfile": {
+      "eyebrow": "Perfil salvo",
+      "title": "Perfil do criador",
+      "description": "Veja os dados publicos do criador e as contas de stream vinculadas.",
+      "badge": "Leitura",
+      "loading": "Carregando perfil...",
+      "emptyTitle": "Perfil nao encontrado",
+      "emptyDescription": "Esse perfil pode ter sido removido ou nao esta mais disponivel.",
+      "backToFavorites": "Voltar para favoritos",
+      "loadError": "Nao foi possivel carregar o perfil.",
+      "noLinkedAccount": "Nenhuma conta de stream vinculada."
     },
     "admin": {
       "topbarTitle": "Administracao",
@@ -261,7 +313,18 @@
       "emptyDescription": "Novas contas aparecerao aqui para revisao administrativa.",
       "tableTitle": "Diretorio de usuarios",
       "tableDescription": "Gerencie status de ativacao e acompanhe a atualizacao mais recente de cada conta.",
+      "usernameMissing": "sem-usuario",
+      "metrics": {
+        "total": "Usuarios",
+        "totalDescription": "Contas cadastradas no ambiente.",
+        "active": "Ativos",
+        "activeDescription_one": "{{count}} conta inativa",
+        "activeDescription_other": "{{count}} contas inativas",
+        "admins": "Administradores",
+        "adminsDescription": "Usuarios com acesso ao modulo admin."
+      },
       "headers": {
+        "user": "Usuario",
         "email": "E-mail",
         "role": "Perfil",
         "status": "Status",

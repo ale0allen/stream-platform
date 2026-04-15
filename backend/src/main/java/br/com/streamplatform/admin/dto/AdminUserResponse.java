@@ -8,6 +8,7 @@ import java.util.UUID;
 public record AdminUserResponse(
         UUID id,
         String email,
+        String username,
         Role role,
         boolean active,
         OffsetDateTime createdAt,

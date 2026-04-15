@@ -18,6 +18,10 @@ export function AdminPage() {
   const [successMessage, setSuccessMessage] = useState("");
   const [pendingUserId, setPendingUserId] = useState<string | null>(null);
 
+  const activeUsers = users.filter((user) => user.active).length;
+  const inactiveUsers = users.length - activeUsers;
+  const adminUsers = users.filter((user) => user.role === "ADMIN").length;
+
   useEffect(() => {
     if (!token) {
       return;
@@ -78,6 +82,24 @@ export function AdminPage() {
         badge={t("pages.admin.badge")}
       />
 
+      <div className="admin-summary-grid">
+        <article className="card stat-card admin-summary-card">
+          <span className="metric-label">{t("pages.admin.metrics.total")}</span>
+          <strong>{users.length}</strong>
+          <p className="muted">{t("pages.admin.metrics.totalDescription")}</p>
+        </article>
+        <article className="card stat-card admin-summary-card">
+          <span className="metric-label">{t("pages.admin.metrics.active")}</span>
+          <strong>{activeUsers}</strong>
+          <p className="muted">{t("pages.admin.metrics.activeDescription", { count: inactiveUsers })}</p>
+        </article>
+        <article className="card stat-card admin-summary-card">
+          <span className="metric-label">{t("pages.admin.metrics.admins")}</span>
+          <strong>{adminUsers}</strong>
+          <p className="muted">{t("pages.admin.metrics.adminsDescription")}</p>
+        </article>
+      </div>
+
       {isLoading ? <Loader label={t("pages.admin.loading")} /> : null}
       {!isLoading && error ? <StatusMessage tone="error" message={error} /> : null}
       {!isLoading && !error && successMessage ? <StatusMessage tone="success" message={successMessage} /> : null}
@@ -88,7 +110,7 @@ export function AdminPage() {
       {!isLoading && !error && users.length > 0 ? (
         <div className="card table-card">
           <div className="table-header">
-            <div>
+            <div className="toolbar-copy">
               <strong>{t("pages.admin.tableTitle")}</strong>
               <p className="muted">{t("pages.admin.tableDescription")}</p>
             </div>
@@ -98,7 +120,7 @@ export function AdminPage() {
             <table>
               <thead>
                 <tr>
-                  <th>{t("pages.admin.headers.email")}</th>
+                  <th>{t("pages.admin.headers.user")}</th>
                   <th>{t("pages.admin.headers.role")}</th>
                   <th>{t("pages.admin.headers.status")}</th>
                   <th>{t("pages.admin.headers.updatedAt")}</th>
@@ -108,7 +130,15 @@ export function AdminPage() {
               <tbody>
                 {users.map((user) => (
                   <tr key={user.id}>
-                    <td>{user.email}</td>
+                    <td>
+                      <div className="admin-user-cell">
+                        <span className="admin-user-avatar">{(user.username || user.email).charAt(0).toUpperCase()}</span>
+                        <span>
+                          <strong>@{user.username || t("pages.admin.usernameMissing")}</strong>
+                          <small>{user.email}</small>
+                        </span>
+                      </div>
+                    </td>
                     <td>
                       <span className="table-pill">{t(`common.role.${user.role}`)}</span>
                     </td>
@@ -120,7 +150,7 @@ export function AdminPage() {
                     <td>{formatDateTime(user.updatedAt)}</td>
                     <td>
                       <button
-                        className="button button-secondary table-action-button"
+                        className={user.active ? "button button-secondary table-action-button admin-action-danger" : "button button-secondary table-action-button"}
                         onClick={() => void handleStatusToggle(user)}
                         type="button"
                         disabled={pendingUserId !== null}

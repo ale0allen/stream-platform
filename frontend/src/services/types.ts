@@ -10,6 +10,7 @@ export interface AuthResponse {
 export interface UserSummary {
   id: string;
   email: string;
+  username: string;
   role: Role;
   active: boolean;
   createdAt: string;

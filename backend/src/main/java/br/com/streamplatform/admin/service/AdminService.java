@@ -2,6 +2,7 @@ package br.com.streamplatform.admin.service;
 
 import br.com.streamplatform.admin.dto.AdminUserResponse;
 import br.com.streamplatform.common.exception.BusinessException;
+import br.com.streamplatform.profile.repository.ProfileRepository;
 import br.com.streamplatform.user.model.User;
 import br.com.streamplatform.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -15,9 +16,11 @@ import java.util.UUID;
 public class AdminService {
 
     private final UserRepository userRepository;
+    private final ProfileRepository profileRepository;
 
-    public AdminService(UserRepository userRepository) {
+    public AdminService(UserRepository userRepository, ProfileRepository profileRepository) {
         this.userRepository = userRepository;
+        this.profileRepository = profileRepository;
     }
 
     public List<AdminUserResponse> listUsers() {
@@ -40,6 +43,7 @@ public class AdminService {
         return new AdminUserResponse(
                 user.getId(),
                 user.getEmail(),
+                profileRepository.findByUserId(user.getId()).map(profile -> profile.getUsername()).orElse(""),
                 user.getRole(),
                 user.isActive(),
                 user.getCreatedAt(),

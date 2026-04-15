@@ -199,7 +199,26 @@
         "title": "Stream accounts",
         "count_one": "{{count}} account",
         "count_other": "{{count}} accounts",
-        "empty": "No stream accounts linked yet."
+        "empty": "No stream accounts linked yet.",
+        "editorEyebrow": "Linked accounts",
+        "editorTitle": "Link your stream platforms",
+        "editorDescription": "Add accounts manually for now. OAuth can be connected later without changing this flow.",
+        "platform": "Platform",
+        "username": "Platform username",
+        "usernamePlaceholder": "channel-name",
+        "usernameHelp": "Use letters, numbers, dots, hyphens, or underscores.",
+        "url": "Channel URL",
+        "urlPlaceholder": "https://...",
+        "urlHelp": "Enter the public channel URL using http or https.",
+        "duplicate": "This account is already linked for the selected platform.",
+        "addAction": "Link account",
+        "open": "Open",
+        "loading": "Loading linked accounts...",
+        "loadError": "Unable to load stream accounts.",
+        "addSuccess": "Stream account linked successfully.",
+        "addError": "Unable to link stream account.",
+        "removeSuccess": "Stream account removed successfully.",
+        "removeError": "Unable to remove stream account."
       },
       "platforms": {
         "TWITCH": "Twitch",
@@ -224,12 +243,29 @@
       "searchPlaceholder": "Search profiles",
       "resultsSummary_one": "{{count}} profile found",
       "resultsSummary_other": "{{count}} profiles found",
+      "searching": "Searching...",
+      "noPlatform": "No platform",
+      "noLinkedAccount": "No linked stream account",
+      "filters": {
+        "label": "Filter by platform",
+        "ALL": "All",
+        "TWITCH": "Twitch",
+        "YOUTUBE": "YouTube",
+        "KICK": "Kick"
+      },
+      "favoriteToggle": {
+        "add": "Favorite",
+        "remove": "Unfavorite",
+        "loading": "Updating..."
+      },
       "loading": "Loading profiles...",
-      "emptyTitle": "No profiles found",
+      "emptyTitle": "No results found",
       "emptyDescription": "Try a broader term or clear the search to view the full directory.",
       "addSuccess": "Profile saved to the shortlist.",
+      "removeSuccess": "Profile removed from the shortlist.",
       "loadError": "Unable to load profiles.",
-      "addError": "Unable to save the profile to the shortlist."
+      "addError": "Unable to save the profile to the shortlist.",
+      "toggleError": "Unable to update the shortlist."
     },
     "favorites": {
       "topbarTitle": "Favorites",
@@ -243,11 +279,27 @@
       "savedCount_one": "{{count}} saved profile",
       "savedCount_other": "{{count}} saved profiles",
       "loading": "Loading favorites...",
-      "emptyTitle": "No saved profiles",
-      "emptyDescription": "Save profiles in discovery to build your shortlist.",
+      "emptyTitle": "Your shortlist is still empty",
+      "emptyDescription": "Explore discovery and save promising creators to follow up later.",
+      "emptyAction": "Go to discovery",
+      "removeAction": "Remove",
+      "noPlatform": "No platform",
+      "noLinkedAccount": "No linked stream account",
       "removeSuccess": "Profile removed from the shortlist successfully.",
       "loadError": "Unable to load favorites.",
       "removeError": "Unable to remove the profile from the shortlist."
+    },
+    "creatorProfile": {
+      "eyebrow": "Saved profile",
+      "title": "Creator profile",
+      "description": "Review the creator public data and linked stream accounts.",
+      "badge": "Read only",
+      "loading": "Loading profile...",
+      "emptyTitle": "Profile not found",
+      "emptyDescription": "This profile may have been removed or is no longer available.",
+      "backToFavorites": "Back to favorites",
+      "loadError": "Unable to load profile.",
+      "noLinkedAccount": "No linked stream account."
     },
     "admin": {
       "topbarTitle": "Administration",
@@ -261,7 +313,18 @@
       "emptyDescription": "New accounts will appear here for administrative review.",
       "tableTitle": "User directory",
       "tableDescription": "Manage activation status and track the latest update for each account.",
+      "usernameMissing": "no-username",
+      "metrics": {
+        "total": "Users",
+        "totalDescription": "Registered accounts in the environment.",
+        "active": "Active",
+        "activeDescription_one": "{{count}} inactive account",
+        "activeDescription_other": "{{count}} inactive accounts",
+        "admins": "Administrators",
+        "adminsDescription": "Users with access to the admin module."
+      },
       "headers": {
+        "user": "User",
         "email": "Email",
         "role": "Role",
         "status": "Status",
