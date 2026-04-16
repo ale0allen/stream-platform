@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.streamplatform.profile.dto.DiscoveryProfilesResponse;
+import br.com.streamplatform.stream.model.StreamPlatformType;
+
 import java.util.List;
 
 @RestController
@@ -50,5 +53,25 @@ public class ProfileController {
     @GetMapping
     public List<ProfileResponse> list(@RequestParam(required = false) String q) {
         return profileService.listProfiles(q);
+    }
+
+    @GetMapping("/discovery")
+    public DiscoveryProfilesResponse discovery(
+            @RequestParam(required = false) String q,
+            @RequestParam(required = false) String platform,
+            @RequestParam(required = false, defaultValue = "name_asc") String sort,
+            @RequestParam(required = false, defaultValue = "1") int page,
+            @RequestParam(required = false, defaultValue = "8") int size
+    ) {
+        StreamPlatformType platformEnum = null;
+        if (platform != null && !platform.isBlank() && !platform.equalsIgnoreCase("ALL")) {
+            try {
+                platformEnum = StreamPlatformType.valueOf(platform.toUpperCase());
+            } catch (IllegalArgumentException ignored) {
+                platformEnum = null;
+            }
+        }
+
+        return profileService.discoveryProfiles(q, platformEnum, sort, page, size);
     }
 }

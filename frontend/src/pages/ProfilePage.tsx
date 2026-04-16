@@ -5,12 +5,14 @@ import { Avatar } from "../components/Avatar";
 import { Loader } from "../components/Loader";
 import { SectionHeader } from "../components/SectionHeader";
 import { StatusMessage } from "../components/StatusMessage";
+import { ProfileCompletionProgress } from "../components/ProfileCompletionProgress";
 import { useAuth } from "../hooks/useAuth";
 import {
   checkUsernameAvailability,
   getMyProfile,
   updateMyProfile
 } from "../modules/profile/profileService";
+import { calculateProfileCompletion } from "../modules/profile/profileCompletion";
 import {
   addStreamAccount,
   listStreamAccounts,
@@ -142,18 +144,18 @@ export function ProfilePage() {
     return errors;
   }, [isAvatarUrlInvalid, isBioInvalid, isDisplayNameInvalid, isUsernameFormatInvalid, isUsernameUnavailable, t]);
 
-  const completenessItems = useMemo(
-    () => [
-      { label: t("pages.profile.completeness.items.displayName"), complete: trimmedDisplayName.length >= 2 },
-      { label: t("pages.profile.completeness.items.username"), complete: usernameStatus === "available" },
-      { label: t("pages.profile.completeness.items.bio"), complete: trimmedBio.length >= 30 },
-      { label: t("pages.profile.completeness.items.avatar"), complete: Boolean(trimmedAvatarUrl || avatarPreviewUrl) },
-      { label: t("pages.profile.completeness.items.streamAccounts"), complete: streamAccounts.length > 0 }
-    ],
-    [avatarPreviewUrl, streamAccounts.length, t, trimmedAvatarUrl, trimmedBio.length, trimmedDisplayName.length, usernameStatus]
+  const completion = useMemo(
+    () =>
+      calculateProfileCompletion({
+        displayName: trimmedDisplayName,
+        username: normalizedUsername,
+        usernameIsValid: usernameStatus === "available",
+        bio: trimmedBio,
+        avatarUrl: avatarSource || null,
+        streamAccounts: streamAccounts.length
+      }),
+    [avatarSource, normalizedUsername, streamAccounts.length, trimmedBio, trimmedDisplayName, usernameStatus]
   );
-  const completedItems = completenessItems.filter((item) => item.complete).length;
-  const completenessPercent = Math.round((completedItems / completenessItems.length) * 100);
   const canSubmit = validationErrors.length === 0 && usernameStatus === "available" && !isSaving && !isLoading;
 
   useEffect(() => {
@@ -427,22 +429,7 @@ export function ProfilePage() {
             <p className="muted">@{normalizedUsername || t("pages.profile.username").toLowerCase()}</p>
           </div>
           <p>{form.bio || t("pages.profile.emptyBio")}</p>
-          <div className="profile-completeness">
-            <div className="profile-completeness-heading">
-              <span>{t("pages.profile.completeness.title")}</span>
-              <strong>{completenessPercent}%</strong>
-            </div>
-            <div className="profile-completeness-track" aria-hidden="true">
-              <span style={{ width: `${completenessPercent}%` }} />
-            </div>
-            <div className="profile-checklist">
-              {completenessItems.map((item) => (
-                <span className={item.complete ? "is-complete" : ""} key={item.label}>
-                  {item.label}
-                </span>
-              ))}
-            </div>
-          </div>
+          <ProfileCompletionProgress completion={completion} />
           <div className="stream-account-panel">
             <div className="stream-account-heading">
               <strong>{t("pages.profile.streamAccounts.title")}</strong>
@@ -585,7 +572,7 @@ export function ProfilePage() {
                 </div>
               </form>
 
-              <section className="stream-account-manager">
+              <section className="stream-account-manager" id="stream-accounts">
                 <div className="panel-heading">
                   <span className="eyebrow">{t("pages.profile.streamAccounts.editorEyebrow")}</span>
                   <strong>{t("pages.profile.streamAccounts.editorTitle")}</strong>

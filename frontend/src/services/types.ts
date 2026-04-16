@@ -44,3 +44,10 @@ export interface Favorite {
   createdAt: string;
   profile: Profile;
 }
+
+export interface DiscoveryProfilesResponse {
+  items: Profile[];
+  totalCount: number;
+  page: number;
+  size: number;
+}

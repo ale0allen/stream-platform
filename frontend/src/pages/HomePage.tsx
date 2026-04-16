@@ -1,11 +1,70 @@
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Loader } from "../components/Loader";
 import { SectionHeader } from "../components/SectionHeader";
+import { StatusMessage } from "../components/StatusMessage";
 import { useAuth } from "../hooks/useAuth";
+import { getMyProfile } from "../modules/profile/profileService";
+import { calculateProfileCompletion } from "../modules/profile/profileCompletion";
+import { ProfileOnboardingCard } from "../components/ProfileOnboardingCard";
 import { formatNumber } from "../utils/format";
+import type { Profile } from "../services/types";
 
 export function HomePage() {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const { t } = useTranslation();
+  const [profileCompletion, setProfileCompletion] = useState<ReturnType<typeof calculateProfileCompletion> | null>(null);
+  const [profileIsLoading, setProfileIsLoading] = useState(true);
+  const [profileError, setProfileError] = useState("");
+  const [profile, setProfile] = useState<Profile | null>(null);
+
+  useEffect(() => {
+    if (!token) {
+      setProfileIsLoading(false);
+      return;
+    }
+
+    const authToken = token;
+
+    let isCurrent = true;
+
+    async function loadProfile() {
+      try {
+        setProfileIsLoading(true);
+        setProfileError("");
+        const myProfile = await getMyProfile(authToken);
+        if (!isCurrent) return;
+        setProfile(myProfile);
+        setProfileCompletion(
+          calculateProfileCompletion({
+            displayName: myProfile.displayName ?? "",
+            username: myProfile.username ?? "",
+            bio: myProfile.bio ?? "",
+            avatarUrl: myProfile.avatarUrl ?? null,
+            streamAccounts: myProfile.streamAccounts ?? []
+          })
+        );
+      } catch (e) {
+        if (!isCurrent) return;
+        setProfileError(e instanceof Error ? e.message : t("pages.home.onboarding.loadError"));
+      } finally {
+        if (!isCurrent) return;
+        setProfileIsLoading(false);
+      }
+    }
+
+    void loadProfile();
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [t, token]);
+
+  const isNewUser = useMemo(() => {
+    if (!profileCompletion) return false;
+    const missingCount = profileCompletion.totalCount - profileCompletion.completedCount;
+    return profileCompletion.percent <= 20 && missingCount >= 3;
+  }, [profileCompletion]);
 
   return (
     <section className="page">
@@ -15,6 +74,12 @@ export function HomePage() {
         description={t("pages.home.description")}
         badge={t("pages.home.badge")}
       />
+
+      {profileIsLoading ? <Loader compact label={t("pages.home.onboarding.loading")} /> : null}
+      {!profileIsLoading && profileError ? <StatusMessage tone="error" message={profileError} /> : null}
+      {!profileIsLoading && profile && profileCompletion ? (
+        <ProfileOnboardingCard profile={profile} completion={profileCompletion} isNewUser={isNewUser} />
+      ) : null}
 
       <div className="hero-panel card">
         <div className="hero-panel-main">

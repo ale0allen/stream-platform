@@ -9,6 +9,18 @@ import { useAuth } from "../hooks/useAuth";
 import { addFavorite, listFavorites } from "../modules/favorite/favoriteService";
 import { getPublicProfile, type PublicProfile } from "../modules/publicProfile/publicProfileService";
 
+function getCleanChannelLabel(channelUrl: string) {
+  try {
+    const parsed = new URL(channelUrl);
+    const host = parsed.hostname.replace(/^www\./, "");
+    const path = parsed.pathname.replace(/\/+$/, "");
+    const compactPath = path.length > 24 ? `${path.slice(0, 24)}…` : path;
+    return `${host}${compactPath}`;
+  } catch {
+    return channelUrl;
+  }
+}
+
 export function PublicProfilePage() {
   const { username } = useParams();
   const { token, isAuthenticated, isLoading: isAuthLoading } = useAuth();
@@ -146,16 +158,24 @@ export function PublicProfilePage() {
                     <span className={`stream-platform-mark platform-${account.platform.toLowerCase()}`}>
                       {account.platform.charAt(0)}
                     </span>
-                    <span>
+                    <span className="public-platform-copy">
                       <strong>{t(`pages.profile.platforms.${account.platform}`)}</strong>
-                      <small>{account.platformUsername}</small>
+                      <small>@{account.platformUsername}</small>
+                      <small className="public-platform-url">{getCleanChannelLabel(account.channelUrl)}</small>
                     </span>
-                    <span className="public-platform-cta">{t("pages.publicProfile.openChannel")}</span>
+                    <span className="public-platform-cta">
+                      {t("pages.publicProfile.openChannel")}
+                      <span className="public-platform-cta-icon" aria-hidden="true">
+                        ↗
+                      </span>
+                    </span>
                   </a>
                 ))}
               </div>
             ) : (
-              <p className="muted">{t("pages.publicProfile.noLinkedAccounts")}</p>
+              <div className="state-card compact-state public-platform-empty">
+                <p className="muted">{t("pages.publicProfile.noLinkedAccounts")}</p>
+              </div>
             )}
           </section>
         </article>

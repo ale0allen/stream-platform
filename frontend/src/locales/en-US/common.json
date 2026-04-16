@@ -137,6 +137,31 @@
         "discoveryDescription": "Search the directory and turn strong profiles into a relevant shortlist.",
         "platformTitle": "Standardized visual foundation",
         "platformDescription": "Navigation, states, information blocks, and actions now share the same visual system."
+      },
+      "onboarding": {
+        "eyebrow": "Profile progress",
+        "loading": "Loading your profile...",
+        "loadError": "Unable to load your profile.",
+        "titleNew": "Start curation with a complete profile",
+        "title": "Let’s get your profile ready",
+        "descriptionNew": "You still need a few details to get your profile right: {{missing}}.",
+        "description": "Your progress: {{percent}}%. To make the most of Discovery, complete: {{missing}}.",
+        "dismiss": "Not now",
+        "actions": {
+          "completeProfile": "Complete profile",
+          "addStreamAccount": "Add a streaming account",
+          "exploreCreators": "Explore creators",
+          "viewPublicProfile": "View public profile"
+        }
+      },
+      "nextSteps": {
+        "eyebrow": "Ready to curate",
+        "title": "Your profile is complete",
+        "description": "Now you can explore creators and keep your shortlist up to date.",
+        "actions": {
+          "exploreCreators": "Explore creators",
+          "viewPublicProfile": "View public profile"
+        }
       }
     },
     "profile": {
@@ -260,6 +285,21 @@
         "remove": "Unfavorite",
         "loading": "Updating..."
       },
+      "sort": {
+        "label": "Sort",
+        "recent": "Most recent",
+        "name_asc": "Name A-Z",
+        "name_desc": "Name Z-A",
+        "complete": "Most complete profile"
+      },
+      "pagination": {
+        "previous": "Previous",
+        "next": "Next",
+        "pageInfo": "Page {{page}} of {{totalPages}}"
+      },
+      "clearFilters": "Clear search and filters",
+      "morePlatforms_one": "{{count}} more platform",
+      "morePlatforms_other": "{{count}} more platforms",
       "loading": "Loading profiles...",
       "emptyTitle": "No results found",
       "emptyDescription": "Try a broader term or clear the search to view the full directory.",

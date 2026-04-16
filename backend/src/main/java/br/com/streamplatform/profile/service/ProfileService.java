@@ -3,6 +3,7 @@ package br.com.streamplatform.profile.service;
 import br.com.streamplatform.common.exception.BusinessException;
 import br.com.streamplatform.profile.dto.ProfileResponse;
 import br.com.streamplatform.profile.dto.PublicProfileResponse;
+import br.com.streamplatform.profile.dto.DiscoveryProfilesResponse;
 import br.com.streamplatform.profile.dto.StreamAccountSummaryResponse;
 import br.com.streamplatform.profile.dto.UpdateProfileRequest;
 import br.com.streamplatform.profile.dto.UsernameAvailabilityResponse;
@@ -14,7 +15,11 @@ import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import br.com.streamplatform.stream.model.StreamPlatformType;
+
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.UUID;
 
 @Service
@@ -59,6 +64,96 @@ public class ProfileService {
                 : profileRepository.findByDisplayNameContainingIgnoreCaseOrUsernameContainingIgnoreCaseOrderByDisplayNameAsc(normalized, normalized);
 
         return profiles.stream().map(this::toResponse).toList();
+    }
+
+    public DiscoveryProfilesResponse discoveryProfiles(String query, StreamPlatformType platform, String sort, int page, int size) {
+        int safePage = Math.max(page, 1);
+        int safeSize = Math.min(Math.max(size, 1), 24);
+
+        // Reaproveita a listagem atual (inclui streamAccounts) e aplica ordenacao/filtragem/paginacao em memoria.
+        // Isso evita mudar a forma como os dados de ProfileResponse sao montados (mantem contrato limpo).
+        List<ProfileResponse> all = listProfiles(query);
+
+        List<ProfileResponse> filtered = all;
+        if (platform != null) {
+            filtered = all.stream()
+                    .filter(profile -> profile.streamAccounts() != null && profile.streamAccounts().stream().anyMatch(sa -> sa.platform() == platform))
+                    .toList();
+        }
+
+        String normalizedSort = sort == null ? "name_asc" : sort.trim().toLowerCase();
+        List<ProfileResponse> sorted = new ArrayList<>(filtered);
+
+        sorted.sort(getDiscoveryComparator(normalizedSort));
+
+        long totalCount = sorted.size();
+        int pageIndex = safePage - 1;
+        int start = pageIndex * safeSize;
+        int end = Math.min(start + safeSize, sorted.size());
+
+        List<ProfileResponse> items = start >= sorted.size() ? List.of() : sorted.subList(start, end);
+
+        return new DiscoveryProfilesResponse(items, totalCount, safePage, safeSize);
+    }
+
+    private Comparator<ProfileResponse> getDiscoveryComparator(String sort) {
+        return switch (sort) {
+            case "recent" -> Comparator
+                    .comparing(ProfileResponse::updatedAt, Comparator.nullsLast(Comparator.naturalOrder()))
+                    .reversed()
+                    .thenComparing(ProfileResponse::displayName, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER));
+            case "name_desc" -> Comparator
+                    .comparing(ProfileResponse::displayName, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
+                    .reversed()
+                    .thenComparing(ProfileResponse::username, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER));
+            case "complete" -> (left, right) -> {
+                int completionCompare = Integer.compare(getCompletionPercent(right), getCompletionPercent(left));
+                if (completionCompare != 0) {
+                    return completionCompare;
+                }
+
+                // Atualizacao mais recente primeiro (desempate).
+                if (left.updatedAt() != null || right.updatedAt() != null) {
+                    if (left.updatedAt() == null) return 1;
+                    if (right.updatedAt() == null) return -1;
+                    int updatedCompare = left.updatedAt().compareTo(right.updatedAt());
+                    if (updatedCompare != 0) return -updatedCompare;
+                }
+
+                // Por fim, exibir nome de forma estavel.
+                if (left.displayName() == null && right.displayName() == null) return 0;
+                if (left.displayName() == null) return 1;
+                if (right.displayName() == null) return -1;
+                return String.CASE_INSENSITIVE_ORDER.compare(left.displayName(), right.displayName());
+            };
+            case "name_asc":
+            default -> Comparator
+                    .comparing(ProfileResponse::displayName, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER))
+                    .thenComparing(ProfileResponse::username, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER));
+        };
+    }
+
+    // Calcula completude seguindo as mesmas regras do ProfilePage (mas com campos vindos do ProfileResponse).
+    private int getCompletionPercent(ProfileResponse profile) {
+        int total = 5;
+        int completed = 0;
+
+        String displayName = profile.displayName();
+        if (displayName != null && displayName.trim().length() >= 2) completed++;
+
+        String username = profile.username();
+        if (username != null && username.trim().length() >= 3 && username.trim().length() <= 30) completed++;
+
+        String bio = profile.bio();
+        if (bio != null && bio.trim().length() >= 30) completed++;
+
+        String avatarUrl = profile.avatarUrl();
+        if (avatarUrl != null && !avatarUrl.trim().isBlank()) completed++;
+
+        List<?> streamAccounts = profile.streamAccounts();
+        if (streamAccounts != null && !streamAccounts.isEmpty()) completed++;
+
+        return (int) Math.round((completed / (double) total) * 100);
     }
 
     public UsernameAvailabilityResponse checkUsernameAvailability(UUID userId, String username) {

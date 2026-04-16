@@ -137,6 +137,31 @@
         "discoveryDescription": "Pesquise no diretorio e transforme bons perfis em uma selecao relevante.",
         "platformTitle": "Base visual padronizada",
         "platformDescription": "Navegacao, estados, blocos de informacao e acoes compartilham o mesmo sistema visual."
+      },
+      "onboarding": {
+        "eyebrow": "Progresso do perfil",
+        "loading": "Carregando seu perfil...",
+        "loadError": "Nao foi possivel carregar seu perfil.",
+        "titleNew": "Comece a curadoria com um perfil completo",
+        "title": "Vamos deixar seu perfil pronto",
+        "descriptionNew": "Faltam alguns detalhes para seu perfil ficar do jeito certo: {{missing}}.",
+        "description": "Seu progresso: {{percent}}%. Para aproveitar o Discovery, complete: {{missing}}.",
+        "dismiss": "Agora nao",
+        "actions": {
+          "completeProfile": "Completar perfil",
+          "addStreamAccount": "Adicionar conta de streaming",
+          "exploreCreators": "Explorar criadores",
+          "viewPublicProfile": "Ver perfil publico"
+        }
+      },
+      "nextSteps": {
+        "eyebrow": "Pronto para curadoria",
+        "title": "Seu perfil esta completo",
+        "description": "Agora voce pode explorar criadores e manter sua selecao sempre atualizada.",
+        "actions": {
+          "exploreCreators": "Explorar criadores",
+          "viewPublicProfile": "Ver perfil publico"
+        }
       }
     },
     "profile": {
@@ -260,10 +285,25 @@
         "remove": "Desfavoritar",
         "loading": "Atualizando..."
       },
+      "sort": {
+        "label": "Ordenar",
+        "recent": "Mais recentes",
+        "name_asc": "Nome A-Z",
+        "name_desc": "Nome Z-A",
+        "complete": "Perfil mais completo"
+      },
+      "pagination": {
+        "previous": "Anterior",
+        "next": "Próxima",
+        "pageInfo": "Página {{page}} de {{totalPages}}"
+      },
+      "clearFilters": "Limpar busca e filtros",
+      "morePlatforms_one": "Mais {{count}} plataforma",
+      "morePlatforms_other": "Mais {{count}} plataformas",
       "loading": "Carregando perfis...",
       "emptyTitle": "Nenhum resultado encontrado",
-      "emptyDescription": "Tente um termo mais amplo ou limpe a busca para visualizar todo o diretorio.",
-      "emptyFilteredDescription": "Nenhum criador corresponde aos filtros atuais. Ajuste a busca ou selecione outra plataforma.",
+      "emptyDescription": "Nao encontramos perfis com este termo. Tente outra busca ou limpe o campo para ver todo o diretorio.",
+      "emptyFilteredDescription": "Nenhum perfil corresponde a esta busca e/ou filtros. Ajuste os filtros ou limpe a busca para ver mais criadores.",
       "addSuccess": "Perfil salvo na selecao.",
       "removeSuccess": "Perfil removido da selecao.",
       "loadError": "Nao foi possivel carregar os perfis.",

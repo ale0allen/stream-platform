@@ -910,6 +910,48 @@ textarea::placeholder {
   border: 1px solid var(--border);
 }
 
+.onboarding-card {
+  padding: 1.1rem;
+  display: grid;
+  gap: var(--space-4);
+}
+
+.onboarding-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.onboarding-copy {
+  display: grid;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+.onboarding-title {
+  font-size: 1.25rem;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+}
+
+.onboarding-description {
+  max-width: 68ch;
+}
+
+.onboarding-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.onboarding-dismiss {
+  min-height: 38px;
+}
+
 .profile-completeness-heading,
 .stream-account-heading {
   display: flex;
@@ -1142,6 +1184,33 @@ textarea::placeholder {
   justify-content: flex-end;
 }
 
+.discovery-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 220px;
+}
+
+.discovery-sort-select {
+  min-height: 44px;
+  width: 220px;
+}
+
+.discovery-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.25rem;
+}
+
+.discovery-pagination-info {
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
 .platform-filter {
   display: inline-flex;
   flex-wrap: wrap;
@@ -1173,6 +1242,11 @@ textarea::placeholder {
 
 .filter-chip.is-active {
   box-shadow: inset 0 0 0 1px rgba(35, 87, 255, 0.18), 0 8px 18px rgba(35, 87, 255, 0.08);
+}
+
+.platform-filter:focus-within {
+  border-color: rgba(35, 87, 255, 0.34);
+  box-shadow: 0 0 0 4px rgba(35, 87, 255, 0.08);
 }
 
 .discovery-results-meta {
@@ -1222,6 +1296,10 @@ textarea::placeholder {
 
 .discovery-card.is-clickable {
   cursor: pointer;
+}
+
+.discovery-card.is-clickable:active {
+  transform: translateY(-1px);
 }
 
 .discovery-card.is-clickable:focus-visible {
@@ -1283,6 +1361,19 @@ textarea::placeholder {
   font-size: 0.8rem;
   font-weight: 800;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: transform 180ms ease;
+}
+
+.discovery-card:hover .open-profile-indicator {
+  transform: translateX(2px);
+}
+
+.open-profile-chevron {
+  font-size: 1.05rem;
+  line-height: 1;
 }
 
 .discovery-card-bio {
@@ -1301,7 +1392,7 @@ textarea::placeholder {
   min-width: 0;
 }
 
-.discovery-card-footer a,
+.discovery-card-footer > a,
 .discovery-card-footer span {
   min-width: 0;
   color: var(--text-muted);
@@ -1312,8 +1403,55 @@ textarea::placeholder {
   white-space: nowrap;
 }
 
-.discovery-card-footer a {
+.platform-overflow {
+  background: rgba(24, 35, 56, 0.06);
+  color: var(--text-muted);
+}
+
+.discovery-primary-channel {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  gap: 0.7rem;
+  align-items: center;
+  padding: 0.55rem 0.65rem;
+  border-radius: 18px;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  color: var(--text);
+  min-width: 0;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.discovery-primary-channel:hover {
+  transform: translateY(-1px);
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+}
+
+.discovery-primary-channel-copy {
+  display: grid;
+  gap: 0.05rem;
+  min-width: 0;
+}
+
+.discovery-primary-channel-copy strong,
+.discovery-primary-channel-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.discovery-primary-channel-copy small {
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+
+.discovery-primary-channel-cta {
   color: var(--primary-dark);
+  font-size: 0.82rem;
+  font-weight: 800;
+  white-space: nowrap;
 }
 
 .favorite-toggle {
@@ -1332,6 +1470,99 @@ textarea::placeholder {
 .favorite-toggle.is-active {
   background: var(--success-soft);
   color: var(--success);
+}
+
+.discovery-card-skeleton {
+  border-color: rgba(133, 151, 182, 0.18);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), #fff);
+  box-shadow: var(--shadow-sm);
+}
+
+.discovery-card-skeleton:hover {
+  transform: none;
+  box-shadow: var(--shadow-sm);
+  border-color: rgba(133, 151, 182, 0.18);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), #fff);
+}
+
+.discovery-skeleton-avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 20px;
+  background: rgba(133, 151, 182, 0.22);
+}
+
+.discovery-skeleton-pill {
+  width: 86px;
+  height: 16px;
+  border-radius: 999px;
+  background: rgba(133, 151, 182, 0.18);
+}
+
+.discovery-skeleton-badge {
+  width: 78px;
+  height: 32px;
+  border-radius: 999px;
+  background: rgba(133, 151, 182, 0.16);
+}
+
+.discovery-skeleton-paragraph {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.discovery-skeleton-line {
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(133, 151, 182, 0.18);
+}
+
+.discovery-skeleton-line.is-title {
+  height: 14px;
+  width: 72%;
+}
+
+.discovery-skeleton-line.is-subtitle {
+  height: 12px;
+  width: 44%;
+}
+
+.discovery-skeleton-line.is-short {
+  width: 56%;
+}
+
+.discovery-skeleton-line.is-link {
+  height: 14px;
+  width: 42%;
+}
+
+.discovery-skeleton-button {
+  height: 40px;
+  border-radius: 14px;
+  background: rgba(133, 151, 182, 0.14);
+  width: 148px;
+}
+
+.discovery-card-skeleton .discovery-skeleton-avatar,
+.discovery-card-skeleton .discovery-skeleton-pill,
+.discovery-card-skeleton .discovery-skeleton-badge,
+.discovery-card-skeleton .discovery-skeleton-line,
+.discovery-card-skeleton .discovery-skeleton-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.discovery-card-skeleton .discovery-skeleton-avatar::after,
+.discovery-card-skeleton .discovery-skeleton-pill::after,
+.discovery-card-skeleton .discovery-skeleton-badge::after,
+.discovery-card-skeleton .discovery-skeleton-line::after,
+.discovery-card-skeleton .discovery-skeleton-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.75), transparent);
+  animation: discoveryShimmer 1.4s ease-in-out infinite;
 }
 
 .favorites-grid {
@@ -1488,7 +1719,7 @@ textarea::placeholder {
   background: var(--surface-strong);
 }
 
-.public-platform-card span:nth-child(2) {
+.public-platform-copy {
   display: grid;
   gap: 0.05rem;
   min-width: 0;
@@ -1500,11 +1731,29 @@ textarea::placeholder {
   text-overflow: ellipsis;
 }
 
+.public-platform-url {
+  color: var(--text-soft);
+  font-weight: 700;
+}
+
 .public-platform-cta {
   color: var(--primary-dark);
   font-size: 0.82rem;
   font-weight: 800;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.public-platform-cta-icon {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.public-platform-empty {
+  border: 1px solid var(--border);
+  background: var(--surface-muted);
 }
 
 .profile-card {
@@ -1696,6 +1945,15 @@ th {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes discoveryShimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
   }
 }
 
@@ -1935,6 +2193,15 @@ th {
     gap: 1rem;
   }
 
+  .onboarding-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .onboarding-actions .button {
+    width: 100%;
+  }
+
   .hero-badges {
     gap: 0.5rem;
   }
@@ -1958,12 +2225,28 @@ th {
     flex-direction: column;
   }
 
+  .discovery-primary-channel {
+    grid-template-columns: 42px minmax(0, 1fr);
+  }
+
+  .discovery-primary-channel-cta {
+    grid-column: 1 / -1;
+  }
+
+  .discovery-skeleton-button {
+    width: 100%;
+  }
+
   .discovery-card {
     min-height: 0;
   }
 
   .discovery-card-header {
     grid-template-columns: 54px minmax(0, 1fr);
+  }
+
+  .discovery-sort-select {
+    width: 100%;
   }
 
   .discovery-avatar {
@@ -2038,6 +2321,21 @@ th {
   .table-summary {
     width: 100%;
     justify-content: center;
+  }
+
+  .discovery-pagination {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .discovery-pagination .button {
+    width: 100%;
+  }
+
+  .discovery-pagination-info {
+    text-align: center;
+    white-space: normal;
   }
 
   .form-card {
