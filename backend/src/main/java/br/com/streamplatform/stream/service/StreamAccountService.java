@@ -4,6 +4,7 @@ import br.com.streamplatform.common.exception.BusinessException;
 import br.com.streamplatform.profile.dto.StreamAccountSummaryResponse;
 import br.com.streamplatform.stream.dto.CreateStreamAccountRequest;
 import br.com.streamplatform.stream.model.StreamAccount;
+import br.com.streamplatform.stream.model.StreamAccountConnectionType;
 import br.com.streamplatform.stream.model.StreamPlatformType;
 import br.com.streamplatform.stream.repository.StreamAccountRepository;
 import br.com.streamplatform.user.model.User;
@@ -46,7 +47,7 @@ public class StreamAccountService {
         String channelUrl = request.url().trim();
         validateChannelUrl(channelUrl);
 
-        if (streamAccountRepository.existsByUserIdAndPlatformAndPlatformUsernameIgnoreCase(userId, platform, username)) {
+        if (streamAccountRepository.existsByUserIdAndPlatform(userId, platform)) {
             throw new BusinessException(HttpStatus.CONFLICT, "error.streamAccount.alreadyExists");
         }
 
@@ -57,7 +58,8 @@ public class StreamAccountService {
                 platform,
                 platform.name().toLowerCase() + ":" + username.toLowerCase(),
                 username,
-                channelUrl
+                channelUrl,
+                StreamAccountConnectionType.MANUAL
         ));
 
         return toResponse(streamAccount);
@@ -80,7 +82,8 @@ public class StreamAccountService {
                 streamAccount.getId(),
                 streamAccount.getPlatform(),
                 streamAccount.getPlatformUsername(),
-                streamAccount.getChannelUrl()
+                streamAccount.getChannelUrl(),
+                streamAccount.getConnectionType()
         );
     }
 

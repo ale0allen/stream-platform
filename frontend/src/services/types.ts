@@ -31,11 +31,14 @@ export interface Profile {
 
 export type StreamPlatformType = "TWITCH" | "YOUTUBE" | "KICK" | "OTHER";
 
+export type StreamAccountConnectionType = "MANUAL" | "OAUTH";
+
 export interface StreamAccountSummary {
   id: string;
   platform: StreamPlatformType;
   platformUsername: string;
   channelUrl: string;
+  connectionType: StreamAccountConnectionType;
 }
 
 export interface Favorite {

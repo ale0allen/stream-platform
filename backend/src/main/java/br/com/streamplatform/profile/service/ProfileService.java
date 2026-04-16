@@ -295,7 +295,8 @@ public class ProfileService {
                 streamAccount.getId(),
                 streamAccount.getPlatform(),
                 streamAccount.getPlatformUsername(),
-                streamAccount.getChannelUrl()
+                streamAccount.getChannelUrl(),
+                streamAccount.getConnectionType()
         );
     }
 

@@ -1035,6 +1035,58 @@ textarea::placeholder {
   transition: border-color 160ms ease, transform 160ms ease;
 }
 
+.account-type-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  font-size: 0.74rem;
+  font-weight: 800;
+  justify-self: end;
+  white-space: nowrap;
+}
+
+.oauth-connect-panel {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 18px;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+}
+
+.oauth-connect-copy {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.oauth-connect-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.oauth-connected-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: var(--success-soft);
+  color: var(--success);
+  font-weight: 800;
+  font-size: 0.82rem;
+}
+
+.oauth-connect-hint {
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
 .stream-account-manager {
   display: grid;
   gap: var(--space-4);
@@ -1053,7 +1105,7 @@ textarea::placeholder {
 }
 
 .stream-account-edit-item {
-  grid-template-columns: 42px minmax(0, 1fr) auto auto;
+  grid-template-columns: 42px minmax(0, 1fr) auto auto auto;
 }
 
 .stream-account-edit-item a {

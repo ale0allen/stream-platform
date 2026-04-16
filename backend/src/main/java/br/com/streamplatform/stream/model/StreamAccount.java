@@ -40,15 +40,27 @@ public class StreamAccount extends BaseTimeEntity {
     @Column(nullable = false, length = 500)
     private String channelUrl;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private StreamAccountConnectionType connectionType;
+
     protected StreamAccount() {
     }
 
-    public StreamAccount(User user, StreamPlatformType platform, String platformUserId, String platformUsername, String channelUrl) {
+    public StreamAccount(
+            User user,
+            StreamPlatformType platform,
+            String platformUserId,
+            String platformUsername,
+            String channelUrl,
+            StreamAccountConnectionType connectionType
+    ) {
         this.user = user;
         this.platform = platform;
         this.platformUserId = platformUserId;
         this.platformUsername = platformUsername;
         this.channelUrl = channelUrl;
+        this.connectionType = connectionType;
     }
 
     public UUID getId() {
@@ -73,5 +85,16 @@ public class StreamAccount extends BaseTimeEntity {
 
     public String getChannelUrl() {
         return channelUrl;
+    }
+
+    public StreamAccountConnectionType getConnectionType() {
+        return connectionType;
+    }
+
+    public void updateOauthIdentity(String platformUserId, String platformUsername, String channelUrl) {
+        this.platformUserId = platformUserId;
+        this.platformUsername = platformUsername;
+        this.channelUrl = channelUrl;
+        this.connectionType = StreamAccountConnectionType.OAUTH;
     }
 }

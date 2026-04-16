@@ -30,6 +30,21 @@ Copy values from [.env.example](/C:/Users/ale_a/projeto/copiaStreamaker/stream-p
 - `FRONTEND_URLS`
   Comma-separated local frontend origins allowed by CORS
   Default: `http://localhost:5173,http://127.0.0.1:5173`
+- `FRONTEND_PUBLIC_URL`
+  Base URL used for OAuth callbacks to redirect back to the frontend.
+  Default: `http://localhost:5173`
+- `TWITCH_CLIENT_ID`
+  Twitch application client id.
+- `TWITCH_CLIENT_SECRET`
+  Twitch application client secret.
+- `TWITCH_REDIRECT_URI`
+  Redirect/callback URL registered in Twitch developer console.
+  Default: `http://localhost:8080/api/stream-accounts/oauth/twitch/callback`
+- `TWITCH_SCOPES`
+  OAuth scopes for Twitch authorization.
+  Default: `user:read:email`
+- `TWITCH_STATE_SECRET`
+  Secret used to sign OAuth `state` parameter (do not expose publicly).
 - `SPRING_PROFILES_ACTIVE`
   Use `dev` to load local seed data
   Use `embedded,dev` if you also want embedded PostgreSQL for local validation
@@ -98,6 +113,9 @@ Seed content:
 - `GET /api/profiles/me`
 - `PUT /api/profiles/me`
 - `GET /api/profiles?q=<search>`
+- `GET /api/stream-accounts/oauth/twitch/start`
+- `GET /api/stream-accounts/oauth/twitch/callback`
+- `DELETE /api/stream-accounts/oauth/twitch`
 - `GET /api/favorites`
 - `POST /api/favorites`
 - `DELETE /api/favorites/{profileId}`

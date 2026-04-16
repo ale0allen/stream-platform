@@ -30,3 +30,11 @@ app:
     expiration-minutes: ${JWT_EXPIRATION_MINUTES:1440}
   cors:
     allowed-origins: ${FRONTEND_URLS:http://localhost:5173,http://127.0.0.1:5173}
+  oauth:
+    twitch:
+      client-id: ${TWITCH_CLIENT_ID:}
+      client-secret: ${TWITCH_CLIENT_SECRET:}
+      redirect-uri: ${TWITCH_REDIRECT_URI:http://localhost:8080/api/stream-accounts/oauth/twitch/callback}
+      scopes: ${TWITCH_SCOPES:user:read:email}
+      state-secret: ${TWITCH_STATE_SECRET:ZmFrZXN0YXRlc2VjcmV0Zm9ybG9jYWxvbmx5MTIzNDU2Nzg5}
+      frontend-redirect-base-url: ${FRONTEND_PUBLIC_URL:http://localhost:5173}

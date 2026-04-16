@@ -260,6 +260,23 @@
         "removeSuccess": "Conta de stream removida com sucesso.",
         "removeError": "Nao foi possivel remover a conta de stream."
       },
+      "oauth": {
+        "badge": "OAuth",
+        "twitch": {
+          "title": "Conectar Twitch",
+          "description": "Conecte sua conta Twitch via OAuth para preencher dados automaticamente.",
+          "connect": "Conectar Twitch",
+          "connecting": "Conectando...",
+          "disconnect": "Desconectar Twitch",
+          "connectedAs": "Conectado como @{{username}}",
+          "manualAlreadyLinked": "Voce ja vinculou Twitch manualmente. Para usar OAuth, remova a conta manual primeiro.",
+          "success": "Twitch conectada com sucesso.",
+          "error": "Nao foi possivel concluir a conexao com a Twitch.",
+          "startError": "Nao foi possivel iniciar a conexao com a Twitch.",
+          "disconnectSuccess": "Twitch desconectada com sucesso.",
+          "disconnectError": "Nao foi possivel desconectar a Twitch."
+        }
+      },
       "platforms": {
         "TWITCH": "Twitch",
         "YOUTUBE": "YouTube",

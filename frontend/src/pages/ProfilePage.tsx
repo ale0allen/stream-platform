@@ -7,6 +7,7 @@ import { SectionHeader } from "../components/SectionHeader";
 import { StatusMessage } from "../components/StatusMessage";
 import { ProfileCompletionProgress } from "../components/ProfileCompletionProgress";
 import { useAuth } from "../hooks/useAuth";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   checkUsernameAvailability,
   getMyProfile,
@@ -19,6 +20,7 @@ import {
   removeStreamAccount
 } from "../modules/streamAccount/streamAccountService";
 import type { StreamAccountSummary, StreamPlatformType } from "../services/types";
+import { disconnectTwitchOAuth, startTwitchOAuth } from "../modules/streamAccount/twitchOAuthService";
 
 const BIO_MAX_LENGTH = 280;
 const USERNAME_PATTERN = /^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?$/;
@@ -62,6 +64,8 @@ function isAvatarUrlValid(value: string) {
 export function ProfilePage() {
   const { token } = useAuth();
   const { t } = useTranslation();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [form, setForm] = useState<ProfileFormState>({
     displayName: "",
     username: "",
@@ -87,6 +91,10 @@ export function ProfilePage() {
   const [error, setError] = useState("");
   const [savedMessage, setSavedMessage] = useState("");
   const [streamAccountFeedback, setStreamAccountFeedback] = useState("");
+  const [oauthFeedback, setOauthFeedback] = useState("");
+  const [oauthError, setOauthError] = useState("");
+  const [isConnectingTwitch, setIsConnectingTwitch] = useState(false);
+  const [isDisconnectingTwitch, setIsDisconnectingTwitch] = useState(false);
 
   const normalizedUsername = useMemo(() => normalizeUsername(form.username), [form.username]);
   const trimmedDisplayName = form.displayName.trim();
@@ -187,6 +195,30 @@ export function ProfilePage() {
 
     void loadProfile();
   }, [t, token]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const oauth = params.get("oauth");
+    const status = params.get("status");
+
+    if (oauth !== "twitch" || !status) {
+      return;
+    }
+
+    if (status === "success") {
+      setOauthError("");
+      setOauthFeedback(t("pages.profile.oauth.twitch.success"));
+    } else {
+      setOauthFeedback("");
+      setOauthError(t("pages.profile.oauth.twitch.error"));
+    }
+
+    // Clean up URL params after showing the feedback.
+    params.delete("oauth");
+    params.delete("status");
+    params.delete("reason");
+    navigate({ pathname: location.pathname, search: params.toString() ? `?${params.toString()}` : "" }, { replace: true });
+  }, [location.pathname, location.search, navigate, t]);
 
   useEffect(() => {
     if (!token) {
@@ -347,6 +379,50 @@ export function ProfilePage() {
     }
   }
 
+  const twitchAccount = useMemo(
+    () => streamAccounts.find((account) => account.platform === "TWITCH") ?? null,
+    [streamAccounts]
+  );
+
+  async function handleConnectTwitch() {
+    if (!token || isConnectingTwitch) {
+      return;
+    }
+
+    try {
+      setIsConnectingTwitch(true);
+      setOauthError("");
+      setOauthFeedback("");
+      const { authorizeUrl } = await startTwitchOAuth(token);
+      window.location.assign(authorizeUrl);
+    } catch (e) {
+      setOauthFeedback("");
+      setOauthError(e instanceof Error ? e.message : t("pages.profile.oauth.twitch.startError"));
+    } finally {
+      setIsConnectingTwitch(false);
+    }
+  }
+
+  async function handleDisconnectTwitch() {
+    if (!token || isDisconnectingTwitch) {
+      return;
+    }
+
+    try {
+      setIsDisconnectingTwitch(true);
+      setOauthError("");
+      setOauthFeedback("");
+      await disconnectTwitchOAuth(token);
+      setStreamAccounts((current) => current.filter((account) => account.platform !== "TWITCH"));
+      setOauthFeedback(t("pages.profile.oauth.twitch.disconnectSuccess"));
+    } catch (e) {
+      setOauthFeedback("");
+      setOauthError(e instanceof Error ? e.message : t("pages.profile.oauth.twitch.disconnectError"));
+    } finally {
+      setIsDisconnectingTwitch(false);
+    }
+  }
+
   useEffect(() => {
     return () => {
       if (avatarPreviewUrl) {
@@ -446,6 +522,9 @@ export function ProfilePage() {
                       <strong>{t(`pages.profile.platforms.${account.platform}`)}</strong>
                       <small>{account.platformUsername}</small>
                     </span>
+                        {account.connectionType === "OAUTH" ? (
+                          <span className="account-type-pill">{t("pages.profile.oauth.badge")}</span>
+                        ) : null}
                   </a>
                 ))}
               </div>
@@ -578,6 +657,46 @@ export function ProfilePage() {
                   <strong>{t("pages.profile.streamAccounts.editorTitle")}</strong>
                   <p className="muted">{t("pages.profile.streamAccounts.editorDescription")}</p>
                 </div>
+
+                <div className="oauth-connect-panel">
+                  <div className="oauth-connect-copy">
+                    <strong>{t("pages.profile.oauth.twitch.title")}</strong>
+                    <p className="muted">{t("pages.profile.oauth.twitch.description")}</p>
+                  </div>
+                  {twitchAccount && twitchAccount.connectionType === "OAUTH" ? (
+                    <div className="oauth-connect-actions">
+                      <span className="oauth-connected-pill">
+                        {t("pages.profile.oauth.twitch.connectedAs", { username: twitchAccount.platformUsername })}
+                      </span>
+                      <button
+                        className="button button-secondary"
+                        disabled={isDisconnectingTwitch}
+                        type="button"
+                        onClick={() => void handleDisconnectTwitch()}
+                      >
+                        {isDisconnectingTwitch ? t("common.actions.removing") : t("pages.profile.oauth.twitch.disconnect")}
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="oauth-connect-actions">
+                      <button
+                        className="button button-secondary"
+                        disabled={Boolean(twitchAccount) || isConnectingTwitch}
+                        type="button"
+                        onClick={() => void handleConnectTwitch()}
+                      >
+                        {isConnectingTwitch ? t("pages.profile.oauth.twitch.connecting") : t("pages.profile.oauth.twitch.connect")}
+                      </button>
+                      {twitchAccount && twitchAccount.connectionType === "MANUAL" ? (
+                        <span className="muted oauth-connect-hint">{t("pages.profile.oauth.twitch.manualAlreadyLinked")}</span>
+                      ) : null}
+                    </div>
+                  )}
+                </div>
+
+                {oauthFeedback ? <StatusMessage tone="success" message={oauthFeedback} /> : null}
+                {oauthError ? <StatusMessage tone="error" message={oauthError} /> : null}
+
                 {isStreamAccountLoading ? <Loader label={t("pages.profile.streamAccounts.loading")} compact /> : null}
                 <form className="form-grid stream-account-form" onSubmit={handleAddStreamAccount}>
                   <label>
@@ -640,6 +759,9 @@ export function ProfilePage() {
                           <strong>{t(`pages.profile.platforms.${account.platform}`)}</strong>
                           <small>{account.platformUsername}</small>
                         </span>
+                        {account.connectionType === "OAUTH" ? (
+                          <span className="account-type-pill">{t("pages.profile.oauth.badge")}</span>
+                        ) : null}
                         <a href={account.channelUrl} rel="noreferrer" target="_blank">
                           {t("pages.profile.streamAccounts.open")}
                         </a>

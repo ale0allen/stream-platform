@@ -8,6 +8,7 @@ public record StreamAccountSummaryResponse(
         UUID id,
         StreamPlatformType platform,
         String platformUsername,
-        String channelUrl
+        String channelUrl,
+        br.com.streamplatform.stream.model.StreamAccountConnectionType connectionType
 ) {
 }
