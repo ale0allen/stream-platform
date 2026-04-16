@@ -1,32 +1,24 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Avatar } from "../components/Avatar";
 import { EmptyState } from "../components/EmptyState";
 import { Loader } from "../components/Loader";
 import { SectionHeader } from "../components/SectionHeader";
 import { StatusMessage } from "../components/StatusMessage";
+import { CreatorDiscoveryCard } from "../components/CreatorDiscoveryCard";
 import { useAuth } from "../hooks/useAuth";
 import { listProfiles, type DiscoverySortKey } from "../modules/discovery/discoveryService";
+import { getDiscoveryHighlights } from "../modules/discovery/discoveryHighlightsService";
 import { addFavorite, listFavorites, removeFavorite } from "../modules/favorite/favoriteService";
-import type { Profile, StreamPlatformType } from "../services/types";
+import type { DiscoveryHighlightsResponse, Profile, StreamPlatformType } from "../services/types";
 
 type PlatformFilter = "ALL" | Extract<StreamPlatformType, "TWITCH" | "YOUTUBE" | "KICK">;
 
 const SEARCH_DEBOUNCE_MS = 350;
 const PLATFORM_FILTERS: PlatformFilter[] = ["ALL", "TWITCH", "YOUTUBE", "KICK"];
-const PLATFORM_BADGE_LIMIT = 4;
 const LOADING_SKELETON_CARDS = 8;
 const PAGE_SIZE = 8;
 const DISCOVERY_DEFAULT_SORT: DiscoverySortKey = "name_asc";
-
-function getPrimaryPlatform(profile: Profile, selectedPlatform: PlatformFilter) {
-  if (selectedPlatform !== "ALL") {
-    return profile.streamAccounts.find((account) => account.platform === selectedPlatform);
-  }
-
-  return profile.streamAccounts.find((account) => account.platform !== "OTHER") ?? profile.streamAccounts[0];
-}
 
 export function DiscoveryPage() {
   const { token } = useAuth();
@@ -39,6 +31,9 @@ export function DiscoveryPage() {
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [highlights, setHighlights] = useState<DiscoveryHighlightsResponse | null>(null);
+  const [highlightsError, setHighlightsError] = useState("");
+  const [isHighlightsLoading, setIsHighlightsLoading] = useState(true);
   const [favoriteProfileIds, setFavoriteProfileIds] = useState<Set<string>>(() => new Set());
   const [isLoading, setIsLoading] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
@@ -125,6 +120,39 @@ export function DiscoveryPage() {
     void loadFavoriteState();
   }, [t, token]);
 
+  useEffect(() => {
+    if (!token) {
+      setIsHighlightsLoading(false);
+      return;
+    }
+
+    const authToken = token;
+    let isCurrent = true;
+
+    async function loadHighlights() {
+      try {
+        setIsHighlightsLoading(true);
+        setHighlightsError("");
+        const result = await getDiscoveryHighlights(authToken, 6);
+        if (!isCurrent) return;
+        setHighlights(result);
+      } catch (e) {
+        if (!isCurrent) return;
+        setHighlights(null);
+        setHighlightsError(e instanceof Error ? e.message : t("pages.discovery.highlights.loadError"));
+      } finally {
+        if (!isCurrent) return;
+        setIsHighlightsLoading(false);
+      }
+    }
+
+    void loadHighlights();
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [t, token]);
+
   async function handleToggleFavorite(profileId: string) {
     if (!token || mutatingProfileId) {
       return;
@@ -180,6 +208,81 @@ export function DiscoveryPage() {
         description={t("pages.discovery.description")}
         badge={t("pages.discovery.badge")}
       />
+
+      {!debouncedQuery && platformFilter === "ALL" && page === 1 ? (
+        <div className="discovery-highlights">
+          <div className="section-block">
+            <div className="section-block-copy">
+              <strong>{t("pages.discovery.highlights.featuredTitle")}</strong>
+              <p className="muted">{t("pages.discovery.highlights.featuredDescription")}</p>
+            </div>
+            {isHighlightsLoading ? <Loader compact label={t("pages.discovery.highlights.loading")} /> : null}
+            {!isHighlightsLoading && highlightsError ? <StatusMessage tone="error" message={highlightsError} /> : null}
+            {!isHighlightsLoading && highlights?.featured?.length ? (
+              <div className="card-grid discovery-grid discovery-highlights-grid">
+                {highlights.featured.slice(0, 4).map((profile) => (
+                  <CreatorDiscoveryCard
+                    key={`featured-${profile.id}`}
+                    profile={profile}
+                    platformFilter="ALL"
+                    isFavorite={favoriteProfileIds.has(profile.id)}
+                    isMutating={mutatingProfileId === profile.id}
+                    isAnyMutating={Boolean(mutatingProfileId)}
+                    onOpenPublicProfile={openPublicProfile}
+                    onToggleFavorite={(profileId) => void handleToggleFavorite(profileId)}
+                  />
+                ))}
+              </div>
+            ) : null}
+          </div>
+
+          <div className="section-block">
+            <div className="section-block-copy">
+              <strong>{t("pages.discovery.highlights.recentTitle")}</strong>
+              <p className="muted">{t("pages.discovery.highlights.recentDescription")}</p>
+            </div>
+            {!isHighlightsLoading && highlights?.recent?.length ? (
+              <div className="card-grid discovery-grid discovery-highlights-grid">
+                {highlights.recent.slice(0, 4).map((profile) => (
+                  <CreatorDiscoveryCard
+                    key={`recent-${profile.id}`}
+                    profile={profile}
+                    platformFilter="ALL"
+                    isFavorite={favoriteProfileIds.has(profile.id)}
+                    isMutating={mutatingProfileId === profile.id}
+                    isAnyMutating={Boolean(mutatingProfileId)}
+                    onOpenPublicProfile={openPublicProfile}
+                    onToggleFavorite={(profileId) => void handleToggleFavorite(profileId)}
+                  />
+                ))}
+              </div>
+            ) : null}
+          </div>
+
+          <div className="section-block">
+            <div className="section-block-copy">
+              <strong>{t("pages.discovery.highlights.completeTitle")}</strong>
+              <p className="muted">{t("pages.discovery.highlights.completeDescription")}</p>
+            </div>
+            {!isHighlightsLoading && highlights?.complete?.length ? (
+              <div className="card-grid discovery-grid discovery-highlights-grid">
+                {highlights.complete.slice(0, 4).map((profile) => (
+                  <CreatorDiscoveryCard
+                    key={`complete-${profile.id}`}
+                    profile={profile}
+                    platformFilter="ALL"
+                    isFavorite={favoriteProfileIds.has(profile.id)}
+                    isMutating={mutatingProfileId === profile.id}
+                    isAnyMutating={Boolean(mutatingProfileId)}
+                    onOpenPublicProfile={openPublicProfile}
+                    onToggleFavorite={(profileId) => void handleToggleFavorite(profileId)}
+                  />
+                ))}
+              </div>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
 
       <div className="toolbar card toolbar-card">
         <div className="toolbar-copy">
@@ -276,115 +379,20 @@ export function DiscoveryPage() {
             }
           />
         ) : null}
-        {!isLoading && !error ? profiles.map((profile) => {
-              const primaryPlatform = getPrimaryPlatform(profile, platformFilter);
-              const isFavorite = favoriteProfileIds.has(profile.id);
-              const isMutating = mutatingProfileId === profile.id;
-              const visibleBadges = profile.streamAccounts.slice(0, PLATFORM_BADGE_LIMIT);
-              const remainingBadges = Math.max(0, profile.streamAccounts.length - visibleBadges.length);
-
-              return (
-                <article
-                  className="card discovery-card is-clickable"
-                  key={profile.id}
-                  role="link"
-                  tabIndex={0}
-                  onClick={() => openPublicProfile(profile.username)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter" || event.key === " ") {
-                      event.preventDefault();
-                      openPublicProfile(profile.username);
-                    }
-                  }}
-                >
-                  <div className="discovery-card-header">
-                    <Avatar
-                      alt={profile.displayName}
-                      className="discovery-avatar"
-                      imageUrl={profile.avatarUrl}
-                      label={profile.displayName || profile.username}
-                    />
-                    <div className="discovery-card-title">
-                      <h3>{profile.displayName}</h3>
-                      <p className="muted">@{profile.username}</p>
-                    </div>
-                    <span className="open-profile-indicator" aria-hidden="true">
-                      {t("pages.discovery.openProfileShort")}
-                      <span className="open-profile-chevron">›</span>
-                    </span>
-                  </div>
-                  <div className="discovery-platform-row">
-                    {profile.streamAccounts.length ? (
-                      <>
-                        {visibleBadges.map((account) => (
-                        <span className={`platform-badge platform-${account.platform.toLowerCase()}`} key={account.id}>
-                          {t(`pages.profile.platforms.${account.platform}`)}
-                        </span>
-                        ))}
-                        {remainingBadges ? (
-                          <span className="platform-badge platform-overflow" aria-label={t("pages.discovery.morePlatforms", { count: remainingBadges })}>
-                            +{remainingBadges}
-                          </span>
-                        ) : null}
-                      </>
-                    ) : (
-                      <span className="platform-badge">{t("pages.discovery.noPlatform")}</span>
-                    )}
-                  </div>
-                  <p className="discovery-card-bio">{profile.bio || t("profileCard.emptyBio")}</p>
-                  <div className="discovery-card-footer">
-                    {primaryPlatform ? (
-                      <a
-                        className="discovery-primary-channel"
-                        href={primaryPlatform.channelUrl}
-                        rel="noreferrer"
-                        target="_blank"
-                        onClick={(event) => event.stopPropagation()}
-                      >
-                        <span className={`stream-platform-mark platform-${primaryPlatform.platform.toLowerCase()}`} aria-hidden="true">
-                          {primaryPlatform.platform.charAt(0)}
-                        </span>
-                        <span className="discovery-primary-channel-copy">
-                          <strong>{primaryPlatform.platformUsername}</strong>
-                          <small>{t(`pages.profile.platforms.${primaryPlatform.platform}`)}</small>
-                        </span>
-                        <span className="discovery-primary-channel-cta" aria-hidden="true">
-                          {t("pages.publicProfile.openChannel")}
-                        </span>
-                      </a>
-                    ) : (
-                      <span>{t("pages.discovery.noLinkedAccount")}</span>
-                    )}
-                    <button
-                      className="button button-secondary open-profile-button"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        openPublicProfile(profile.username);
-                      }}
-                      type="button"
-                    >
-                      {t("pages.discovery.openProfile")}
-                    </button>
-                    <button
-                      className={isFavorite ? "button button-secondary favorite-toggle is-active" : "button button-secondary favorite-toggle"}
-                      disabled={isMutating || Boolean(mutatingProfileId)}
-                      aria-pressed={isFavorite}
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        void handleToggleFavorite(profile.id);
-                      }}
-                      type="button"
-                    >
-                      {isMutating
-                        ? t("pages.discovery.favoriteToggle.loading")
-                        : isFavorite
-                          ? t("pages.discovery.favoriteToggle.remove")
-                          : t("pages.discovery.favoriteToggle.add")}
-                    </button>
-                  </div>
-                </article>
-              );
-            }) : null}
+        {!isLoading && !error
+          ? profiles.map((profile) => (
+              <CreatorDiscoveryCard
+                key={profile.id}
+                profile={profile}
+                platformFilter={platformFilter}
+                isFavorite={favoriteProfileIds.has(profile.id)}
+                isMutating={mutatingProfileId === profile.id}
+                isAnyMutating={Boolean(mutatingProfileId)}
+                onOpenPublicProfile={openPublicProfile}
+                onToggleFavorite={(profileId) => void handleToggleFavorite(profileId)}
+              />
+            ))
+          : null}
       </div>
 
       {totalCount > 0 && !error ? (

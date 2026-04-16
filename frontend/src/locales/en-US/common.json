@@ -162,6 +162,21 @@
           "exploreCreators": "Explore creators",
           "viewPublicProfile": "View public profile"
         }
+      },
+      "ecosystem": {
+        "title": "Creator ecosystem",
+        "description": "A quick snapshot to discover and follow creators with more context.",
+        "loadError": "Unable to load ecosystem data.",
+        "metrics": {
+          "totalCreators": "Total creators",
+          "completeProfiles": "Complete profiles",
+          "linkedAccounts": "Linked accounts"
+        },
+        "featuredTitle": "Featured creators",
+        "featuredDescription": "Suggestions based on completeness and linked accounts.",
+        "actions": {
+          "openDiscovery": "Open discovery"
+        }
       }
     },
     "profile": {
@@ -296,6 +311,16 @@
         "previous": "Previous",
         "next": "Next",
         "pageInfo": "Page {{page}} of {{totalPages}}"
+      },
+      "highlights": {
+        "loading": "Loading highlights...",
+        "loadError": "Unable to load highlights.",
+        "featuredTitle": "Featured creators",
+        "featuredDescription": "Profiles with stronger completeness and linked accounts.",
+        "recentTitle": "Recent profiles",
+        "recentDescription": "Creators added recently to the directory.",
+        "completeTitle": "Complete profiles",
+        "completeDescription": "Profiles with the essentials and at least one linked account."
       },
       "clearFilters": "Clear search and filters",
       "morePlatforms_one": "{{count}} more platform",

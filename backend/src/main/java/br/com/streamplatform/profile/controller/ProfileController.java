@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.streamplatform.profile.dto.DiscoveryProfilesResponse;
+import br.com.streamplatform.profile.dto.DiscoveryHighlightsResponse;
+import br.com.streamplatform.profile.dto.CreatorMetricsResponse;
 import br.com.streamplatform.stream.model.StreamPlatformType;
 
 import java.util.List;
@@ -73,5 +75,15 @@ public class ProfileController {
         }
 
         return profileService.discoveryProfiles(q, platformEnum, sort, page, size);
+    }
+
+    @GetMapping("/highlights")
+    public DiscoveryHighlightsResponse highlights(@RequestParam(required = false, defaultValue = "6") int limit) {
+        return profileService.discoveryHighlights(limit);
+    }
+
+    @GetMapping("/metrics")
+    public CreatorMetricsResponse metrics() {
+        return profileService.creatorMetrics();
     }
 }

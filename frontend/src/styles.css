@@ -1211,6 +1211,15 @@ textarea::placeholder {
   white-space: nowrap;
 }
 
+.discovery-highlights {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.discovery-highlights-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
 .platform-filter {
   display: inline-flex;
   flex-wrap: wrap;
@@ -1884,6 +1893,12 @@ th {
   font-size: clamp(1.8rem, 3vw, 2.5rem);
   line-height: 1;
   letter-spacing: -0.04em;
+}
+
+.metric-value {
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  letter-spacing: -0.04em;
+  line-height: 1;
 }
 
 .admin-user-cell {

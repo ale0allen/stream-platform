@@ -162,6 +162,21 @@
           "exploreCreators": "Explorar criadores",
           "viewPublicProfile": "Ver perfil publico"
         }
+      },
+      "ecosystem": {
+        "title": "Ecossistema de criadores",
+        "description": "Um panorama rapido para descobrir e acompanhar criadores com mais contexto.",
+        "loadError": "Nao foi possivel carregar os dados do ecossistema.",
+        "metrics": {
+          "totalCreators": "Total de criadores",
+          "completeProfiles": "Perfis completos",
+          "linkedAccounts": "Contas vinculadas"
+        },
+        "featuredTitle": "Creators em destaque",
+        "featuredDescription": "Sugestoes baseadas em perfis completos e criadores com contas vinculadas.",
+        "actions": {
+          "openDiscovery": "Abrir descoberta"
+        }
       }
     },
     "profile": {
@@ -296,6 +311,16 @@
         "previous": "Anterior",
         "next": "Próxima",
         "pageInfo": "Página {{page}} de {{totalPages}}"
+      },
+      "highlights": {
+        "loading": "Carregando destaques...",
+        "loadError": "Nao foi possivel carregar os destaques.",
+        "featuredTitle": "Creators em destaque",
+        "featuredDescription": "Perfis com bom nivel de completude e contas vinculadas.",
+        "recentTitle": "Perfis recentes",
+        "recentDescription": "Novos criadores adicionados recentemente ao diretorio.",
+        "completeTitle": "Criadores com perfil completo",
+        "completeDescription": "Perfis com informacoes essenciais e pelo menos uma conta vinculada."
       },
       "clearFilters": "Limpar busca e filtros",
       "morePlatforms_one": "Mais {{count}} plataforma",

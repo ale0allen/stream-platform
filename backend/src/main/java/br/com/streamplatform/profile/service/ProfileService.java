@@ -4,6 +4,8 @@ import br.com.streamplatform.common.exception.BusinessException;
 import br.com.streamplatform.profile.dto.ProfileResponse;
 import br.com.streamplatform.profile.dto.PublicProfileResponse;
 import br.com.streamplatform.profile.dto.DiscoveryProfilesResponse;
+import br.com.streamplatform.profile.dto.DiscoveryHighlightsResponse;
+import br.com.streamplatform.profile.dto.CreatorMetricsResponse;
 import br.com.streamplatform.profile.dto.StreamAccountSummaryResponse;
 import br.com.streamplatform.profile.dto.UpdateProfileRequest;
 import br.com.streamplatform.profile.dto.UsernameAvailabilityResponse;
@@ -20,6 +22,8 @@ import br.com.streamplatform.stream.model.StreamPlatformType;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.UUID;
 
 @Service
@@ -96,6 +100,71 @@ public class ProfileService {
         return new DiscoveryProfilesResponse(items, totalCount, safePage, safeSize);
     }
 
+    public DiscoveryHighlightsResponse discoveryHighlights(int limit) {
+        int safeLimit = Math.min(Math.max(limit, 1), 12);
+
+        List<Profile> allProfiles = profileRepository.findAll();
+        Set<UUID> usersWithStreamAccounts = new HashSet<>(streamAccountRepository.findDistinctUserIds());
+
+        List<Profile> withAccounts = allProfiles.stream()
+                .filter(profile -> usersWithStreamAccounts.contains(profile.getUser().getId()))
+                .toList();
+
+        List<Profile> featured = withAccounts.stream()
+                .sorted((left, right) -> {
+                    int completionCompare = Integer.compare(getCompletionPercent(right, true), getCompletionPercent(left, true));
+                    if (completionCompare != 0) return completionCompare;
+                    if (left.getUpdatedAt() == null && right.getUpdatedAt() == null) return 0;
+                    if (left.getUpdatedAt() == null) return 1;
+                    if (right.getUpdatedAt() == null) return -1;
+                    return right.getUpdatedAt().compareTo(left.getUpdatedAt());
+                })
+                .limit(safeLimit)
+                .toList();
+
+        List<Profile> recent = allProfiles.stream()
+                .sorted((left, right) -> {
+                    if (left.getCreatedAt() == null && right.getCreatedAt() == null) return 0;
+                    if (left.getCreatedAt() == null) return 1;
+                    if (right.getCreatedAt() == null) return -1;
+                    return right.getCreatedAt().compareTo(left.getCreatedAt());
+                })
+                .limit(safeLimit)
+                .toList();
+
+        List<Profile> complete = withAccounts.stream()
+                .filter(profile -> getCompletionPercent(profile, true) >= 100)
+                .sorted((left, right) -> {
+                    if (left.getUpdatedAt() == null && right.getUpdatedAt() == null) return 0;
+                    if (left.getUpdatedAt() == null) return 1;
+                    if (right.getUpdatedAt() == null) return -1;
+                    return right.getUpdatedAt().compareTo(left.getUpdatedAt());
+                })
+                .limit(safeLimit)
+                .toList();
+
+        return new DiscoveryHighlightsResponse(
+                featured.stream().map(this::toResponse).toList(),
+                recent.stream().map(this::toResponse).toList(),
+                complete.stream().map(this::toResponse).toList()
+        );
+    }
+
+    public CreatorMetricsResponse creatorMetrics() {
+        long totalCreators = profileRepository.count();
+        long linkedAccounts = streamAccountRepository.count();
+
+        List<Profile> profiles = profileRepository.findAll();
+        Set<UUID> usersWithStreamAccounts = new HashSet<>(streamAccountRepository.findDistinctUserIds());
+
+        long completeProfiles = profiles.stream()
+                .filter(profile -> usersWithStreamAccounts.contains(profile.getUser().getId()))
+                .filter(profile -> getCompletionPercent(profile, true) >= 100)
+                .count();
+
+        return new CreatorMetricsResponse(totalCreators, completeProfiles, linkedAccounts);
+    }
+
     private Comparator<ProfileResponse> getDiscoveryComparator(String sort) {
         return switch (sort) {
             case "recent" -> Comparator
@@ -152,6 +221,19 @@ public class ProfileService {
 
         List<?> streamAccounts = profile.streamAccounts();
         if (streamAccounts != null && !streamAccounts.isEmpty()) completed++;
+
+        return (int) Math.round((completed / (double) total) * 100);
+    }
+
+    private int getCompletionPercent(Profile profile, boolean hasStreamAccount) {
+        int total = 5;
+        int completed = 0;
+
+        if (profile.getDisplayName() != null && profile.getDisplayName().trim().length() >= 2) completed++;
+        if (profile.getUsername() != null && profile.getUsername().trim().length() >= 3 && profile.getUsername().trim().length() <= 30) completed++;
+        if (profile.getBio() != null && profile.getBio().trim().length() >= 30) completed++;
+        if (profile.getAvatarUrl() != null && !profile.getAvatarUrl().trim().isBlank()) completed++;
+        if (hasStreamAccount) completed++;
 
         return (int) Math.round((completed / (double) total) * 100);
     }

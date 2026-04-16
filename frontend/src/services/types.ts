@@ -51,3 +51,15 @@ export interface DiscoveryProfilesResponse {
   page: number;
   size: number;
 }
+
+export interface DiscoveryHighlightsResponse {
+  featured: Profile[];
+  recent: Profile[];
+  complete: Profile[];
+}
+
+export interface CreatorMetricsResponse {
+  totalCreators: number;
+  completeProfiles: number;
+  linkedAccounts: number;
+}
